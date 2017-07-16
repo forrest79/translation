@@ -1,0 +1,31 @@
+{
+	"name": "forrest79/ntt-translator",
+	"description": "Simple fast translator for Nette Framework",
+	"keywords": ["nette", "translator"],
+	"type": "library",
+	"license": "BSD License",
+	"authors": [
+		{
+			"name": "Jakub Trmota",
+			"email": "jakub@trmota.cz"
+		}
+	],
+	"require": {
+		"php": ">=5.6.0",
+		"nette/application": "^2.4",
+		"tracy/tracy": "^2.4",
+		"nette/utils": "^2.4",
+		"nette/neon": "^2.4"
+	},
+	"require-dev": {
+		"nette/tester": "^1.7"
+	},
+	"autoload": {
+		"psr-0": {
+			"Forrest79\\NttTranslator\\": "src/"
+		},
+		"classmap": [
+			"src/Forrest79/NttTranslator/exceptions.php"
+		]
+	}
+}
