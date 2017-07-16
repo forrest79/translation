@@ -72,14 +72,12 @@ class Translator implements Localization\ITranslator
 	{
 		if (is_array($parameters) && isset($parameters['locale'])) {
 			$locale = strtolower($parameters['locale']);
-			unset($parameters['locale']);
 		} else {
 			$locale = $this->getLocale();
 		}
 
 		if (is_array($parameters) && isset($parameters['count'])) {
 			$count = (int) $parameters['count'];
-			unset($parameters['count']);
 		} else if (is_numeric($parameters)) {
 			$count = (int) $parameters;
 			$parameters = NULL;
