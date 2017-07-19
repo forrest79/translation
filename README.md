@@ -85,6 +85,7 @@ Default settings is (this works out of the box):
 
 ```yml
 extensions:
+    locale, NULL # can set manual locale
     fallbackLocale, NULL # can set locale that is used, when main locale does't have message to translate (this is logged)
     localesDir: %appDir%/locales # directory with neon files
     tempDir: %tempDir% # for cached translation files: tempDir/cache/locales

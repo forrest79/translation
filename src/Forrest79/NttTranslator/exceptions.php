@@ -18,3 +18,5 @@ class BadCountForPluralMessageException extends TranslatorException {};
 class NoCountForPluralMessageException extends TranslatorException {};
 
 class NoLocaleSelectedExceptions extends TranslatorException {};
+
+class BadLocaleNameExceptions extends TranslatorException {};

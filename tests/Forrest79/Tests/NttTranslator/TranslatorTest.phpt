@@ -4,7 +4,6 @@ namespace Forrest79\Tests\NttTranslator;
 
 use Forrest79;
 use Forrest79\NttTranslator;
-use Nette\Neon;
 use Tester;
 use Tester\Assert;
 use Tracy;
@@ -16,9 +15,6 @@ class TranslatorTest extends Tester\TestCase
 {
 	/** @var NttTranslator\Translator */
 	private $translator;
-
-	/** @var int */
-	private $locale = 0;
 
 
 	protected function setUp()
@@ -35,6 +31,17 @@ class TranslatorTest extends Tester\TestCase
 	public function testNoLocaleSelected()
 	{
 		$this->translator->translate('message');
+	}
+
+
+	/**
+	 * @throws Forrest79\NttTranslator\BadLocaleNameExceptions
+	 */
+	public function testBadLocaleName()
+	{
+		$this->translator
+			->setLocale('bad-locale-name')
+			->translate('message');
 	}
 
 
@@ -119,18 +126,7 @@ class TranslatorTest extends Tester\TestCase
 
 	private function createLocale(array $messages, array $plural = [])
 	{
-		if ($plural === []) {
-			$plural = ['n == 1', 'n > 1'];
-		}
-
-		$messages = [
-			'plural' => $plural,
-			'messages' => $messages,
-		];
-
-		file_put_contents(TEMP_DIR . DIRECTORY_SEPARATOR . $this->locale . '.neon', (new Neon\Encoder)->encode($messages));
-
-		return $this->locale++;
+		return createLocale($messages, $plural);
 	}
 
 }

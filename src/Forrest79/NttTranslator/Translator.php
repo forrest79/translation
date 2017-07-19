@@ -49,14 +49,18 @@ class Translator implements Localization\ITranslator
 
 	public function setLocale($locale)
 	{
-		$this->locale = strtolower($locale);
+		$locale = strtolower($locale);
+		$this->checkLocaleName($locale);
+
+		$this->locale = $locale;
+		return $this;
 	}
 
 
 	public function getLocale()
 	{
 		if ($this->locale === NULL) {
-			throw new NoLocaleSelectedExceptions();
+			throw new NoLocaleSelectedExceptions;
 		}
 		return $this->locale;
 	}
@@ -64,7 +68,19 @@ class Translator implements Localization\ITranslator
 
 	public function setFallbackLocale($locale)
 	{
-		$this->fallbackLocale = strtolower($locale);
+		$locale = strtolower($locale);
+		$this->checkLocaleName($locale);
+
+		$this->fallbackLocale = $locale;
+		return $this;
+	}
+
+
+	private function checkLocaleName($locale)
+	{
+		if (!preg_match('/^[a-z0-9]+$/', $locale)) {
+			throw new BadLocaleNameExceptions('Only a-z and 0-9 characters are allowed for locale name.');
+		}
 	}
 
 
@@ -192,6 +208,14 @@ class Translator implements Localization\ITranslator
 	public function setLocaleUtils(ILocaleUtils $localeUtils)
 	{
 		$this->localeUtils = $localeUtils;
+		return $this;
+	}
+
+
+	/** @return ILocaleUtils */
+	public function getLocaleUtils()
+	{
+		return $this->localeUtils;
 	}
 
 

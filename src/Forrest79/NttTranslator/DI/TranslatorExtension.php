@@ -10,10 +10,11 @@ class TranslatorExtension extends Nette\DI\CompilerExtension
 {
 
 	public $defaults = [
+		'locale' => NULL,
 		'fallbackLocale' => NULL,
 		'localesDir' => '%appDir%/locales',
 		'tempDir' => '%tempDir%',
-		'localeUtils' => NULL, // auto detect
+		'localeUtils' => NULL, // NULL = auto detect, FALSE = disable
 		'requestResolver' => 'locale', // FALSE = disable
 		'debugger' => '%debugMode%',
 	];
@@ -26,6 +27,13 @@ class TranslatorExtension extends Nette\DI\CompilerExtension
 		$builder = $this->getContainerBuilder();
 		$config = Nette\DI\Helpers::expand($this->config, $builder->parameters);
 
+		$translator = $builder->addDefinition($this->prefix('default'))
+			->setClass(NttTranslator\Translator::class, [
+				$config['debugger'],
+				$config['localesDir'],
+				$config['tempDir'],
+			]);
+
 		$localeUtils = $config['localeUtils'];
 		if (($localeUtils === NULL) && function_exists('opcache_invalidate')){
 			$builder->addDefinition($this->prefix('localeUtils.opcache'))
@@ -33,23 +41,29 @@ class TranslatorExtension extends Nette\DI\CompilerExtension
 			$localeUtils = $this->prefix('@localeUtils.opcache');
 		}
 
-		if ($config['requestResolver'] !== FALSE) {
-			$builder->addDefinition($this->prefix('requestResolver'))
-				->setClass(NttTranslator\RequestResolver::class, [$config['requestResolver']]);
+		if ($localeUtils) {
+			$translator->addSetup('setLocaleUtils', [$localeUtils]);
 		}
 
-		$translator = $builder->addDefinition($this->prefix('default'))
-			->setClass(NttTranslator\Translator::class)
-			->setFactory(NttTranslator\TranslatorFactory::class . '::create', [
-				$builder->parameters['debugMode'],
-				$config['debugger'],
-				$config['localesDir'],
-				$config['tempDir'],
-				$localeUtils,
-			]);
+		if ($config['debugger']) {
+			$builder->addDefinition($this->prefix('panel'))
+				->setClass(NttTranslator\Diagnostics\Panel::class)
+				->setFactory(NttTranslator\Diagnostics\Panel::class . '::register');
+
+			$translator->addSetup('?->setPanel(?)', ['@self', $this->prefix('@panel')]);
+		}
+
+		if ($config['locale'] !== NULL) {
+			$translator->addSetup('setLocale', [$config['locale']]);
+		}
 
 		if ($config['fallbackLocale'] !== NULL) {
 			$translator->addSetup('setFallbackLocale', [$config['fallbackLocale']]);
+		}
+
+		if ($config['requestResolver'] !== FALSE) {
+			$builder->addDefinition($this->prefix('requestResolver'))
+				->setClass(NttTranslator\RequestResolver::class, [$config['requestResolver']]);
 		}
 	}
 
