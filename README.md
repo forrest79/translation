@@ -1,6 +1,10 @@
 Forrest79/NttTranslator
 ======
 
+[![Build Status](https://travis-ci.org/forrest79/NttTranslator.svg?branch=master)](https://travis-ci.org/forrest79/NttTranslator)
+[![Downloads this Month](https://img.shields.io/packagist/dm/forrest79/ntt-translator.svg)](https://packagist.org/packages/forrest79/ntt-translator)
+[![Latest stable](https://img.shields.io/packagist/v/forrest79/ntt-translator.svg)](https://packagist.org/packages/forrest79/ntt-translator)
+
 Simple and fast translator for Nette Frameword based on neon locale files.
 
 
