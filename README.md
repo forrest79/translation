@@ -19,7 +19,7 @@ Forrest79/NttTranslator requires PHP 5.6 or higher.
 Installation
 ------------
 
-* Install Forrest79/NttTranslator to your project is using  [Composer](http://getcomposer.org/):
+* Install Forrest79/NttTranslator to your project using [Composer](http://getcomposer.org/):
 
 ```sh
 $ composer require forrest79/ntt-translator
