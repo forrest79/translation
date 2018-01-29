@@ -1,9 +1,9 @@
 {
 	"name": "forrest79/ntt-translator",
-	"description": "Simple fast translator for Nette Framework",
+	"description": "Simple fast translator for Nette Framework.",
 	"keywords": ["nette", "translator"],
 	"type": "library",
-	"license": "BSD License",
+	"license": "BSD-3-Clause",
 	"authors": [
 		{
 			"name": "Jakub Trmota",
