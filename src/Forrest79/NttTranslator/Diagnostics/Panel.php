@@ -2,13 +2,11 @@
 
 namespace Forrest79\NttTranslator\Diagnostics;
 
-use Forrest79\NttTranslator;
-use Nette;
 use Tracy;
 use Tracy\Helpers;
 
 
-class Panel extends Nette\Object implements Tracy\IBarPanel
+class Panel implements Tracy\IBarPanel
 {
 	/** @var array */
 	private $untranslated = [];
