@@ -1,6 +1,7 @@
 Forrest79/NttTranslator
-======
+=======================
 
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/forrest79/NttTranslator/blob/master/license.md)
 [![Build Status](https://travis-ci.org/forrest79/NttTranslator.svg?branch=master)](https://travis-ci.org/forrest79/NttTranslator)
 [![Downloads this Month](https://img.shields.io/packagist/dm/forrest79/ntt-translator.svg)](https://packagist.org/packages/forrest79/ntt-translator)
 [![Latest stable](https://img.shields.io/packagist/v/forrest79/ntt-translator.svg)](https://packagist.org/packages/forrest79/ntt-translator)
