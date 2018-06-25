@@ -1,6 +1,6 @@
 <?php
 
-namespace Forrest79\Tests\NttTranslator;
+namespace Forrest79\Tests\SimpleTranslator;
 
 use Tester\Assert;
 

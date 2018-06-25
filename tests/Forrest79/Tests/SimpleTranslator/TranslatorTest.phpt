@@ -1,9 +1,9 @@
 <?php
 
-namespace Forrest79\Tests\NttTranslator;
+namespace Forrest79\Tests\SimpleTranslator;
 
 use Forrest79;
-use Forrest79\NttTranslator;
+use Forrest79\SimpleTranslator;
 use Tester;
 use Tester\Assert;
 use Tracy;
@@ -13,7 +13,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 
 class TranslatorTest extends Tester\TestCase
 {
-	/** @var NttTranslator\Translator */
+	/** @var SimpleTranslator\Translator */
 	private $translator;
 
 
@@ -21,12 +21,12 @@ class TranslatorTest extends Tester\TestCase
 	{
 		parent::setUp();
 
-		$this->translator = new NttTranslator\Translator(TRUE, TEMP_DIR, TEMP_DIR, Tracy\Debugger::getLogger());
+		$this->translator = new SimpleTranslator\Translator(TRUE, TEMP_DIR, TEMP_DIR, Tracy\Debugger::getLogger());
 	}
 
 
 	/**
-	 * @throws Forrest79\NttTranslator\NoLocaleSelectedExceptions
+	 * @throws Forrest79\SimpleTranslator\NoLocaleSelectedExceptions
 	 */
 	public function testNoLocaleSelected()
 	{
@@ -35,7 +35,7 @@ class TranslatorTest extends Tester\TestCase
 
 
 	/**
-	 * @throws Forrest79\NttTranslator\BadLocaleNameExceptions
+	 * @throws Forrest79\SimpleTranslator\BadLocaleNameExceptions
 	 */
 	public function testBadLocaleName()
 	{
@@ -65,7 +65,7 @@ class TranslatorTest extends Tester\TestCase
 
 
 	/**
-	 * @throws Forrest79\NttTranslator\BadCountForPluralMessageException
+	 * @throws Forrest79\SimpleTranslator\BadCountForPluralMessageException
 	 */
 	public function testBadPluralTranslate()
 	{
@@ -75,7 +75,7 @@ class TranslatorTest extends Tester\TestCase
 
 
 	/**
-	 * @throws Forrest79\NttTranslator\NotPluralMessageException
+	 * @throws Forrest79\SimpleTranslator\NotPluralMessageException
 	 */
 	public function testNotPluralTranslate()
 	{

@@ -1,8 +1,8 @@
 <?php
 
-namespace Forrest79\NttTranslator;
+namespace Forrest79\SimpleTranslator;
 
-use Forrest79\NttTranslator;
+use Forrest79\SimpleTranslator;
 use Nette\Application;
 
 
@@ -11,11 +11,11 @@ class RequestResolver
 	/** @var string */
 	private $parameter;
 
-	/** @var NttTranslator\Translator */
+	/** @var SimpleTranslator\Translator */
 	private $translator;
 
 
-	public function __construct($parameter, NttTranslator\Translator $translator)
+	public function __construct($parameter, SimpleTranslator\Translator $translator)
 	{
 		$this->parameter = $parameter;
 		$this->translator = $translator;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Forrest79\NttTranslator\Diagnostics;
+namespace Forrest79\SimpleTranslator\Diagnostics;
 
 use Tracy;
 use Tracy\Helpers;

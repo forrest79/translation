@@ -23,10 +23,10 @@
 	},
 	"autoload": {
 		"psr-0": {
-			"Forrest79\\NttTranslator\\": "src/"
+			"Forrest79\\SimpleTranslator\\": "src/"
 		},
 		"classmap": [
-			"src/Forrest79/NttTranslator/exceptions.php"
+			"src/Forrest79/SimpleTranslator/exceptions.php"
 		]
 	}
 }

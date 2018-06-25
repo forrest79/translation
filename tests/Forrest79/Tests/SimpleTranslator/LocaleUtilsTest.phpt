@@ -1,8 +1,8 @@
 <?php
 
-namespace Forrest79\Tests\NttTranslator;
+namespace Forrest79\Tests\SimpleTranslator;
 
-use Forrest79\NttTranslator;
+use Forrest79\SimpleTranslator;
 use Tester\Assert;
 use Tracy;
 
@@ -13,7 +13,7 @@ $testMessage = 'Test message';
 
 class TestLocaleUtilsException extends \Exception {};
 
-class TestLocaleUtils implements NttTranslator\ILocaleUtils
+class TestLocaleUtils implements SimpleTranslator\ILocaleUtils
 {
 
 	public function afterCacheBuild($locale, $localeFile, $localeCache)
@@ -25,7 +25,7 @@ class TestLocaleUtils implements NttTranslator\ILocaleUtils
 
 $locale = createLocale(['test' => $testMessage], []);
 
-$translator = (new NttTranslator\Translator(TRUE, TEMP_DIR, TEMP_DIR, Tracy\Debugger::getLogger()))
+$translator = (new SimpleTranslator\Translator(TRUE, TEMP_DIR, TEMP_DIR, Tracy\Debugger::getLogger()))
 	->setLocaleUtils(new TestLocaleUtils)
 	->setLocale($locale);
 

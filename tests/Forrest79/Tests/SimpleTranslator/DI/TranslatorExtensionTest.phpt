@@ -1,9 +1,9 @@
 <?php
 
-namespace Forrest79\Tests\NttTranslator\DI;
+namespace Forrest79\Tests\SimpleTranslator\DI;
 
 use Forrest79;
-use Forrest79\NttTranslator;
+use Forrest79\SimpleTranslator;
 use Nette\DI;
 use Tester;
 use Tester\Assert;
@@ -22,7 +22,7 @@ class TranslatorExtensionTest extends Tester\TestCase
 		$container = $this->createContainer();
 
 		$translator = $container->getService('translator.default');
-		Assert::type(NttTranslator\Translator::class, $translator);
+		Assert::type(SimpleTranslator\Translator::class, $translator);
 	}
 
 
@@ -33,7 +33,7 @@ class TranslatorExtensionTest extends Tester\TestCase
 		]);
 
 		$translator = $container->getService('translator.default');
-		Assert::type(NttTranslator\Translator::class, $translator);
+		Assert::type(SimpleTranslator\Translator::class, $translator);
 	}
 
 
@@ -46,7 +46,7 @@ class TranslatorExtensionTest extends Tester\TestCase
 		$container = $this->createContainer();
 
 		$localeUtils = $container->getService('translator.localeUtils.opcache');
-		Assert::type(NttTranslator\LocaleUtils\Opcache::class, $localeUtils);
+		Assert::type(SimpleTranslator\LocaleUtils\Opcache::class, $localeUtils);
 	}
 
 
@@ -55,7 +55,7 @@ class TranslatorExtensionTest extends Tester\TestCase
 		$container = $this->createContainer([
 			'localeUtils: @opcache',
 		], [
-			'opcache: Forrest79\NttTranslator\LocaleUtils\Opcache',
+			'opcache: Forrest79\SimpleTranslator\LocaleUtils\Opcache',
 		]);
 
 		Assert::exception(function() use ($container) {
@@ -63,7 +63,7 @@ class TranslatorExtensionTest extends Tester\TestCase
 		}, DI\MissingServiceException::class);
 
 		$translator = $container->getService('translator.default');
-		Assert::type(NttTranslator\LocaleUtils\Opcache::class, $translator->getLocaleUtils());
+		Assert::type(SimpleTranslator\LocaleUtils\Opcache::class, $translator->getLocaleUtils());
 	}
 
 
@@ -80,7 +80,7 @@ class TranslatorExtensionTest extends Tester\TestCase
 		$container = $this->createContainer();
 
 		$requestResolver = $container->getService('translator.requestResolver');
-		Assert::type(NttTranslator\RequestResolver::class, $requestResolver);
+		Assert::type(SimpleTranslator\RequestResolver::class, $requestResolver);
 	}
 
 
@@ -125,7 +125,7 @@ class TranslatorExtensionTest extends Tester\TestCase
 					- Tracy\Logger(%appDir%)
 			', 'neon'));
 		$compiler = new DI\Compiler;
-		$compiler->addExtension('translator', new NttTranslator\DI\TranslatorExtension);
+		$compiler->addExtension('translator', new SimpleTranslator\DI\TranslatorExtension);
 		eval($compiler->addConfig($config)->setClassName($containerName)->compile());
 
 		$containerName = '\\' . $containerName;

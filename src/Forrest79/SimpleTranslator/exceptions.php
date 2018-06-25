@@ -1,6 +1,6 @@
 <?php
 
-namespace Forrest79\NttTranslator;
+namespace Forrest79\SimpleTranslator;
 
 
 class TranslatorException extends \Exception {}

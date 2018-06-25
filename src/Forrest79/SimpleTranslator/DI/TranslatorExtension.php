@@ -1,8 +1,8 @@
 <?php
 
-namespace Forrest79\NttTranslator\DI;
+namespace Forrest79\SimpleTranslator\DI;
 
-use Forrest79\NttTranslator;
+use Forrest79\SimpleTranslator;
 use Nette;
 
 
@@ -28,7 +28,7 @@ class TranslatorExtension extends Nette\DI\CompilerExtension
 		$config = Nette\DI\Helpers::expand($this->config, $builder->parameters);
 
 		$translator = $builder->addDefinition($this->prefix('default'))
-			->setClass(NttTranslator\Translator::class, [
+			->setClass(SimpleTranslator\Translator::class, [
 				$config['debugger'],
 				$config['localesDir'],
 				$config['tempDir'],
@@ -37,7 +37,7 @@ class TranslatorExtension extends Nette\DI\CompilerExtension
 		$localeUtils = $config['localeUtils'];
 		if (($localeUtils === NULL) && function_exists('opcache_invalidate')){
 			$builder->addDefinition($this->prefix('localeUtils.opcache'))
-				->setClass(NttTranslator\LocaleUtils\Opcache::class);
+				->setClass(SimpleTranslator\LocaleUtils\Opcache::class);
 			$localeUtils = $this->prefix('@localeUtils.opcache');
 		}
 
@@ -47,8 +47,8 @@ class TranslatorExtension extends Nette\DI\CompilerExtension
 
 		if ($config['debugger']) {
 			$builder->addDefinition($this->prefix('panel'))
-				->setClass(NttTranslator\Diagnostics\Panel::class)
-				->setFactory(NttTranslator\Diagnostics\Panel::class . '::register');
+				->setClass(SimpleTranslator\Diagnostics\Panel::class)
+				->setFactory(SimpleTranslator\Diagnostics\Panel::class . '::register');
 
 			$translator->addSetup('?->setPanel(?)', ['@self', $this->prefix('@panel')]);
 		}
@@ -63,7 +63,7 @@ class TranslatorExtension extends Nette\DI\CompilerExtension
 
 		if ($config['requestResolver'] !== FALSE) {
 			$builder->addDefinition($this->prefix('requestResolver'))
-				->setClass(NttTranslator\RequestResolver::class, [$config['requestResolver']]);
+				->setClass(SimpleTranslator\RequestResolver::class, [$config['requestResolver']]);
 		}
 	}
 

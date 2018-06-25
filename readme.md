@@ -1,8 +1,8 @@
-Forrest79/NttTranslator
-=======================
+Forrest79/SimpleTranslator
+==========================
 
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/forrest79/NttTranslator/blob/master/license.md)
-[![Build Status](https://travis-ci.org/forrest79/NttTranslator.svg?branch=master)](https://travis-ci.org/forrest79/NttTranslator)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/forrest79/SimpleTranslator/blob/master/license.md)
+[![Build Status](https://travis-ci.org/forrest79/SimpleTranslator.svg?branch=master)](https://travis-ci.org/forrest79/SimpleTranslator)
 [![Downloads this Month](https://img.shields.io/packagist/dm/forrest79/ntt-translator.svg)](https://packagist.org/packages/forrest79/ntt-translator)
 [![Latest stable](https://img.shields.io/packagist/v/forrest79/ntt-translator.svg)](https://packagist.org/packages/forrest79/ntt-translator)
 
@@ -12,7 +12,7 @@ Simple and fast translator for Nette Frameword based on neon locale files.
 Requirements
 ------------
 
-Forrest79/NttTranslator requires PHP 5.6 or higher.
+Forrest79/SimpleTranslator requires PHP 7.1 or higher.
 
 - [Nette Framework](https://github.com/nette/nette)
 
@@ -20,7 +20,7 @@ Forrest79/NttTranslator requires PHP 5.6 or higher.
 Installation
 ------------
 
-* Install Forrest79/NttTranslator to your project using [Composer](http://getcomposer.org/):
+* Install Forrest79/SimpleTranslator to your project using [Composer](http://getcomposer.org/):
 
 ```sh
 $ composer require forrest79/ntt-translator
@@ -83,7 +83,7 @@ Enable this extension using your neon config.
 
 ```yml
 extensions:
-    translator: Forrest79\NttTranslator\DI\TranslatorExtension
+    translator: Forrest79\SimpleTranslator\DI\TranslatorExtension
 ```
 
 Default settings is (this works out of the box):

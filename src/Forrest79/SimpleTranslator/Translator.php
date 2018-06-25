@@ -1,6 +1,6 @@
 <?php
 
-namespace Forrest79\NttTranslator;
+namespace Forrest79\SimpleTranslator;
 
 use Nette\Localization;
 use Nette\Neon;
@@ -184,7 +184,7 @@ class Translator implements Localization\ITranslator
 					}
 
 					Utils\FileSystem::createDir(dirname($localeCache), 0755);
-					file_put_contents($localeCache . '.tmp', '<?php class TranslatorData' . ucfirst($locale) . ' extends Forrest79\NttTranslator\TranslatorData {protected function getPluralIndex($count) {' . $pluralCondition . 'throw new Forrest79\NttTranslator\TranslateException(\'No definition for count \' . $count);}}; return new TranslatorData' . ucfirst($this->locale) . '(\'' . $this->locale . '\', [' . $localeData . ']);');
+					file_put_contents($localeCache . '.tmp', '<?php class TranslatorData' . ucfirst($locale) . ' extends Forrest79\SimpleTranslator\TranslatorData {protected function getPluralIndex($count) {' . $pluralCondition . 'throw new Forrest79\SimpleTranslator\TranslateException(\'No definition for count \' . $count);}}; return new TranslatorData' . ucfirst($this->locale) . '(\'' . $this->locale . '\', [' . $localeData . ']);');
 					rename($localeCache . '.tmp', $localeCache); // atomic replace (in Linux)
 					if ($this->localeUtils !== NULL) {
 						$this->localeUtils->afterCacheBuild($locale, $localeFile, $localeCache);
