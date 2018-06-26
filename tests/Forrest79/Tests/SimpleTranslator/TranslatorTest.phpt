@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Forrest79\Tests\SimpleTranslator;
 
@@ -10,42 +10,45 @@ use Tracy;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
-
+/**
+ * @testCase
+ */
 class TranslatorTest extends Tester\TestCase
 {
 	/** @var SimpleTranslator\Translator */
 	private $translator;
 
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		parent::setUp();
 
-		$this->translator = new SimpleTranslator\Translator(TRUE, TEMP_DIR, TEMP_DIR, Tracy\Debugger::getLogger());
+		$this->translator = new SimpleTranslator\Translator(TRUE, TEMP_DIR, Tracy\Debugger::getLogger());
+		$this->translator->setDataLoader(new SimpleTranslator\DataLoaders\Neon(TEMP_DIR));
 	}
 
 
 	/**
-	 * @throws Forrest79\SimpleTranslator\NoLocaleSelectedExceptions
+	 * @throws Forrest79\SimpleTranslator\Exceptions\NoLocaleSelectedExceptions
 	 */
-	public function testNoLocaleSelected()
+	public function testNoLocaleSelected(): void
 	{
 		$this->translator->translate('message');
 	}
 
 
 	/**
-	 * @throws Forrest79\SimpleTranslator\BadLocaleNameExceptions
+	 * @throws Forrest79\SimpleTranslator\Exceptions\BadLocaleNameExceptions
 	 */
-	public function testBadLocaleName()
+	public function testBadLocaleName(): void
 	{
 		$this->translator
-			->setLocale('bad-locale-name')
+			->setLocale('bad*locale*name')
 			->translate('message');
 	}
 
 
-	public function testSimpleTranslate()
+	public function testSimpleTranslate(): void
 	{
 		$message = 'Test message.';
 		$this->translator->setLocale($this->createLocale(['message' => $message]));
@@ -53,7 +56,7 @@ class TranslatorTest extends Tester\TestCase
 	}
 
 
-	public function testFallbackTranslate()
+	public function testFallbackTranslate(): void
 	{
 		$message = 'Test message.';
 
@@ -65,9 +68,9 @@ class TranslatorTest extends Tester\TestCase
 
 
 	/**
-	 * @throws Forrest79\SimpleTranslator\BadCountForPluralMessageException
+	 * @throws Forrest79\SimpleTranslator\Exceptions\BadCountForPluralMessageException
 	 */
-	public function testBadPluralTranslate()
+	public function testBadPluralTranslate(): void
 	{
 		$this->translator->setLocale($this->createLocale(['message' => ['One item.']]));
 		$this->translator->translate('message', 10);
@@ -75,9 +78,9 @@ class TranslatorTest extends Tester\TestCase
 
 
 	/**
-	 * @throws Forrest79\SimpleTranslator\NotPluralMessageException
+	 * @throws Forrest79\SimpleTranslator\Exceptions\NotPluralMessageException
 	 */
-	public function testNotPluralTranslate()
+	public function testNotPluralTranslate(): void
 	{
 		$this->translator->setLocale($this->createLocale(['message' => 'One item.']));
 		$this->translator->translate('message', 10);
@@ -94,7 +97,7 @@ class TranslatorTest extends Tester\TestCase
 	}
 
 
-	public function testPluralCsTranslate()
+	public function testPluralCsTranslate(): void
 	{
 		$message1 = 'Jedno auto.';
 		$message2 = '3 auta.';
@@ -106,14 +109,14 @@ class TranslatorTest extends Tester\TestCase
 	}
 
 
-	public function testVariablesTranslate()
+	public function testVariablesTranslate(): void
 	{
 		$this->translator->setLocale($this->createLocale(['message' => 'Welcome %user%.']));
 		Assert::same('Welcome Jakub.', $this->translator->translate('message', ['user' => 'Jakub']));
 	}
 
 
-	public function testVariablesPluralTranslate()
+	public function testVariablesPluralTranslate(): void
 	{
 		$this->translator->setLocale($this->createLocale(['message' => ['I have one %type%.', 'I have more %type%s.']]));
 		Assert::same('I have one car.', $this->translator->translate('message', ['type' => 'car', 'count' => 1]));
@@ -124,11 +127,11 @@ class TranslatorTest extends Tester\TestCase
 	}
 
 
-	private function createLocale(array $messages, array $plural = [])
+	private function createLocale(array $messages, array $plural = []): string
 	{
 		return createLocale($messages, $plural);
 	}
 
 }
 
-(new TranslatorTest)->run();
+(new TranslatorTest())->run();

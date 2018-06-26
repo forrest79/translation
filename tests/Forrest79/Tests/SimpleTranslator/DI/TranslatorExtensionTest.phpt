@@ -7,11 +7,12 @@ use Forrest79\SimpleTranslator;
 use Nette\DI;
 use Tester;
 use Tester\Assert;
-use Tracy;
 
 require_once __DIR__ . '/../../../../bootstrap.php';
 
-
+/**
+ * @testCase
+ */
 class TranslatorExtensionTest extends Tester\TestCase
 {
 	private $container = 0;

@@ -8,25 +8,25 @@ use Tracy;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
-
 $testMessage = 'Test message';
 
 class TestLocaleUtilsException extends \Exception {};
 
-class TestLocaleUtils implements SimpleTranslator\ILocaleUtils
+class TestLocaleUtils implements SimpleTranslator\LocaleUtils
 {
 
-	public function afterCacheBuild($locale, $localeFile, $localeCache)
+	public function afterCacheBuild(string $locale, string $source, string $localeCache): void
 	{
-		throw new TestLocaleUtilsException($locale . '|' . $localeFile . '|' . $localeCache);
+		throw new TestLocaleUtilsException($locale . '|' . $source . '|' . $localeCache);
 	}
 
 }
 
 $locale = createLocale(['test' => $testMessage], []);
 
-$translator = (new SimpleTranslator\Translator(TRUE, TEMP_DIR, TEMP_DIR, Tracy\Debugger::getLogger()))
+$translator = (new SimpleTranslator\Translator(TRUE, TEMP_DIR, Tracy\Debugger::getLogger()))
 	->setLocaleUtils(new TestLocaleUtils)
+	->setDataLoader(new SimpleTranslator\DataLoaders\Neon(TEMP_DIR))
 	->setLocale($locale);
 
 

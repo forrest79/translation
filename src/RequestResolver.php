@@ -1,10 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Forrest79\SimpleTranslator;
 
 use Forrest79\SimpleTranslator;
 use Nette\Application;
-
 
 class RequestResolver
 {
@@ -15,14 +14,17 @@ class RequestResolver
 	private $translator;
 
 
-	public function __construct($parameter, SimpleTranslator\Translator $translator)
+	public function __construct(string $parameter, SimpleTranslator\Translator $translator)
 	{
 		$this->parameter = $parameter;
 		$this->translator = $translator;
 	}
 
 
-	public function onRequest(Application\Application $application, Application\Request $request)
+	/**
+	 * @throws Exceptions\BadLocaleNameExceptions
+	 */
+	public function onRequest(Application\Application $application, Application\Request $request): void
 	{
 		$this->translator->setLocale($request->getParameter($this->parameter));
 	}

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+${0%/*}/../vendor/bin/tester -c ${0%/*}/php.ini "$@"
+
+rm -rf ${0%/*}/temp/*

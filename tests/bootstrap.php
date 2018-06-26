@@ -15,7 +15,7 @@ define('TEMP_DIR', __DIR__ . '/temp/' . getmypid());
 Tester\Helpers::purge(TEMP_DIR);
 Tracy\Debugger::$logDirectory = TEMP_DIR;
 
-function createLocale(array $messages, array $plural = [], $manualLocale = NULL)
+function createLocale(array $messages, array $plural = [], ?string $manualLocale = NULL)
 {
 	static $locale = 0;
 
@@ -30,5 +30,5 @@ function createLocale(array $messages, array $plural = [], $manualLocale = NULL)
 
 	file_put_contents(TEMP_DIR . DIRECTORY_SEPARATOR . (($manualLocale === NULL) ? $locale : $manualLocale) . '.neon', (new Nette\Neon\Encoder)->encode($messages));
 
-	return ($manualLocale === NULL) ? $locale++ : $manualLocale;
+	return ($manualLocale === NULL) ? (string) $locale++ : $manualLocale;
 }

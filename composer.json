@@ -22,11 +22,8 @@
 		"nette/tester": "~2"
 	},
 	"autoload": {
-		"psr-0": {
+		"psr-4": {
 			"Forrest79\\SimpleTranslator\\": "src/"
-		},
-		"classmap": [
-			"src/Forrest79/SimpleTranslator/exceptions.php"
-		]
+		}
 	}
 }

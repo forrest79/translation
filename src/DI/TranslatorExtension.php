@@ -1,18 +1,16 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Forrest79\SimpleTranslator\DI;
 
 use Forrest79\SimpleTranslator;
 use Nette;
 
-
 class TranslatorExtension extends Nette\DI\CompilerExtension
 {
-
-	public $defaults = [
+	private $defaults = [
 		'locale' => NULL,
 		'fallbackLocale' => NULL,
-		'localesDir' => '%appDir%/locales',
+		'localesDir' => '%appDir%/locales', // for DataLoaders/Neon
 		'tempDir' => '%tempDir%',
 		'localeUtils' => NULL, // NULL = auto detect, FALSE = disable
 		'requestResolver' => 'locale', // FALSE = disable
@@ -20,7 +18,7 @@ class TranslatorExtension extends Nette\DI\CompilerExtension
 	];
 
 
-	public function loadConfiguration()
+	public function loadConfiguration(): void
 	{
 		$this->config += $this->defaults;
 
@@ -28,16 +26,15 @@ class TranslatorExtension extends Nette\DI\CompilerExtension
 		$config = Nette\DI\Helpers::expand($this->config, $builder->parameters);
 
 		$translator = $builder->addDefinition($this->prefix('default'))
-			->setClass(SimpleTranslator\Translator::class, [
+			->setFactory(SimpleTranslator\Translator::class, [
 				$config['debugger'],
-				$config['localesDir'],
 				$config['tempDir'],
 			]);
 
 		$localeUtils = $config['localeUtils'];
 		if (($localeUtils === NULL) && function_exists('opcache_invalidate')){
 			$builder->addDefinition($this->prefix('localeUtils.opcache'))
-				->setClass(SimpleTranslator\LocaleUtils\Opcache::class);
+				->setFactory(SimpleTranslator\LocaleUtils\Opcache::class);
 			$localeUtils = $this->prefix('@localeUtils.opcache');
 		}
 
@@ -47,7 +44,6 @@ class TranslatorExtension extends Nette\DI\CompilerExtension
 
 		if ($config['debugger']) {
 			$builder->addDefinition($this->prefix('panel'))
-				->setClass(SimpleTranslator\Diagnostics\Panel::class)
 				->setFactory(SimpleTranslator\Diagnostics\Panel::class . '::register');
 
 			$translator->addSetup('?->setPanel(?)', ['@self', $this->prefix('@panel')]);
@@ -63,15 +59,25 @@ class TranslatorExtension extends Nette\DI\CompilerExtension
 
 		if ($config['requestResolver'] !== FALSE) {
 			$builder->addDefinition($this->prefix('requestResolver'))
-				->setClass(SimpleTranslator\RequestResolver::class, [$config['requestResolver']]);
+				->setFactory(SimpleTranslator\RequestResolver::class, [$config['requestResolver']]);
 		}
 	}
 
 
-	public function beforeCompile()
+	public function beforeCompile(): void
 	{
 		$builder = $this->getContainerBuilder();
 		$config = $this->getConfig();
+
+		$translator = $builder->getDefinition($this->prefix('default'));
+
+		$dataLoader = $builder->getByType(SimpleTranslator\DataLoader::class);
+		if (!$dataLoader) {
+			$dataLoader = $builder->addDefinition($this->prefix('neonDataLoader'))
+				->setFactory(SimpleTranslator\DataLoaders\Neon::class, [$config['localesDir']]);
+		}
+
+		$translator->addSetup('setDataLoader', [$dataLoader]);
 
 		if ($builder->hasDefinition('nette.latteFactory')) {
 			$builder->getDefinition('nette.latteFactory')

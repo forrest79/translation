@@ -8,7 +8,8 @@ require_once __DIR__ . '/../../../bootstrap.php';
 
 
 function translate($testLocale, $cacheFile = NULL) {
-	$data = exec('php ' . __DIR__ . '/helpers/translate.php ' . TEMP_DIR . ' ' . $testLocale . (($cacheFile === NULL) ? '' : (' ' . $cacheFile)));
+	$data = exec('php ' . __DIR__ . '/helpers/translate.php ' . TEMP_DIR . ' ' . $testLocale . (($cacheFile === NULL) ? '' : (' ' . $cacheFile)), $x);
+	var_dump($x);
 	return explode('|', $data);
 }
 
@@ -20,6 +21,7 @@ $updatedTestMessage = 'New test message';
 createLocale(['test' => $testMessage], [], $testLocale);
 
 $data = translate($testLocale);
+var_dump($data[0]);
 
 $originalHash = $data[1];
 $cacheFile = $data[2];

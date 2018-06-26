@@ -15,18 +15,19 @@ $cacheFile = isset($argv[3]) ? $argv[3] : NULL;
 
 class TestLocaleUtilsException extends \Exception {};
 
-class TestLocaleUtils implements SimpleTranslator\ILocaleUtils
+class TestLocaleUtils implements SimpleTranslator\LocaleUtils
 {
 
-	public function afterCacheBuild($locale, $localeFile, $localeCache)
+	public function afterCacheBuild(string $locale, string $source, string $localeCache): void
 	{
-		throw new TestLocaleUtilsException($locale . '|' . $localeFile . '|' . $localeCache);
+		throw new TestLocaleUtilsException($locale . '|' . $source . '|' . $localeCache);
 	}
 
 }
 
-$translator = (new SimpleTranslator\Translator(TRUE, $tempDir, $tempDir, Tracy\Debugger::getLogger()))
+$translator = (new SimpleTranslator\Translator(TRUE, $tempDir, Tracy\Debugger::getLogger()))
 	->setLocaleUtils(new TestLocaleUtils)
+	->setDataLoader(new SimpleTranslator\DataLoaders\Neon($tempDir))
 	->setLocale($locale);
 
 $cacheHash = NULL;

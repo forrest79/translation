@@ -11,7 +11,8 @@ use Tracy;
 require_once __DIR__ . '/../../../bootstrap.php';
 
 
-$translator = new SimpleTranslator\Translator(TRUE, TEMP_DIR, TEMP_DIR, Tracy\Debugger::getLogger());
+$translator = new SimpleTranslator\Translator(TRUE, TEMP_DIR, Tracy\Debugger::getLogger());
+$translator->setDataLoader(new SimpleTranslator\DataLoaders\Neon(TEMP_DIR));
 
 class HomepagePresenter implements Application\IPresenter
 {
@@ -43,6 +44,6 @@ $app->run();
 
 Assert::exception(function () use ($translator) {
 	$translator->translate('test', ['locale' => 'bad-locale']);
-}, SimpleTranslator\NoLocaleFileException::class);
+}, SimpleTranslator\Exceptions\NoLocaleFileException::class);
 
 Assert::same($testMessage, $translator->translate('test'));
