@@ -8,7 +8,7 @@ use Nette\Http;
 use Tester\Assert;
 use Tracy;
 
-require_once __DIR__ . '/../../../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 
 $translator = new SimpleTranslator\Translator(TRUE, TEMP_DIR, Tracy\Debugger::getLogger());

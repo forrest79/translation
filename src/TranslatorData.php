@@ -34,13 +34,13 @@ abstract class TranslatorData
 
 		$translate = $this->messages[$message];
 
-		if (is_array($translate) && ($count !== NULL)) {
+		if (is_array($translate) && ($count !== NULL)) {var_dump(1);
 			$index = $this->getPluralIndex($count);
 			if (!isset($translate[$index])) {
 				throw new Exceptions\BadCountForPluralMessageException('Message "' . $message . '" for count "' . $count . '" in "' . $this->locale . '" not exists');
 			}
 			return $translate[$index];
-		} else if (is_array($translate) && ($count === NULL)) {
+		} else if (is_array($translate) && ($count === NULL)) {var_dump(2);
 			throw new Exceptions\NoCountForPluralMessageException('You must specify count for "' . $message . '" in "' . $this->locale . '"');
 		} else if ($count !== NULL) {
 			throw new Exceptions\NotPluralMessageException('Message "' . $message . '" in "' . $this->locale . '" is not plural');

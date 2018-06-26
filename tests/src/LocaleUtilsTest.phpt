@@ -6,7 +6,7 @@ use Forrest79\SimpleTranslator;
 use Tester\Assert;
 use Tracy;
 
-require_once __DIR__ . '/../../../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 $testMessage = 'Test message';
 

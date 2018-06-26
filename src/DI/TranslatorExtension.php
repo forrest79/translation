@@ -10,6 +10,7 @@ class TranslatorExtension extends Nette\DI\CompilerExtension
 	private $defaults = [
 		'locale' => NULL,
 		'fallbackLocale' => NULL,
+		'dataLoader' => NULL, // will use DataLoaders/Neon
 		'localesDir' => '%appDir%/locales', // for DataLoaders/Neon
 		'tempDir' => '%tempDir%',
 		'localeUtils' => NULL, // NULL = auto detect, FALSE = disable
@@ -30,6 +31,14 @@ class TranslatorExtension extends Nette\DI\CompilerExtension
 				$config['debugger'],
 				$config['tempDir'],
 			]);
+
+		$dataLoader = $config['dataLoader'];
+		if ($dataLoader === NULL) {
+			$builder->addDefinition($this->prefix('dataLoader.neon'))
+				->setFactory(SimpleTranslator\DataLoaders\Neon::class, [$config['localesDir']]);
+			$dataLoader = $this->prefix('@dataLoader.neon');
+		}
+		$translator->addSetup('setDataLoader', [$dataLoader]);
 
 		$localeUtils = $config['localeUtils'];
 		if (($localeUtils === NULL) && function_exists('opcache_invalidate')){
@@ -68,16 +77,6 @@ class TranslatorExtension extends Nette\DI\CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 		$config = $this->getConfig();
-
-		$translator = $builder->getDefinition($this->prefix('default'));
-
-		$dataLoader = $builder->getByType(SimpleTranslator\DataLoader::class);
-		if (!$dataLoader) {
-			$dataLoader = $builder->addDefinition($this->prefix('neonDataLoader'))
-				->setFactory(SimpleTranslator\DataLoaders\Neon::class, [$config['localesDir']]);
-		}
-
-		$translator->addSetup('setDataLoader', [$dataLoader]);
 
 		if ($builder->hasDefinition('nette.latteFactory')) {
 			$builder->getDefinition('nette.latteFactory')

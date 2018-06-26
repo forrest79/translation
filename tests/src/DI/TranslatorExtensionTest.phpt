@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Forrest79\Tests\SimpleTranslator\DI;
 
@@ -8,7 +8,7 @@ use Nette\DI;
 use Tester;
 use Tester\Assert;
 
-require_once __DIR__ . '/../../../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 /**
  * @testCase
@@ -18,7 +18,7 @@ class TranslatorExtensionTest extends Tester\TestCase
 	private $container = 0;
 
 
-	public function testDefaultConfig()
+	public function testDefaultConfig(): void
 	{
 		$container = $this->createContainer();
 
@@ -27,7 +27,7 @@ class TranslatorExtensionTest extends Tester\TestCase
 	}
 
 
-	public function testNoLocaleUtils()
+	public function testNoLocaleUtils(): void
 	{
 		$container = $this->createContainer([
 			'localeUtils: false',
@@ -38,7 +38,18 @@ class TranslatorExtensionTest extends Tester\TestCase
 	}
 
 
-	public function testAutoLocaleUtils()
+	public function testSetFallbackLocale(): void
+	{
+		$container = $this->createContainer([
+			'fallbackLocale: cs',
+		]);
+
+		$translator = $container->getService('translator.default');
+		Assert::type(SimpleTranslator\Translator::class, $translator);
+	}
+
+
+	public function testAutoLocaleUtils(): void
 	{
 		if (!function_exists('opcache_invalidate')) {
 			eval('function opcache_invalidate() {};');
@@ -51,7 +62,7 @@ class TranslatorExtensionTest extends Tester\TestCase
 	}
 
 
-	public function testOpcacheLocaleUtils()
+	public function testOpcacheLocaleUtils(): void
 	{
 		$container = $this->createContainer([
 			'localeUtils: @opcache',
@@ -68,7 +79,20 @@ class TranslatorExtensionTest extends Tester\TestCase
 	}
 
 
-	public function testRequestResolver()
+	public function testExternalDataLoader(): void
+	{
+		$container = $this->createContainer([
+			'dataLoader: @neon',
+		], [
+			'neon: Forrest79\SimpleTranslator\DataLoaders\Neon(%tempDir%)',
+		]);
+
+		$translator = $container->getService('translator.default');
+		Assert::type(SimpleTranslator\Translator::class, $translator);
+	}
+
+
+	public function testRequestResolver(): void
 	{
 		$container = $this->createContainer([
 			'requestResolver: false',
@@ -85,7 +109,7 @@ class TranslatorExtensionTest extends Tester\TestCase
 	}
 
 
-	public function testSetLocale()
+	public function testSetLocale(): void
 	{
 		$container = $this->createContainer([
 			'locale: en',

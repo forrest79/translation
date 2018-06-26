@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 if (!$loader = include __DIR__ . '/../vendor/autoload.php') {
 	echo 'Install dependencies using `composer update --dev`';
@@ -15,7 +15,7 @@ define('TEMP_DIR', __DIR__ . '/temp/' . getmypid());
 Tester\Helpers::purge(TEMP_DIR);
 Tracy\Debugger::$logDirectory = TEMP_DIR;
 
-function createLocale(array $messages, array $plural = [], ?string $manualLocale = NULL)
+function createLocale(array $messages, array $plural = [], ?string $manualLocale = NULL, ?string $neonSuffix = NULL): string
 {
 	static $locale = 0;
 
@@ -28,7 +28,10 @@ function createLocale(array $messages, array $plural = [], ?string $manualLocale
 		'messages' => $messages,
 	];
 
-	file_put_contents(TEMP_DIR . DIRECTORY_SEPARATOR . (($manualLocale === NULL) ? $locale : $manualLocale) . '.neon', (new Nette\Neon\Encoder)->encode($messages));
+	file_put_contents(
+		TEMP_DIR . DIRECTORY_SEPARATOR . (($manualLocale === NULL) ? $locale : $manualLocale) . '.neon',
+		(new Nette\Neon\Encoder)->encode($messages) . ($neonSuffix ?? '')
+	);
 
 	return ($manualLocale === NULL) ? (string) $locale++ : $manualLocale;
 }

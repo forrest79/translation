@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Forrest79\Tests\SimpleTranslator;
 
@@ -6,14 +6,15 @@ use Forrest79\SimpleTranslator;
 use Tester\Assert;
 use Tracy;
 
-require_once __DIR__ . '/../../../../bootstrap.php';
-
+require_once __DIR__ . '/../bootstrap.php';
 
 $tempDir = $argv[1];
 $locale = $argv[2];
 $cacheFile = isset($argv[3]) ? $argv[3] : NULL;
 
-class TestLocaleUtilsException extends \Exception {};
+class TestLocaleUtilsException extends \Exception
+{
+};
 
 class TestLocaleUtils implements SimpleTranslator\LocaleUtils
 {
