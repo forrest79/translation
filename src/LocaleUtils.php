@@ -6,7 +6,7 @@ interface LocaleUtils
 {
 
 	/**
-	 * Call after cache is build.
+	 * Call after cache is built.
 	 */
 	function afterCacheBuild(string $locale, string $source, string $localeCache): void;
 

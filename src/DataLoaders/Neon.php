@@ -17,6 +17,9 @@ class Neon implements SimpleTranslator\DataLoader
 	}
 
 
+	/**
+	 * @inheritdoc
+	 */
 	public function isLocaleUpdated(string $locale, string $cacheFile): bool
 	{
 		$localeFile = $this->source($locale);
@@ -25,6 +28,7 @@ class Neon implements SimpleTranslator\DataLoader
 
 
 	/**
+	 * @inheritdoc
 	 * @throws SimpleTranslator\Exceptions\NoLocaleFileException
 	 * @throws SimpleTranslator\Exceptions\ParsingErrorException
 	 */
@@ -42,6 +46,9 @@ class Neon implements SimpleTranslator\DataLoader
 	}
 
 
+	/**
+	 * @inheritdoc
+	 */
 	public function source(string $locale): string
 	{
 		return $this->localesDir . DIRECTORY_SEPARATOR . $locale . '.neon';

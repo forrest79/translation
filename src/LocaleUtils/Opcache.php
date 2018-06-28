@@ -7,6 +7,9 @@ use Forrest79\SimpleTranslator;
 class Opcache implements SimpleTranslator\LocaleUtils
 {
 
+	/**
+	 * @inheritdoc
+	 */
 	public function afterCacheBuild(string $locale, string $source, string $localeCache): void
 	{
 		opcache_invalidate($localeCache, TRUE);
