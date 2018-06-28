@@ -74,8 +74,8 @@ class TranslatorExtensionTest extends Tester\TestCase
 			$container->getService('translator.localeUtils.opcache');
 		}, DI\MissingServiceException::class);
 
-		$translator = $container->getService('translator.default');
-		Assert::type(SimpleTranslator\LocaleUtils\Opcache::class, $translator->getLocaleUtils());
+		$localeUtils = $container->getService('opcache');
+		Assert::type(SimpleTranslator\LocaleUtils\Opcache::class, $localeUtils);
 	}
 
 

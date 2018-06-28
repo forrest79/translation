@@ -25,6 +25,9 @@ class Translator implements ITranslator
 	/** @var string */
 	private $fallbackLocale;
 
+	/** @var TranslatorImmutable[] */
+	private $immutableTranslators = [];
+
 	/** @var TranslatorData[] */
 	private $data = [];
 
@@ -142,7 +145,11 @@ class Translator implements ITranslator
 
 	public function createImmutableTranslator(string $locale): TranslatorImmutable
 	{
-		return new TranslatorImmutable($this, $locale);
+		$locale = strtolower($locale);
+		if (!isset($this->immutableTranslators[$locale])) {
+			$this->immutableTranslators[$locale] = new TranslatorImmutable($this, $locale);
+		}
+		return $this->immutableTranslators[$locale];
 	}
 
 
@@ -168,7 +175,7 @@ class Translator implements ITranslator
 	}
 
 
-	public function getLocaleUtils(): LocaleUtils
+	private function getLocaleUtils(): LocaleUtils
 	{
 		return $this->localeUtils;
 	}
