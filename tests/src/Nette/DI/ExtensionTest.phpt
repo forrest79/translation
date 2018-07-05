@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Forrest79\Tests\SimpleTranslator\DI;
+namespace Tests\Forrest79\SimpleTranslator\Nette\DI;
 
 use Forrest79;
 use Forrest79\SimpleTranslator;
@@ -8,12 +8,12 @@ use Nette\DI;
 use Tester;
 use Tester\Assert;
 
-require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 /**
  * @testCase
  */
-class TranslatorExtensionTest extends Tester\TestCase
+class ExtensionTest extends Tester\TestCase
 {
 	private $container = 0;
 
@@ -150,7 +150,7 @@ class TranslatorExtensionTest extends Tester\TestCase
 					- Tracy\Logger(%appDir%)
 			', 'neon'));
 		$compiler = new DI\Compiler;
-		$compiler->addExtension('translator', new SimpleTranslator\DI\TranslatorExtension);
+		$compiler->addExtension('translator', new SimpleTranslator\Nette\DI\Extension(TRUE));
 		eval($compiler->addConfig($config)->setClassName($containerName)->compile());
 
 		$containerName = '\\' . $containerName;
@@ -163,4 +163,4 @@ class TranslatorExtensionTest extends Tester\TestCase
 
 }
 
-(new TranslatorExtensionTest)->run();
+(new ExtensionTest)->run();

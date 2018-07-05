@@ -2,6 +2,6 @@
 
 namespace Forrest79\SimpleTranslator\Exceptions;
 
-class ParsingErrorException extends TranslatorException
+class ParsingErrorException extends Exception
 {
 }

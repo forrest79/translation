@@ -2,6 +2,6 @@
 
 namespace Forrest79\SimpleTranslator\Exceptions;
 
-abstract class TranslatorException extends \Exception
+abstract class Exception extends \Exception
 {
 }

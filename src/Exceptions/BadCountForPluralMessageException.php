@@ -2,6 +2,6 @@
 
 namespace Forrest79\SimpleTranslator\Exceptions;
 
-class BadCountForPluralMessageException extends TranslatorException
+class BadCountForPluralMessageException extends Exception
 {
 }

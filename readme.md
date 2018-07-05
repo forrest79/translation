@@ -89,11 +89,11 @@ When you want to be sure, that you have translator with set locale and be sure, 
 
 Locale files in neon format must have name `locale.neon`. For example for `en` locale is file name `en.neon`.
 
-Enable this extension using your neon config:
+Enable this extension using your neon config and add as parameter debug mode:
 
 ```yml
 extensions:
-    translator: Forrest79\SimpleTranslator\DI\TranslatorExtension
+    translator: Forrest79\SimpleTranslator\Nette\DI\Extension(%debugMode%)
 ```
 
 Default settings is (this works out of the box):
@@ -107,7 +107,7 @@ extensions:
     tempDir: %tempDir% # for cached translation files: tempDir/cache/locales
     localeUtils: null # auto detect - use Zend OpCache clean if it's detect or you can pass service name ('@customLocaleUtilsService') 
     requestResolver: locale # FALSE = disable
-    debugger: %debugMode%
+    debugger: TRUE # when TRUE - show Tracy bar in debug mode
 ```
 
 Translations are cached to PHP files. In debug mode, cache is rebuild when translation definition is changed, in productin mode is cache build only once and translation source definitions are not checked for changes. If you want to regenerate cache, you can clean cache by calling 'clearCache($locale)'.

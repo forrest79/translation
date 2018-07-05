@@ -2,6 +2,6 @@
 
 namespace Forrest79\SimpleTranslator\Exceptions;
 
-class ClearCacheFailedException extends TranslatorException
+class ClearCacheFailedException extends Exception
 {
 }

@@ -36,7 +36,7 @@ class Neon implements SimpleTranslator\DataLoader
 	{
 		$localeFile = $this->source($locale);
 		if (!file_exists($localeFile)) {
-			throw new SimpleTranslator\Exceptions\NoLocaleFileException('Locale file "' . $localeFile . '" doesn\'t exists');
+			throw new SimpleTranslator\Exceptions\NoLocaleFileException(sprintf('Locale file "%s" doesn\'t exists', $localeFile));
 		}
 		try {
 			return NetteNeon\Neon::decode(file_get_contents($localeFile));

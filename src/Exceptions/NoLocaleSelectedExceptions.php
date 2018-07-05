@@ -2,6 +2,6 @@
 
 namespace Forrest79\SimpleTranslator\Exceptions;
 
-class NoLocaleSelectedExceptions extends TranslatorException
+class NoLocaleSelectedExceptions extends Exception
 {
 }

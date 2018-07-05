@@ -1,6 +1,6 @@
 <?php
 
-namespace Forrest79\Tests\SimpleTranslator;
+namespace Tests\Forrest79\SimpleTranslator;
 
 use Forrest79\SimpleTranslator;
 use Tester\Assert;
@@ -10,7 +10,9 @@ require_once __DIR__ . '/../bootstrap.php';
 
 $testMessage = 'Test message';
 
-class TestLocaleUtilsException extends \Exception {};
+class TestLocaleUtilsException extends \Exception
+{
+};
 
 class TestLocaleUtils implements SimpleTranslator\LocaleUtils
 {
@@ -22,7 +24,7 @@ class TestLocaleUtils implements SimpleTranslator\LocaleUtils
 
 }
 
-$locale = createLocale(['test' => $testMessage], []);
+$locale = createLocale(['test' => $testMessage]);
 
 $translator = (new SimpleTranslator\Translator(TRUE, TEMP_DIR, Tracy\Debugger::getLogger()))
 	->setLocaleUtils(new TestLocaleUtils)

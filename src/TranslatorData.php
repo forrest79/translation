@@ -34,16 +34,16 @@ abstract class TranslatorData
 
 		$translate = $this->messages[$message];
 
-		if (is_array($translate) && ($count !== NULL)) {var_dump(1);
+		if (is_array($translate) && ($count !== NULL)) {
 			$index = $this->getPluralIndex($count);
 			if (!isset($translate[$index])) {
-				throw new Exceptions\BadCountForPluralMessageException('Message "' . $message . '" for count "' . $count . '" in "' . $this->locale . '" not exists');
+				throw new Exceptions\BadCountForPluralMessageException(sprintf('Message "%s" for count "%d" in "%s" not exists', $message, $count, $this->locale));
 			}
 			return $translate[$index];
-		} else if (is_array($translate) && ($count === NULL)) {var_dump(2);
-			throw new Exceptions\NoCountForPluralMessageException('You must specify count for "' . $message . '" in "' . $this->locale . '"');
+		} else if (is_array($translate) && ($count === NULL)) {
+			throw new Exceptions\NoCountForPluralMessageException(sprintf('You must specify count for "%s" in "%s"', $message, $this->locale));
 		} else if ($count !== NULL) {
-			throw new Exceptions\NotPluralMessageException('Message "' . $message . '" in "' . $this->locale . '" is not plural');
+			throw new Exceptions\NotPluralMessageException(sprintf('Message "%s" in "%s" is not plural', $message, $this->locale));
 		}
 
 		return $translate;

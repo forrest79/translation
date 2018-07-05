@@ -87,7 +87,7 @@ class Translator implements ITranslator
 	/**
 	 * @inheritdoc
 	 * @throws Exceptions\NoLocaleSelectedExceptions
-	 * @throws Exceptions\TranslatorException
+	 * @throws Exceptions\Exception
 	 */
 	public function translate($message, $parameters = NULL, $count = NULL): string
 	{
@@ -106,20 +106,20 @@ class Translator implements ITranslator
 
 		try {
 			$translate = $this->loadData($locale)->getTranslate($message, $count);
-		} catch (Exceptions\TranslatorException $e) {
+		} catch (Exceptions\Exception $e) {
 			return $this->processTranslatorException($e, $message, $locale);
 		}
 		if ($translate === NULL) {
 			if ($this->panel) {
 				$this->panel->addUntranslated($locale, $message);
 			} else {
-				$this->logger->log('No translation for "' . $message . '" in locale "' . $locale . '"', 'translator');
+				$this->logger->log(sprintf('No translation for "%s" in locale "%s"', $message, $locale), 'translator');
 			}
 
 			if (($this->fallbackLocale !== NULL) && ($this->fallbackLocale !== $locale)) {
 				try {
 					$translate = $this->loadData($this->fallbackLocale)->getTranslate($message, $count);
-				} catch (Exceptions\TranslatorException $e) {
+				} catch (Exceptions\Exception $e) {
 					return $this->processTranslatorException($e, $message, $this->fallbackLocale);
 				}
 			}
@@ -175,12 +175,6 @@ class Translator implements ITranslator
 	}
 
 
-	private function getLocaleUtils(): LocaleUtils
-	{
-		return $this->localeUtils;
-	}
-
-
 	public function setPanel(Diagnostics\Panel $panel): Diagnostics\Panel
 	{
 		$this->panel = $panel;
@@ -192,7 +186,7 @@ class Translator implements ITranslator
 	 * @throws Exceptions\NoLocaleFileException
 	 * @throws Exceptions\NoDataLoaderException
 	 * @throws Exceptions\ParsingErrorException
-	 * @throws Exceptions\PluralSectionMissingException
+	 * @throws Exceptions\SomeSectionMissingException
 	 */
 	private function loadData(string $locale): TranslatorData
 	{
@@ -203,17 +197,17 @@ class Translator implements ITranslator
 			if (!file_exists($localeCache) || ($this->debugMode && $dataLoader->isLocaleUpdated($locale, $localeCache))) {
 				$data = $dataLoader->loadData($locale);
 
-				if (!isset($data['plural']) || !isset($data['messages'])) {
-					throw new Exceptions\PluralSectionMissingException('You must have "plural" and "messages" section in data');
+				if (!array_key_exists('plural', $data) || !array_key_exists('messages', $data)) {
+					throw new Exceptions\SomeSectionMissingException('You must have "plural" and "messages" section in data');
 				}
 
 				$pluralCondition = '';
-				foreach ($data['plural'] as $i => $plural) {
+				foreach ((array) $data['plural'] as $i => $plural) {
 					$pluralCondition .= (($i > 0) ? 'else ' : '') . 'if (' . str_replace('n', '$count', $plural) . ') return ' . $i . ';';
 				}
 
 				$localeData = '';
-				foreach ($data['messages'] as $identificator => $translate) {
+				foreach ((array) $data['messages'] as $identificator => $translate) {
 					if (is_array($translate)) {
 						$translateData = '';
 						foreach ($translate as $translateItem) {
@@ -227,7 +221,13 @@ class Translator implements ITranslator
 				}
 
 				Utils\FileSystem::createDir(dirname($localeCache), 0755);
-				file_put_contents($localeCache . '.tmp', '<?php declare(strict_types=1); class TranslatorData' . ucfirst($locale) . ' extends Forrest79\SimpleTranslator\TranslatorData {protected function getPluralIndex(int $count): int {' . $pluralCondition . 'throw new Forrest79\SimpleTranslator\TranslateException(\'No definition for count \' . $count);}}; return new TranslatorData' . ucfirst($this->locale) . '(\'' . $this->locale . '\', [' . $localeData . ']);');
+				file_put_contents(
+					$localeCache . '.tmp',
+					sprintf(
+						'<?php declare(strict_types=1); class TranslatorData%s extends Forrest79\SimpleTranslator\TranslatorData {protected function getPluralIndex(int $count): int {%sthrow new Forrest79\SimpleTranslator\TranslateException(\'No definition for count \' . $count);}}; return new TranslatorData%s(\'%s\', [%s]);',
+						ucfirst($locale), $pluralCondition, ucfirst($this->locale), $this->locale, $localeData
+					)
+				);
 				rename($localeCache . '.tmp', $localeCache); // atomic replace (in Linux)
 				if ($this->localeUtils !== NULL) {
 					$this->localeUtils->afterCacheBuild($locale, $source, $localeCache);
@@ -283,14 +283,14 @@ class Translator implements ITranslator
 
 
 	/**
-	 * @throws Exceptions\TranslatorException
+	 * @throws Exceptions\Exception
 	 */
-	private function processTranslatorException(Exceptions\TranslatorException $e, string $message, string $locale): string
+	private function processTranslatorException(Exceptions\Exception $e, string $message, string $locale): string
 	{
 		if ($this->debugMode) {
 			throw $e;
 		} else {
-			$this->logger->log('Translation error "' . $e->getMessage() . '" in locale "' . $locale . '"', 'translator');
+			$this->logger->log(sprintf('Translation error "%s" in locale "%s"', $e->getMessage(), $locale), 'translator');
 			return $message;
 		}
 	}

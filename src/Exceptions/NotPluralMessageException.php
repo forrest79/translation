@@ -2,6 +2,6 @@
 
 namespace Forrest79\SimpleTranslator\Exceptions;
 
-class NotPluralMessageException extends TranslatorException
+class NotPluralMessageException extends Exception
 {
 }

@@ -14,12 +14,12 @@
 		"php": ">=7.1",
 		"nette/application": "^2.4",
 		"nette/di": "^2.4",
-		"nette/utils": "^2.4",
+		"nette/utils": "^2.5",
 		"nette/neon": "^2.4",
-		"tracy/tracy": "^2.4"
+		"tracy/tracy": "^2.5"
 	},
 	"require-dev": {
-		"nette/tester": "~2"
+		"nette/tester": "~2.1"
 	},
 	"autoload": {
 		"psr-4": {

@@ -2,6 +2,6 @@
 
 namespace Forrest79\SimpleTranslator\Exceptions;
 
-class NoDataLoaderException extends TranslatorException
+class NoDataLoaderException extends Exception
 {
 }

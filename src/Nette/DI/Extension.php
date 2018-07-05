@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Forrest79\SimpleTranslator\DI;
+namespace Forrest79\SimpleTranslator\Nette\DI;
 
 use Forrest79\SimpleTranslator;
 use Nette;
 
-class TranslatorExtension extends Nette\DI\CompilerExtension
+class Extension extends Nette\DI\CompilerExtension
 {
 	private $defaults = [
 		'locale' => NULL,
@@ -18,6 +18,15 @@ class TranslatorExtension extends Nette\DI\CompilerExtension
 		'debugger' => '%debugMode%',
 	];
 
+	/** @var bool */
+	private $debugMode;
+
+
+	public function __construct(bool $debugMode)
+	{
+		$this->debugMode = $debugMode;
+	}
+
 
 	public function loadConfiguration(): void
 	{
@@ -28,7 +37,7 @@ class TranslatorExtension extends Nette\DI\CompilerExtension
 
 		$translator = $builder->addDefinition($this->prefix('default'))
 			->setFactory(SimpleTranslator\Translator::class, [
-				$config['debugger'],
+				$this->debugMode,
 				$config['tempDir'],
 			]);
 
@@ -51,7 +60,7 @@ class TranslatorExtension extends Nette\DI\CompilerExtension
 			$translator->addSetup('setLocaleUtils', [$localeUtils]);
 		}
 
-		if ($config['debugger']) {
+		if ($this->debugMode && $config['debugger']) {
 			$builder->addDefinition($this->prefix('panel'))
 				->setFactory(SimpleTranslator\Diagnostics\Panel::class . '::register');
 

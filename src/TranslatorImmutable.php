@@ -27,7 +27,7 @@ class TranslatorImmutable implements ITranslator
 	/**
 	 * @inheritdoc
 	 * @throws Exceptions\CantChangeLocaleForImmutableTranslatorException
-	 * @throws Exceptions\TranslatorException
+	 * @throws Exceptions\Exception
 	 */
 	public function translate($message, $parameters = NULL, $count = NULL): string
 	{

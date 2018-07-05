@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Forrest79\Tests\SimpleTranslator;
+namespace Tests\Forrest79\SimpleTranslator;
 
 use Forrest79;
 use Forrest79\SimpleTranslator;
@@ -216,6 +216,16 @@ class TranslatorTest extends Tester\TestCase
 	}
 
 
+	public function testMissingSectionInNeon(): void
+	{
+		$this->translator->setLocale($this->createLocale([], [], FALSE, TRUE));
+
+		Tester\Assert::exception(function() {
+			Assert::same('I have one car.', $this->translator->translate('message'));
+		}, SimpleTranslator\Exceptions\SomeSectionMissingException::class);
+	}
+
+
 	public function testProcessErrorInProductionMode(): void
 	{
 		$translator = new SimpleTranslator\Translator(FALSE, TEMP_DIR, Tracy\Debugger::getLogger());
@@ -225,9 +235,20 @@ class TranslatorTest extends Tester\TestCase
 	}
 
 
-	private function createLocale(array $messages, array $plural = [], bool $corruptNeon = FALSE): string
+	private function createLocale(array $messages, array $plural = [], bool $corruptNeon = FALSE, bool $missingSections = FALSE): string
 	{
-		return createLocale($messages, $plural, NULL, $corruptNeon === TRUE ? (PHP_EOL . 'error') : '');
+		$updateNeon = NULL;
+		if ($corruptNeon === TRUE) {
+			$updateNeon = function($neon): string {
+				return $neon . PHP_EOL . 'error';
+			};
+		} else if ($missingSections) {
+			$updateNeon = function($neon): string {
+				return 'messages:';
+			};
+		}
+
+		return createLocale($messages, $plural, NULL, $updateNeon);
 	}
 
 }

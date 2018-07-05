@@ -1,11 +1,10 @@
 <?php
 
-namespace Forrest79\Tests\SimpleTranslator;
+namespace Tests\Forrest79\SimpleTranslator;
 
 use Tester\Assert;
 
 require_once __DIR__ . '/../bootstrap.php';
-
 
 function translate($testLocale, $cacheFile = NULL) {
 	$data = exec('php ' . __DIR__ . '/../helpers/translate.php ' . TEMP_DIR . ' ' . $testLocale . (($cacheFile === NULL) ? '' : (' ' . $cacheFile)));

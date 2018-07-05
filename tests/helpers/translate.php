@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Forrest79\Tests\SimpleTranslator;
+namespace Tests\Forrest79\SimpleTranslator;
 
 use Forrest79\SimpleTranslator;
 use Tester\Assert;

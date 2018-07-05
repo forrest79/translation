@@ -2,6 +2,6 @@
 
 namespace Forrest79\SimpleTranslator\Exceptions;
 
-class BadLocaleNameExceptions extends TranslatorException
+class BadLocaleNameExceptions extends Exception
 {
 }

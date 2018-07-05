@@ -2,6 +2,6 @@
 
 namespace Forrest79\SimpleTranslator\Exceptions;
 
-class CantChangeLocaleForImmutableTranslatorException extends TranslatorException
+class CantChangeLocaleForImmutableTranslatorException extends Exception
 {
 }
