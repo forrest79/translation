@@ -89,7 +89,7 @@ class Panel implements Tracy\IBarPanel
 		foreach ($this->localeSources as $locale => $source) {
 			$s .= '<tr>';
 			$s .= '<td>' . htmlSpecialChars($locale) . '</td>';
-			$s .= '<td>' . file_exists($source) ? Helpers::editorLink($source, 1) : $source . '</td>';
+			$s .= '<td>' . (file_exists($source) ? Helpers::editorLink($source) : $source) . '</td>';
 			$s .= '</tr>';
 		}
 
