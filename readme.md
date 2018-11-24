@@ -1,5 +1,4 @@
-Forrest79/SimpleTranslator
-==========================
+# Forrest79/SimpleTranslator
 
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/forrest79/SimpleTranslator/blob/master/license.md)
 [![Build Status](https://travis-ci.org/forrest79/SimpleTranslator.svg?branch=master)](https://travis-ci.org/forrest79/SimpleTranslator)
@@ -9,14 +8,12 @@ Forrest79/SimpleTranslator
 Simple and fast translator for Nette Framework based (default) on neon locale files.
 
 
-Requirements
-------------
+## Requirements
 
 Forrest79/SimpleTranslator requires PHP 7.1 or higher and [Nette Framework](https://github.com/nette/nette) 2.4.
 
 
-Installation
-------------
+## Installation
 
 * Install Forrest79/SimpleTranslator to your project using [Composer](http://getcomposer.org/):
 
@@ -25,8 +22,7 @@ $ composer require forrest79/simple-translator
 ```
 
 
-Documentation
--------------
+## Documentation
 
 This translator is basically distributes with [neon format](https://ne-on.org/) data loader for locale files. You must specify `plural` section and `messages` section.
 
