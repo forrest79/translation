@@ -19,7 +19,9 @@
 		"tracy/tracy": "^2.5"
 	},
 	"require-dev": {
-		"nette/tester": "~2.1"
+		"nette/tester": "~2.1",
+		"phpstan/phpstan": "^0.10.5",
+		"phpstan/phpstan-strict-rules": "^0.10.1"
 	},
 	"autoload": {
 		"psr-4": {

@@ -16,7 +16,7 @@ interface ITranslator extends Localization\ITranslator
 	 * @param int|NULL $count
 	 * @return string
 	 */
-	function translate($message, $parameters = NULL, $count = NULL): string;
+	function translate($message, $parameters = NULL, ?int $count = NULL): string;
 
 
 	function getLocale(): string;

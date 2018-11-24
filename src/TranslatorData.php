@@ -19,14 +19,11 @@ abstract class TranslatorData
 
 
 	/**
-	 * @param string $message
-	 * @param int|NULL $count
-	 * @return string|array
 	 * @throws Exceptions\BadCountForPluralMessageException
 	 * @throws Exceptions\NoCountForPluralMessageException
 	 * @throws Exceptions\NotPluralMessageException
 	 */
-	public function getTranslate(string $message, ?int $count = NULL)
+	public function getTranslate(string $message, ?int $count = NULL): ?string
 	{
 		if (!isset($this->messages[$message])) {
 			return NULL;

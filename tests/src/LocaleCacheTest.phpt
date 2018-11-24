@@ -1,15 +1,8 @@
-<?php
-
-namespace Tests\Forrest79\SimpleTranslator;
+<?php declare(strict_types=1);
 
 use Tester\Assert;
 
 require_once __DIR__ . '/../bootstrap.php';
-
-function translate($testLocale, $cacheFile = NULL) {
-	$data = exec('php ' . __DIR__ . '/../helpers/translate.php ' . TEMP_DIR . ' ' . $testLocale . (($cacheFile === NULL) ? '' : (' ' . $cacheFile)));
-	return explode('|', $data);
-}
 
 $testLocale = 'testlocale';
 $testMessage = 'Test message';

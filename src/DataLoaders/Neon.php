@@ -35,11 +35,12 @@ class Neon implements SimpleTranslator\DataLoader
 	public function loadData(string $locale): array
 	{
 		$localeFile = $this->source($locale);
-		if (!file_exists($localeFile)) {
+		$data = @file_get_contents($localeFile); // intentionally @
+		if ($data === FALSE) {
 			throw new SimpleTranslator\Exceptions\NoLocaleFileException(sprintf('Locale file "%s" doesn\'t exists', $localeFile));
 		}
 		try {
-			return NetteNeon\Neon::decode(file_get_contents($localeFile));
+			return NetteNeon\Neon::decode($data);
 		} catch (NetteNeon\Exception $e) {
 			throw new SimpleTranslator\Exceptions\ParsingErrorException('Error parsing Neon: ' . $e->getMessage(), 0, $e);
 		}

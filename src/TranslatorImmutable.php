@@ -25,11 +25,14 @@ class TranslatorImmutable implements ITranslator
 
 
 	/**
-	 * @inheritdoc
+	 * @param string $message
+	 * @param int|array|NULL $parameters (int = count, array = parameters, can contains self::PARAM_COUNT and self::PARAM_LOCALE value)
+	 * @param int|NULL $count
+	 * @return string
 	 * @throws Exceptions\CantChangeLocaleForImmutableTranslatorException
 	 * @throws Exceptions\Exception
 	 */
-	public function translate($message, $parameters = NULL, $count = NULL): string
+	public function translate($message, $parameters = NULL, ?int $count = NULL): string
 	{
 		if (is_array($parameters) && isset($parameters[self::PARAM_LOCALE]) && (strcasecmp($parameters[self::PARAM_LOCALE], $this->locale) !== 0)) {
 			throw new Exceptions\CantChangeLocaleForImmutableTranslatorException(sprintf('Immutable translator is set with "%s" locale, you tried to use "%s" locale.', $this->locale, $parameters[self::PARAM_LOCALE]));

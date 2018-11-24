@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Tests\Forrest79\SimpleTranslator\Nette\DI;
+namespace Forrest79\SimpleTranslator\Tests\Nette\DI;
 
 use Forrest79;
 use Forrest79\SimpleTranslator;
@@ -15,6 +15,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
  */
 class ExtensionTest extends Tester\TestCase
 {
+	/** @var int */
 	private $container = 0;
 
 
@@ -115,6 +116,7 @@ class ExtensionTest extends Tester\TestCase
 			'locale: en',
 		]);
 
+		/** @var Forrest79\SimpleTranslator\ITranslator $translator */
 		$translator = $container->getService('translator.default');
 		Assert::same('en', $translator->getLocale());
 	}
@@ -124,14 +126,14 @@ class ExtensionTest extends Tester\TestCase
 	private function createContainer(array $config = [], array $services = [])
 	{
 		$configNeon = '';
-		if ($config) {
+		if (count($config) > 0) {
 			foreach ($config as $line) {
 				$configNeon .= "\n" . str_repeat("\t", 5) . $line;
 			}
 		}
 
 		$servicesNeon = '';
-		if ($services) {
+		if (count($services) > 0) {
 			foreach ($services as $line) {
 				$servicesNeon .= "\n" . str_repeat("\t", 5) . $line;
 			}

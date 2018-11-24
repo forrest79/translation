@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Tests\Forrest79\SimpleTranslator;
+namespace Forrest79\SimpleTranslator\Tests;
 
 use Forrest79;
 use Forrest79\SimpleTranslator;

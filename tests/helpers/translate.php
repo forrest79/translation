@@ -1,10 +1,7 @@
 <?php declare(strict_types=1);
 
-namespace Tests\Forrest79\SimpleTranslator;
-
 use Forrest79\SimpleTranslator;
 use Tester\Assert;
-use Tracy;
 
 require_once __DIR__ . '/../bootstrap.php';
 
@@ -12,22 +9,8 @@ $tempDir = $argv[1];
 $locale = $argv[2];
 $cacheFile = isset($argv[3]) ? $argv[3] : NULL;
 
-class TestLocaleUtilsException extends \Exception
-{
-};
-
-class TestLocaleUtils implements SimpleTranslator\LocaleUtils
-{
-
-	public function afterCacheBuild(string $locale, string $source, string $localeCache): void
-	{
-		throw new TestLocaleUtilsException($locale . '|' . $source . '|' . $localeCache);
-	}
-
-}
-
 $translator = (new SimpleTranslator\Translator(TRUE, $tempDir, Tracy\Debugger::getLogger()))
-	->setLocaleUtils(new TestLocaleUtils)
+	->setLocaleUtils(new Forrest79\SimpleTranslator\Tests\TestLocaleUtils)
 	->setDataLoader(new SimpleTranslator\DataLoaders\Neon($tempDir))
 	->setLocale($locale);
 
@@ -35,7 +18,7 @@ $cacheHash = NULL;
 
 try {
 	echo $translator->translate('test');
-} catch (TestLocaleUtilsException $e) {
+} catch (Forrest79\SimpleTranslator\Tests\TestLocaleUtilsException $e) {
 	$data = explode('|', $e->getMessage(), 3);
 	$cacheFile = $data[2];
 	$cacheHash = md5_file($cacheFile);

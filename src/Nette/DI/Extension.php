@@ -7,6 +7,7 @@ use Nette;
 
 class Extension extends Nette\DI\CompilerExtension
 {
+	/** @var array */
 	private $defaults = [
 		'locale' => NULL,
 		'fallbackLocale' => NULL,

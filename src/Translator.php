@@ -85,11 +85,14 @@ class Translator implements ITranslator
 
 
 	/**
-	 * @inheritdoc
+	 * @param string $message
+	 * @param int|array|NULL $parameters (int = count, array = parameters, can contains self::PARAM_COUNT and self::PARAM_LOCALE value)
+	 * @param int|NULL $count
+	 * @return string
 	 * @throws Exceptions\NoLocaleSelectedExceptions
 	 * @throws Exceptions\Exception
 	 */
-	public function translate($message, $parameters = NULL, $count = NULL): string
+	public function translate($message, $parameters = NULL, ?int $count = NULL): string
 	{
 		if (is_array($parameters) && isset($parameters[self::PARAM_LOCALE])) {
 			$locale = strtolower($parameters[self::PARAM_LOCALE]);
@@ -98,9 +101,9 @@ class Translator implements ITranslator
 		}
 
 		if (is_array($parameters) && isset($parameters[self::PARAM_COUNT])) {
-			$count = (int) $parameters[self::PARAM_COUNT];
+			$count = intval($parameters[self::PARAM_COUNT]);
 		} else if (is_numeric($parameters)) {
-			$count = (int) $parameters;
+			$count = intval($parameters);
 			$parameters = NULL;
 		}
 
@@ -110,7 +113,7 @@ class Translator implements ITranslator
 			return $this->processTranslatorException($e, $message, $locale);
 		}
 		if ($translate === NULL) {
-			if ($this->panel) {
+			if ($this->panel !== NULL) {
 				$this->panel->addUntranslated($locale, $message);
 			} else {
 				$this->logger->log(sprintf('No translation for "%s" in locale "%s"', $message, $locale), 'translator');
@@ -129,10 +132,10 @@ class Translator implements ITranslator
 			}
 		}
 
-		if (is_array($parameters) && $parameters) {
+		if (is_array($parameters) && (count($parameters) > 0)) {
 			$tmp = [];
 			foreach ($parameters as $key => $value) {
-				$tmp['%' . trim($key, '%') . '%'] = $value;
+				$tmp['%' . trim((string) $key, '%') . '%'] = $value;
 			}
 			$parameters = $tmp;
 
@@ -236,7 +239,7 @@ class Translator implements ITranslator
 
 			$this->data[$locale] = require $localeCache;
 
-			if ($this->panel) {
+			if ($this->panel !== NULL) {
 				$this->panel->addLocaleFile($locale, $source);
 			}
 		}
@@ -276,7 +279,7 @@ class Translator implements ITranslator
 	 */
 	private function checkLocaleName(string $locale): void
 	{
-		if (!preg_match('/^[a-z0-9_\-]+$/', $locale)) {
+		if (preg_match('/^[a-z0-9_\-]+$/', $locale) === 0) {
 			throw new Exceptions\BadLocaleNameExceptions('Only "a-z", "0-9", "_" and "-" characters are allowed for locale name.');
 		}
 	}
