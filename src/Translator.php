@@ -214,11 +214,11 @@ class Translator implements ITranslator
 					if (is_array($translate)) {
 						$translateData = '';
 						foreach ($translate as $translateItem) {
-							$translateData .= '\'' . addslashes($translateItem) . '\',';
+							$translateData .= '\'' . str_replace('\'', '\\\'', $translateItem) . '\',';
 						}
 						$translateData = '[' . $translateData . ']';
 					} else {
-						$translateData = '\'' . addslashes($translate) . '\'';
+						$translateData = '\'' . str_replace('\'', '\\\'', $translate) . '\'';
 					}
 					$localeData .= '\'' . $identificator . '\'=>' . $translateData . ',';
 				}
