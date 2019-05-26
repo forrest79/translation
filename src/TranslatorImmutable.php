@@ -25,8 +25,8 @@ class TranslatorImmutable implements ITranslator
 
 
 	/**
-	 * @param string $message
-	 * @param int|array|NULL $parameters (int = count, array = parameters, can contains self::PARAM_COUNT and self::PARAM_LOCALE value)
+	 * @param mixed $message string
+	 * @param mixed $parameters int|array|NULL (int = count, array = parameters, can contains self::PARAM_COUNT and self::PARAM_LOCALE value)
 	 * @param int|NULL $count
 	 * @return string
 	 * @throws Exceptions\CantChangeLocaleForImmutableTranslatorException
@@ -39,7 +39,7 @@ class TranslatorImmutable implements ITranslator
 		}
 
 		if (is_numeric($parameters)) {
-			$count = $parameters;
+			$count = (int) $parameters;
 			$parameters = [];
 		} else if (!is_array($parameters)) {
 			$parameters = [];

@@ -11,8 +11,8 @@ interface ITranslator extends Localization\ITranslator
 
 
 	/**
-	 * @param string $message
-	 * @param int|array|NULL $parameters (int = count, array = parameters, can contains self::PARAM_COUNT and self::PARAM_LOCALE value)
+	 * @param mixed $message string
+	 * @param mixed $parameters int|array|NULL (int = count, array = parameters, can contains self::PARAM_COUNT and self::PARAM_LOCALE value)
 	 * @param int|NULL $count
 	 * @return string
 	 */
