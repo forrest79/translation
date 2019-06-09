@@ -227,7 +227,7 @@ class Translator implements ITranslator
 				file_put_contents(
 					$localeCache . '.tmp',
 					sprintf(
-						'<?php declare(strict_types=1); class TranslatorData%s extends Forrest79\SimpleTranslator\TranslatorData {protected function getPluralIndex(int $count): int {%sthrow new Forrest79\SimpleTranslator\TranslateException(\'No definition for count \' . $count);}}; return new TranslatorData%s(\'%s\', [%s]);',
+						'<?php declare(strict_types=1); class TranslatorData%s extends Forrest79\SimpleTranslator\TranslatorData {protected function getPluralIndex(int $count): int {%sthrow new Forrest79\SimpleTranslator\TranslatorException(\'No definition for count \' . $count);}}; return new TranslatorData%s(\'%s\', [%s]);',
 						ucfirst($locale), $pluralCondition, ucfirst($this->locale), $this->locale, $localeData
 					)
 				);
