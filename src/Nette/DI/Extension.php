@@ -51,7 +51,7 @@ class Extension extends Nette\DI\CompilerExtension
 		$translator->addSetup('setDataLoader', [$dataLoader]);
 
 		$localeUtils = $config['localeUtils'];
-		if (($localeUtils === NULL) && function_exists('opcache_invalidate')){
+		if (($localeUtils === NULL) && function_exists('opcache_invalidate')) {
 			$builder->addDefinition($this->prefix('localeUtils.opcache'))
 				->setFactory(SimpleTranslator\LocaleUtils\Opcache::class);
 			$localeUtils = $this->prefix('@localeUtils.opcache');

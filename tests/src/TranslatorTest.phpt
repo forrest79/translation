@@ -32,7 +32,7 @@ class TranslatorTest extends Tester\TestCase
 	{
 		Tester\Assert::exception(function() {
 			$this->translator->translate('message');
-		}, SimpleTranslator\Exceptions\NoLocaleSelectedExceptions::class);
+		}, SimpleTranslator\Exceptions\NoLocaleSelectedException::class);
 	}
 
 
@@ -42,7 +42,7 @@ class TranslatorTest extends Tester\TestCase
 			$this->translator
 				->setLocale('bad*locale*name')
 				->translate('message');
-		}, SimpleTranslator\Exceptions\BadLocaleNameExceptions::class);
+		}, SimpleTranslator\Exceptions\BadLocaleNameException::class);
 	}
 
 

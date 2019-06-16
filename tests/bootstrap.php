@@ -1,9 +1,13 @@
 <?php declare(strict_types=1);
 
-if (!$loader = include __DIR__ . '/../vendor/autoload.php') {
+$loader = __DIR__ . '/../vendor/autoload.php';
+
+if (!file_exists($loader)) {
 	echo 'Install dependencies using `composer update --dev`';
 	exit(1);
 }
+
+require $loader;
 
 // create temporary directory
 define('TEMP_DIR', __DIR__ . '/temp/' . getmypid());

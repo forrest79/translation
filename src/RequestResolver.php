@@ -22,7 +22,7 @@ class RequestResolver
 
 
 	/**
-	 * @throws Exceptions\BadLocaleNameExceptions
+	 * @throws Exceptions\BadLocaleNameException
 	 */
 	public function onRequest(Application\Application $application, Application\Request $request): void
 	{

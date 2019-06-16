@@ -6,8 +6,8 @@ use Nette\Localization;
 
 interface ITranslator extends Localization\ITranslator
 {
-	const PARAM_LOCALE = 'locale';
-	const PARAM_COUNT = 'count';
+	public const PARAM_LOCALE = 'locale';
+	public const PARAM_COUNT = 'count';
 
 
 	/**

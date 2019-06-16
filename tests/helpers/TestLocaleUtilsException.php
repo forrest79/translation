@@ -4,4 +4,5 @@ namespace Forrest79\SimpleTranslator\Tests;
 
 class TestLocaleUtilsException extends \Exception
 {
+
 }

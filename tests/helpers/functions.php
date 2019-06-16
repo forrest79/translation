@@ -13,7 +13,7 @@ function createLocale(array $messages, array $plural = [], ?string $manualLocale
 		'messages' => $messages,
 	];
 
-	$neon = (new Nette\Neon\Encoder)->encode($messages);
+	$neon = (new Nette\Neon\Encoder())->encode($messages);
 
 	if ($updateNeonData !== NULL) {
 		$neon = $updateNeonData($neon);
@@ -27,7 +27,8 @@ function createLocale(array $messages, array $plural = [], ?string $manualLocale
 	return ($manualLocale === NULL) ? (string) $locale++ : $manualLocale;
 }
 
-function translate(string $testLocale, ?string $cacheFile = NULL): array {
+function translate(string $testLocale, ?string $cacheFile = NULL): array
+{
 	$data = exec('php ' . __DIR__ . '/translate.php ' . TEMP_DIR . ' ' . $testLocale . (($cacheFile === NULL) ? '' : (' ' . $cacheFile)));
 	return explode('|', $data);
 }

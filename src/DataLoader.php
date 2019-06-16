@@ -13,6 +13,7 @@ interface DataLoader
 
 	/**
 	 * Return translation defition.
+	 *
 	 * @param string $locale
 	 * @return array with two keys
 	 *   [

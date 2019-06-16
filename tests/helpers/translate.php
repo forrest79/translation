@@ -7,10 +7,10 @@ require_once __DIR__ . '/../bootstrap.php';
 
 $tempDir = $argv[1];
 $locale = $argv[2];
-$cacheFile = isset($argv[3]) ? $argv[3] : NULL;
+$cacheFile = $argv[3] ?? NULL;
 
 $translator = (new SimpleTranslator\Translator(TRUE, $tempDir, Tracy\Debugger::getLogger()))
-	->setLocaleUtils(new Forrest79\SimpleTranslator\Tests\TestLocaleUtils)
+	->setLocaleUtils(new Forrest79\SimpleTranslator\Tests\TestLocaleUtils())
 	->setDataLoader(new SimpleTranslator\DataLoaders\Neon($tempDir))
 	->setLocale($locale);
 

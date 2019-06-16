@@ -74,7 +74,7 @@ class Panel implements Tracy\IBarPanel
 	{
 		$s = '';
 
-		foreach ($unique = array_unique($untranslated, SORT_REGULAR) as $message) {
+		foreach (array_unique($untranslated, SORT_REGULAR) as $message) {
 			$s .= '<tr><td>' . htmlspecialchars($message) . '</td></tr>';
 		}
 
@@ -111,7 +111,7 @@ class Panel implements Tracy\IBarPanel
 
 	public static function register(): self
 	{
-		$panel = new static;
+		$panel = new static();
 
 		Tracy\Debugger::getBar()->addPanel($panel, 'translator');
 

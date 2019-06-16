@@ -47,7 +47,7 @@ class Translator implements ITranslator
 
 
 	/**
-	 * @throws Exceptions\BadLocaleNameExceptions
+	 * @throws Exceptions\BadLocaleNameException
 	 */
 	public function setLocale(string $locale): self
 	{
@@ -60,19 +60,19 @@ class Translator implements ITranslator
 
 
 	/**
-	 * @throws Exceptions\NoLocaleSelectedExceptions
+	 * @throws Exceptions\NoLocaleSelectedException
 	 */
 	public function getLocale(): string
 	{
 		if ($this->locale === NULL) {
-			throw new Exceptions\NoLocaleSelectedExceptions;
+			throw new Exceptions\NoLocaleSelectedException();
 		}
 		return $this->locale;
 	}
 
 
 	/**
-	 * @throws Exceptions\BadLocaleNameExceptions
+	 * @throws Exceptions\BadLocaleNameException
 	 */
 	public function setFallbackLocale(string $locale): self
 	{
@@ -89,7 +89,7 @@ class Translator implements ITranslator
 	 * @param mixed $parameters int|array|NULL (int = count, array = parameters, can contains self::PARAM_COUNT and self::PARAM_LOCALE value)
 	 * @param int|NULL $count
 	 * @return string
-	 * @throws Exceptions\NoLocaleSelectedExceptions
+	 * @throws Exceptions\NoLocaleSelectedException
 	 * @throws Exceptions\Exception
 	 */
 	public function translate($message, $parameters = NULL, ?int $count = NULL): string
@@ -228,7 +228,11 @@ class Translator implements ITranslator
 					$localeCache . '.tmp',
 					sprintf(
 						'<?php declare(strict_types=1); class TranslatorData%s extends Forrest79\SimpleTranslator\TranslatorData {protected function getPluralIndex(int $count): int {%sthrow new Forrest79\SimpleTranslator\Exceptions\TranslatorException(\'No definition for count \' . $count);}}; return new TranslatorData%s(\'%s\', [%s]);',
-						ucfirst($locale), $pluralCondition, ucfirst($locale), $locale, $localeData
+						ucfirst($locale),
+						$pluralCondition,
+						ucfirst($locale),
+						$locale,
+						$localeData
 					)
 				);
 				rename($localeCache . '.tmp', $localeCache); // atomic replace (in Linux)
@@ -275,12 +279,12 @@ class Translator implements ITranslator
 
 
 	/**
-	 * @throws Exceptions\BadLocaleNameExceptions
+	 * @throws Exceptions\BadLocaleNameException
 	 */
 	private function checkLocaleName(string $locale): void
 	{
 		if (preg_match('/^[a-z0-9_\-]+$/', $locale) === 0) {
-			throw new Exceptions\BadLocaleNameExceptions('Only "a-z", "0-9", "_" and "-" characters are allowed for locale name.');
+			throw new Exceptions\BadLocaleNameException('Only "a-z", "0-9", "_" and "-" characters are allowed for locale name.');
 		}
 	}
 
