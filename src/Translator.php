@@ -197,48 +197,62 @@ class Translator implements ITranslator
 			$dataLoader = $this->getDataLoader();
 			$source = $dataLoader->source($locale);
 			$localeCache = $this->getCacheFile($locale);
-			if (!file_exists($localeCache) || ($this->debugMode && $dataLoader->isLocaleUpdated($locale, $localeCache))) {
-				$data = $dataLoader->loadData($locale);
-
-				if (!array_key_exists('plural', $data) || !array_key_exists('messages', $data)) {
-					throw new Exceptions\SomeSectionMissingException('You must have "plural" and "messages" section in data');
-				}
-
-				$pluralCondition = '';
-				foreach ((array) $data['plural'] as $i => $plural) {
-					$pluralCondition .= (($i > 0) ? 'else ' : '') . 'if (' . str_replace('n', '$count', $plural) . ') return ' . $i . ';';
-				}
-
-				$localeData = '';
-				foreach ((array) $data['messages'] as $identificator => $translate) {
-					if (is_array($translate)) {
-						$translateData = '';
-						foreach ($translate as $translateItem) {
-							$translateData .= '\'' . str_replace('\'', '\\\'', $translateItem) . '\',';
-						}
-						$translateData = '[' . $translateData . ']';
-					} else {
-						$translateData = '\'' . str_replace('\'', '\\\'', $translate) . '\'';
-					}
-					$localeData .= '\'' . $identificator . '\'=>' . $translateData . ',';
-				}
-
+			if ($this->cacheNeedsRebuild($localeCache, $locale)) {
 				Utils\FileSystem::createDir(dirname($localeCache), 0755);
-				file_put_contents(
-					$localeCache . '.tmp',
-					sprintf(
-						'<?php declare(strict_types=1); class TranslatorData%s extends Forrest79\SimpleTranslator\TranslatorData {protected function getPluralIndex(int $count): int {%sthrow new Forrest79\SimpleTranslator\Exceptions\TranslatorException(\'No definition for count \' . $count);}}; return new TranslatorData%s(\'%s\', [%s]);',
-						ucfirst($locale),
-						$pluralCondition,
-						ucfirst($locale),
-						$locale,
-						$localeData
-					)
-				);
-				rename($localeCache . '.tmp', $localeCache); // atomic replace (in Linux)
-				if ($this->localeUtils !== NULL) {
-					$this->localeUtils->afterCacheBuild($locale, $source, $localeCache);
+
+				$lockFile = $localeCache . '.lock';
+				$lockHandle = fopen($lockFile, 'c+');
+				if (($lockHandle === FALSE) || !flock($lockHandle, LOCK_EX)) {
+					throw new Exceptions\CantAcquireLockException(sprintf('Unable to create or acquire exclusive lock on file \'%s\'.', $lockFile));
 				}
+
+				// cache still not exists
+				if ($this->cacheNeedsRebuild($localeCache, $locale)) {
+					$data = $dataLoader->loadData($locale);
+
+					if (!array_key_exists('plural', $data) || !array_key_exists('messages', $data)) {
+						throw new Exceptions\SomeSectionMissingException('You must have "plural" and "messages" section in data');
+					}
+
+					$pluralCondition = '';
+					foreach ((array) $data['plural'] as $i => $plural) {
+						$pluralCondition .= (($i > 0) ? 'else ' : '') . 'if (' . str_replace('n', '$count', $plural) . ') return ' . $i . ';';
+					}
+
+					$localeData = '';
+					foreach ((array) $data['messages'] as $identificator => $translate) {
+						if (is_array($translate)) {
+							$translateData = '';
+							foreach ($translate as $translateItem) {
+								$translateData .= '\'' . str_replace('\'', '\\\'', $translateItem) . '\',';
+							}
+							$translateData = '[' . $translateData . ']';
+						} else {
+							$translateData = '\'' . str_replace('\'', '\\\'', $translate) . '\'';
+						}
+						$localeData .= '\'' . $identificator . '\'=>' . $translateData . ',';
+					}
+
+					file_put_contents(
+						$localeCache . '.tmp',
+						sprintf(
+							'<?php declare(strict_types=1); class TranslatorData%s extends Forrest79\SimpleTranslator\TranslatorData {protected function getPluralIndex(int $count): int {%sthrow new Forrest79\SimpleTranslator\Exceptions\TranslatorException(\'No definition for count \' . $count);}}; return new TranslatorData%s(\'%s\', [%s]);',
+							ucfirst($locale),
+							$pluralCondition,
+							ucfirst($locale),
+							$locale,
+							$localeData
+						)
+					);
+					rename($localeCache . '.tmp', $localeCache); // atomic replace (in Linux)
+					if ($this->localeUtils !== NULL) {
+						$this->localeUtils->afterCacheBuild($locale, $source, $localeCache);
+					}
+				}
+
+				flock($lockHandle, LOCK_UN);
+				fclose($lockHandle);
+				@unlink($lockFile); // intentionally @ - file may become locked on Windows
 			}
 
 			$this->data[$locale] = require $localeCache;
@@ -255,6 +269,12 @@ class Translator implements ITranslator
 	private function getCacheFile(string $locale): string
 	{
 		return $this->tempDir . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'locales' . DIRECTORY_SEPARATOR . $locale . '.php';
+	}
+
+
+	private function cacheNeedsRebuild(string $localeCache, string $locale): bool
+	{
+		return !file_exists($localeCache) || ($this->debugMode && $this->getDataLoader()->isLocaleUpdated($locale, $localeCache));
 	}
 
 
