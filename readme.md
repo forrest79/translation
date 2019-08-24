@@ -44,7 +44,7 @@ plural:
 ```
 
 Messages can be simple - ```key => translation```. Or can contains variables (`%var%`) or plurals.
- 
+
 ```yml
 messages:
     simpleMessage: This is simple message.
@@ -95,13 +95,13 @@ extensions:
 Default settings is (this works out of the box):
 
 ```yml
-extensions:
+translator:
     locale: NULL # can set manual locale
     fallbackLocale: NULL # can set locale that is used, when main locale does't have message to translate (this is logged)
-    dataLoader: NULL # will use as default DataLoaders\Neon data loader, you can specify your own ('@customDataLoaderService')  
+    dataLoader: NULL # will use as default DataLoaders\Neon data loader, you can specify your own ('@customDataLoaderService')
     localesDir: %appDir%/locales # directory with neon files for Neon data loader
     tempDir: %tempDir% # for cached translation files: tempDir/cache/locales
-    localeUtils: null # auto detect - use Zend OpCache clean if it's detect or you can pass service name ('@customLocaleUtilsService') 
+    localeUtils: null # auto detect - use Zend OpCache clean if it's detect or you can pass service name ('@customLocaleUtilsService')
     requestResolver: locale # FALSE = disable
     debugger: TRUE # when TRUE - show Tracy bar in debug mode
 ```
@@ -115,6 +115,6 @@ Translator is registered to Nette and Latte. By default, there is resolver, that
 As default translations are loaded from neon files. This translator is shipped only with this possibility but you can write your own data loader to load translation from the source you want. Just implement ```DataLoader``` interface to some object and set this object via neon settings ```dataLoader``` or by calling ```setDataLoader($dataLoader)```. This interface has three methods:
 - ```isLocaleUpdated(string $locale, string $cacheFile)``` that returns ```true/false``` if cache needs to be rebuild in debug mode
 - ```loadData(string $locale)``` that returns array with two keys, ```plural``` definition and ```messages``` with array ```key => trasnlate```
-- ```source(string $locale)``` that return source identification, file path for neon file or whatever you want 
+- ```source(string $locale)``` that return source identification, file path for neon file or whatever you want
 
 In debug mode, there is a Tracy panel that shows untranslated messages and loaded locales and also this messages are saved to log. In production mode, only saving to log is active.
