@@ -7,10 +7,13 @@ abstract class TranslatorData
 	/** @var string */
 	private $locale;
 
-	/** @var array */
+	/** @var array<string|array<string>> */
 	private $messages = [];
 
 
+	/**
+	 * @param array<string|array<string>> $messages
+	 */
 	public function __construct(string $locale, array $messages)
 	{
 		$this->locale = $locale;
@@ -43,6 +46,7 @@ abstract class TranslatorData
 			throw new Exceptions\NotPluralMessageException(sprintf('Message "%s" in "%s" is not plural', $message, $this->locale));
 		}
 
+		/** @var string $translate */
 		return $translate;
 	}
 

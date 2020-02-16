@@ -2,7 +2,6 @@
 
 namespace Forrest79\SimpleTranslator\Tests;
 
-use Forrest79;
 use Forrest79\SimpleTranslator;
 use Tester;
 use Tester\Assert;
@@ -30,7 +29,7 @@ class TranslatorTest extends Tester\TestCase
 
 	public function testNoLocaleSelected(): void
 	{
-		Tester\Assert::exception(function() {
+		Tester\Assert::exception(function (): void {
 			$this->translator->translate('message');
 		}, SimpleTranslator\Exceptions\NoLocaleSelectedException::class);
 	}
@@ -38,7 +37,7 @@ class TranslatorTest extends Tester\TestCase
 
 	public function testBadLocaleName(): void
 	{
-		Tester\Assert::exception(function() {
+		Tester\Assert::exception(function (): void {
 			$this->translator
 				->setLocale('bad*locale*name')
 				->translate('message');
@@ -67,7 +66,7 @@ class TranslatorTest extends Tester\TestCase
 
 	public function testBadPluralTranslate(): void
 	{
-		Tester\Assert::exception(function() {
+		Tester\Assert::exception(function (): void {
 			$this->translator->setLocale($this->createLocale(['message' => ['One item.']]));
 			$this->translator->translate('message', 10);
 		}, SimpleTranslator\Exceptions\BadCountForPluralMessageException::class);
@@ -76,7 +75,7 @@ class TranslatorTest extends Tester\TestCase
 
 	public function testNotPluralTranslate(): void
 	{
-		Tester\Assert::exception(function() {
+		Tester\Assert::exception(function (): void {
 			$this->translator->setLocale($this->createLocale(['message' => 'One item.']));
 			$this->translator->translate('message', 10);
 		}, SimpleTranslator\Exceptions\NotPluralMessageException::class);
@@ -85,7 +84,7 @@ class TranslatorTest extends Tester\TestCase
 
 	public function testPluralNoCountTranslate(): void
 	{
-		Tester\Assert::exception(function() {
+		Tester\Assert::exception(function (): void {
 			$this->translator->setLocale($this->createLocale(['message' => ['One item.']]));
 			$this->translator->translate('message');
 		}, SimpleTranslator\Exceptions\NoCountForPluralMessageException::class);
@@ -144,7 +143,7 @@ class TranslatorTest extends Tester\TestCase
 	public function testImmutableTranslatorChangeLocale(): void
 	{
 		$immutable = $this->translator->createImmutableTranslator('cs');
-		Tester\Assert::exception(function() use ($immutable) {
+		Tester\Assert::exception(static function () use ($immutable): void {
 			$immutable->translate('test', [$immutable::PARAM_LOCALE => 'en']);
 		}, SimpleTranslator\Exceptions\CantChangeLocaleForImmutableTranslatorException::class);
 	}
@@ -182,7 +181,7 @@ class TranslatorTest extends Tester\TestCase
 		$translator = new SimpleTranslator\Translator(TRUE, TEMP_DIR, Tracy\Debugger::getLogger());
 		$translator->setLocale('cs');
 
-		Tester\Assert::exception(function() use ($translator) {
+		Tester\Assert::exception(static function () use ($translator): void {
 			$translator->translate('test');
 		}, SimpleTranslator\Exceptions\NoDataLoaderException::class);
 	}
@@ -210,7 +209,7 @@ class TranslatorTest extends Tester\TestCase
 	{
 		$this->translator->setLocale($this->createLocale([], [], TRUE));
 
-		Tester\Assert::exception(function() {
+		Tester\Assert::exception(function (): void {
 			Assert::same('I have one car.', $this->translator->translate('message'));
 		}, SimpleTranslator\Exceptions\ParsingErrorException::class);
 	}
@@ -220,7 +219,7 @@ class TranslatorTest extends Tester\TestCase
 	{
 		$this->translator->setLocale($this->createLocale([], [], FALSE, TRUE));
 
-		Tester\Assert::exception(function() {
+		Tester\Assert::exception(function (): void {
 			Assert::same('I have one car.', $this->translator->translate('message'));
 		}, SimpleTranslator\Exceptions\SomeSectionMissingException::class);
 	}
@@ -235,15 +234,19 @@ class TranslatorTest extends Tester\TestCase
 	}
 
 
+	/**
+	 * @param array<string, string|array<string>> $messages
+	 * @param array<string> $plural
+	 */
 	private function createLocale(array $messages, array $plural = [], bool $corruptNeon = FALSE, bool $missingSections = FALSE): string
 	{
 		$updateNeon = NULL;
 		if ($corruptNeon === TRUE) {
-			$updateNeon = function($neon): string {
+			$updateNeon = static function ($neon): string {
 				return $neon . PHP_EOL . 'error';
 			};
 		} else if ($missingSections) {
-			$updateNeon = function($neon): string {
+			$updateNeon = static function (): string {
 				return 'messages:';
 			};
 		}

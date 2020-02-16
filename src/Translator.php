@@ -25,10 +25,10 @@ class Translator implements ITranslator
 	/** @var string */
 	private $fallbackLocale;
 
-	/** @var TranslatorImmutable[] */
+	/** @var array<string, TranslatorImmutable> */
 	private $immutableTranslators = [];
 
-	/** @var TranslatorData[] */
+	/** @var array<string, TranslatorData> */
 	private $data = [];
 
 	/** @var LocaleUtils */
@@ -87,8 +87,6 @@ class Translator implements ITranslator
 	/**
 	 * @param mixed $message string
 	 * @param mixed $parameters int|array|NULL (int = count, array = parameters, can contains self::PARAM_COUNT and self::PARAM_LOCALE value)
-	 * @param int|NULL $count
-	 * @return string
 	 * @throws Exceptions\NoLocaleSelectedException
 	 * @throws Exceptions\Exception
 	 */
@@ -215,12 +213,13 @@ class Translator implements ITranslator
 					}
 
 					$pluralCondition = '';
-					foreach ((array) $data['plural'] as $i => $plural) {
+					/** @var string $plural */
+					foreach ($data['plural'] as $i => $plural) {
 						$pluralCondition .= (($i > 0) ? 'else ' : '') . 'if (' . str_replace('n', '$count', $plural) . ') return ' . $i . ';';
 					}
 
 					$localeData = '';
-					foreach ((array) $data['messages'] as $identificator => $translate) {
+					foreach ($data['messages'] as $identificator => $translate) {
 						if (is_array($translate)) {
 							$translateData = '';
 							foreach ($translate as $translateItem) {

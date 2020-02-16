@@ -7,13 +7,13 @@ use Tracy\Helpers;
 
 class Panel implements Tracy\IBarPanel
 {
-	/** @var array */
+	/** @var array<string, array<string>> */
 	private $untranslated = [];
 
 	/** @var int */
 	private $untranslatedCount = 0;
 
-	/** @var array */
+	/** @var array<string, string> */
 	private $localeSources = [];
 
 
@@ -23,7 +23,7 @@ class Panel implements Tracy\IBarPanel
 	public function getTab(): string
 	{
 		return '<span title="SimpleTranslator"><img width="16" height="16" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAB9ElEQVR42qWTv2pUQRTGfzP37t3EJTHZpDBIIIIgYhVQQdKJEXwECxsbG8FXsPcBxMaUEsQHSCmi2AVfQAvBGHYxf3Tv7r0zcz6Lm2QTE0FwimHm8M2P8505B/5zucPD3dXVh5+NR08KGz4uYvgSBDLMDMyQhJm1JJuU2YurbzdfAuSHAMF9xE0dXJqgaHuPAVVMR0rBPnASgAQ4ZAamI8j3UUWOmMo8SWpkGlvw4/dq4hKyRO7EMCW+lkO2hjVmasQCd4zgT5ZESIYsITN2qppunlM4x16IZAcGjL9loMaJA8qYKENkcaKgW2TshECUNYKzLIxBhpNRxkCdjH4dGIRIHROjmMj+0Ptjv9DsEpaM/TqQORjESGUJAb9Cwjt3NqApL2TAXh3ojQLzRcbSZMGlyYJO5vlW11TJyMftc+wbD/rKMCRjoZ3TcY46JryDbp7hgSjhnZ0GmMHIPFWCGQUWnaMcViRBBNrARWAUI6HVOisDw6UalycGrQ6D4hxFq0UVAkJEoJZDyXCjcucU4MI8PL3Xp7e1y3rxAHWXuXZlgfm5OYajITKR2hNYv4dfe77Bu82TgNpYW1meurN92fP62Zv1n+9ffdRSMXNj9jxtIMjIzHlnmlaKP05N4/bGrevTHVYmpn292y8/zN7e/PQv4/wbPRMfZ4n8tOQAAAAASUVORK5CYII="><span class="tracy-label">'
-			. implode(', ', array_keys($this->localeSources)) . ($this->untranslated > 0 ? ' <strong>(' . $this->getUntranslatedCount() . ' errors)</strong>' : '')
+			. implode(', ', array_keys($this->localeSources)) . ($this->getUntranslatedCount() > 0 ? ' <strong>(' . $this->getUntranslatedCount() . ' errors)</strong>' : '')
 			. '</span></span>';
 	}
 
@@ -34,7 +34,7 @@ class Panel implements Tracy\IBarPanel
 	public function getPanel(): string
 	{
 		$panel = [];
-		if (count($this->untranslated) > 0) {
+		if ($this->getUntranslatedCount() > 0) {
 			foreach ($this->untranslated as $locale => $untranslated) {
 				$panel[] = $this->renderUntranslated($locale, $untranslated);
 			}
@@ -70,6 +70,9 @@ class Panel implements Tracy\IBarPanel
 	}
 
 
+	/**
+	 * @param array<string> $untranslated
+	 */
 	private function renderUntranslated(string $locale, array $untranslated): string
 	{
 		$s = '';
@@ -99,7 +102,11 @@ class Panel implements Tracy\IBarPanel
 
 	public function addUntranslated(string $locale, string $message): void
 	{
-		$this->untranslated[$locale][] = $message;
+		if (!isset($this->untranslated[$locale])) {
+			$this->untranslated[$locale] = [$message];
+		} else {
+			$this->untranslated[$locale][] = $message;
+		}
 	}
 
 
@@ -111,7 +118,7 @@ class Panel implements Tracy\IBarPanel
 
 	public static function register(): self
 	{
-		$panel = new static();
+		$panel = new self();
 
 		Tracy\Debugger::getBar()->addPanel($panel, 'translator');
 

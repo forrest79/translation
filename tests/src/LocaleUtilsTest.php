@@ -10,7 +10,7 @@ $testMessage = 'Test message';
 $locale = createLocale(['test' => $testMessage]);
 
 $translator = (new SimpleTranslator\Translator(TRUE, TEMP_DIR, Tracy\Debugger::getLogger()))
-	->setLocaleUtils(new Forrest79\SimpleTranslator\Tests\TestLocaleUtils)
+	->setLocaleUtils(new Forrest79\SimpleTranslator\Tests\TestLocaleUtils())
 	->setDataLoader(new SimpleTranslator\DataLoaders\Neon(TEMP_DIR))
 	->setLocale($locale);
 

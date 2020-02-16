@@ -14,9 +14,9 @@ $resolveBy = 'locale';
 $testMessage = 'Test message';
 
 $httpRequest = new Http\Request(new Http\UrlScript('https://www.test.com/?' . $resolveBy . '=' . createLocale(['test' => $testMessage])));
-$httpResponse = new Http\Response;
+$httpResponse = new Http\Response();
 
-$presenterFactory = (new Application\PresenterFactory)->setMapping(['*' => 'Forrest79\SimpleTranslator\Tests\*Presenter']);
+$presenterFactory = (new Application\PresenterFactory())->setMapping(['*' => 'Forrest79\SimpleTranslator\Tests\*Presenter']);
 $router = new Application\Routers\SimpleRouter('Homepage:default');
 
 $app = new Application\Application($presenterFactory, $router, $httpRequest, $httpResponse);
@@ -26,7 +26,7 @@ $app->onRequest[] = [$requestResolver, 'onRequest'];
 
 $app->run();
 
-Assert::exception(function () use ($translator) {
+Assert::exception(static function () use ($translator): void {
 	$translator->translate('test', ['locale' => 'bad-locale']);
 }, SimpleTranslator\Exceptions\NoLocaleFileException::class);
 

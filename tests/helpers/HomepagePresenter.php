@@ -10,11 +10,7 @@ class HomepagePresenter implements Application\IPresenter
 	public $request;
 
 
-	/**
-	 * @param Application\Request $request
-	 * @return Application\IResponse
-	 */
-	public function run(Application\Request $request)
+	public function run(Application\Request $request): Application\IResponse
 	{
 		$this->request = $request;
 		return new Application\Responses\TextResponse('');

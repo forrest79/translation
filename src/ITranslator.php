@@ -13,8 +13,6 @@ interface ITranslator extends Localization\ITranslator
 	/**
 	 * @param mixed $message string
 	 * @param mixed $parameters int|array|NULL (int = count, array = parameters, can contains self::PARAM_COUNT and self::PARAM_LOCALE value)
-	 * @param int|NULL $count
-	 * @return string
 	 */
 	function translate($message, $parameters = NULL, ?int $count = NULL): string;
 

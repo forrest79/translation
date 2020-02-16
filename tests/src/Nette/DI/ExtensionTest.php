@@ -71,7 +71,7 @@ class ExtensionTest extends Tester\TestCase
 			'opcache: Forrest79\SimpleTranslator\LocaleUtils\Opcache',
 		]);
 
-		Assert::exception(function() use ($container) {
+		Assert::exception(static function () use ($container): void {
 			$container->getService('translator.localeUtils.opcache');
 		}, DI\MissingServiceException::class);
 
@@ -99,7 +99,7 @@ class ExtensionTest extends Tester\TestCase
 			'requestResolver: false',
 		]);
 
-		Assert::exception(function() use ($container) {
+		Assert::exception(static function () use ($container): void {
 			$container->getService('translator.requestResolver');
 		}, DI\MissingServiceException::class);
 
@@ -122,8 +122,11 @@ class ExtensionTest extends Tester\TestCase
 	}
 
 
-	/** @return DI\Container */
-	private function createContainer(array $config = [], array $services = [])
+	/**
+	 * @param array<string> $config
+	 * @param array<string> $services
+	 */
+	private function createContainer(array $config = [], array $services = []): DI\Container
 	{
 		$configNeon = '';
 		if (count($config) > 0) {
@@ -141,7 +144,7 @@ class ExtensionTest extends Tester\TestCase
 
 		$containerName = 'Container' . $this->container++;
 
-		$loader = new DI\Config\Loader;
+		$loader = new DI\Config\Loader();
 		$config = $loader->load(Tester\FileMock::create('
 				translator:' . $configNeon . '
 				parameters:
@@ -151,13 +154,13 @@ class ExtensionTest extends Tester\TestCase
 				services:' . $servicesNeon . '
 					- Tracy\Logger(%appDir%)
 			', 'neon'));
-		$compiler = new DI\Compiler;
+		$compiler = new DI\Compiler();
 		$compiler->addExtension('translator', new SimpleTranslator\Nette\DI\Extension(TRUE));
 		eval($compiler->addConfig($config)->setClassName($containerName)->compile());
 
 		$containerName = '\\' . $containerName;
 
-		$container = new $containerName;
+		$container = new $containerName();
 		$container->initialize();
 
 		return $container;
@@ -165,4 +168,4 @@ class ExtensionTest extends Tester\TestCase
 
 }
 
-(new ExtensionTest)->run();
+(new ExtensionTest())->run();

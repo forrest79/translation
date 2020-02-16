@@ -27,8 +27,6 @@ class TranslatorImmutable implements ITranslator
 	/**
 	 * @param mixed $message string
 	 * @param mixed $parameters int|array|NULL (int = count, array = parameters, can contains self::PARAM_COUNT and self::PARAM_LOCALE value)
-	 * @param int|NULL $count
-	 * @return string
 	 * @throws Exceptions\CantChangeLocaleForImmutableTranslatorException
 	 * @throws Exceptions\Exception
 	 */
