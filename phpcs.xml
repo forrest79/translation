@@ -68,12 +68,17 @@
 		</properties>
 	</rule>
 
+	<rule ref="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable">
+		<exclude-pattern>src/TranslatorData.php</exclude-pattern>
+	</rule>
+
 	<rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
 		<exclude-pattern>src/*</exclude-pattern>
 		<exclude-pattern>tests/*</exclude-pattern>
 	</rule>
 
-	<rule ref="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable">
-		<exclude-pattern>src/TranslatorData.php</exclude-pattern>
+	<rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint">
+		<exclude-pattern>src/*</exclude-pattern>
+		<exclude-pattern>tests/*</exclude-pattern>
 	</rule>
 </ruleset>
