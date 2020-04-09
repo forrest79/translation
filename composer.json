@@ -12,11 +12,10 @@
 	],
 	"require": {
 		"php": ">=7.1",
-		"nette/application": "^2.4",
-		"nette/di": "^2.4",
-		"nette/utils": "^2.5",
-		"nette/neon": "^2.4",
-		"tracy/tracy": "^2.5"
+		"nette/application": "^3.0",
+		"nette/di": "^3.0",
+		"nette/utils": "^3.0",
+		"tracy/tracy": "^2.6"
 	},
 	"require-dev": {
 		"nette/tester": "~2",

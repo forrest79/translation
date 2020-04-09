@@ -11,10 +11,15 @@ interface ITranslator extends Localization\ITranslator
 
 
 	/**
-	 * @param mixed $message string
-	 * @param mixed $parameters int|array|NULL (int = count, array = parameters, can contains self::PARAM_COUNT and self::PARAM_LOCALE value)
+	 * translate(string $message, int|array|NULL $translateParameters = NULL, ?int $count = NULL): string
+	 *   param string $message
+	 *   param int|array|NULL $translateParameters (int = count; array = parameters, can contains self::PARAM_COUNT and self::PARAM_LOCALE value)
+	 *   param int|NULL $count
+	 *
+	 * @param mixed $message
+	 * @param mixed ...$parameters int|array|NULL
 	 */
-	function translate($message, $parameters = NULL, ?int $count = NULL): string;
+	function translate($message, ...$parameters): string;
 
 
 	function getLocale(): string;

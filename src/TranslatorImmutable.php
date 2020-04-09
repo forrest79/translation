@@ -25,27 +25,35 @@ class TranslatorImmutable implements ITranslator
 
 
 	/**
-	 * @param mixed $message string
-	 * @param mixed $parameters int|array|NULL (int = count, array = parameters, can contains self::PARAM_COUNT and self::PARAM_LOCALE value)
+	 * translate(string $message, int|array|NULL $translateParameters = NULL, ?int $count = NULL): string
+	 *   param string $message
+	 *   param int|array|NULL $translateParameters (int = count; array = parameters, can contains self::PARAM_COUNT and self::PARAM_LOCALE value)
+	 *   param int|NULL $count
+	 *
+	 * @param mixed $message
+	 * @param mixed ...$parameters
 	 * @throws Exceptions\CantChangeLocaleForImmutableTranslatorException
 	 * @throws Exceptions\Exception
 	 */
-	public function translate($message, $parameters = NULL, ?int $count = NULL): string
+	public function translate($message, ...$parameters): string
 	{
-		if (is_array($parameters) && isset($parameters[self::PARAM_LOCALE]) && (strcasecmp($parameters[self::PARAM_LOCALE], $this->locale) !== 0)) {
-			throw new Exceptions\CantChangeLocaleForImmutableTranslatorException(sprintf('Immutable translator is set with "%s" locale, you tried to use "%s" locale.', $this->locale, $parameters[self::PARAM_LOCALE]));
+		$translationParams = $parameters[0] ?? NULL;
+		$count = $parameters[1] ?? NULL;
+
+		if (is_array($translationParams) && isset($translationParams[self::PARAM_LOCALE]) && (strcasecmp($translationParams[self::PARAM_LOCALE], $this->locale) !== 0)) {
+			throw new Exceptions\CantChangeLocaleForImmutableTranslatorException(sprintf('Immutable translator is set with "%s" locale, you tried to use "%s" locale.', $this->locale, $translationParams[self::PARAM_LOCALE]));
 		}
 
-		if (is_numeric($parameters)) {
-			$count = (int) $parameters;
-			$parameters = [];
-		} else if (!is_array($parameters)) {
-			$parameters = [];
+		if (is_numeric($translationParams)) {
+			$count = (int) $translationParams;
+			$translationParams = [];
+		} else if (!is_array($translationParams)) {
+			$translationParams = [];
 		}
 
-		$parameters[self::PARAM_LOCALE] = $this->locale;
+		$translationParams[self::PARAM_LOCALE] = $this->locale;
 
-		return $this->translator->translate($message, $parameters, $count);
+		return $this->translator->translate($message, $translationParams, $count);
 	}
 
 }

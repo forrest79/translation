@@ -85,24 +85,35 @@ class Translator implements ITranslator
 
 
 	/**
-	 * @param mixed $message string
-	 * @param mixed $parameters int|array|NULL (int = count, array = parameters, can contains self::PARAM_COUNT and self::PARAM_LOCALE value)
+	 * translate(string $message, int|array|NULL $translateParameters = NULL, ?int $count = NULL): string
+	 *   param string $message
+	 *   param int|array|NULL $translateParameters (int = count; array = parameters, can contains self::PARAM_COUNT and self::PARAM_LOCALE value)
+	 *   param int|NULL $count
+	 *
+	 * @param mixed $message
+	 * @param mixed ...$parameters
 	 * @throws Exceptions\NoLocaleSelectedException
 	 * @throws Exceptions\Exception
 	 */
-	public function translate($message, $parameters = NULL, ?int $count = NULL): string
+	public function translate($message, ...$parameters): string
 	{
-		if (is_array($parameters) && isset($parameters[self::PARAM_LOCALE])) {
-			$locale = strtolower($parameters[self::PARAM_LOCALE]);
+		$translationParams = $parameters[0] ?? NULL;
+
+		if (is_array($translationParams) && isset($translationParams[self::PARAM_LOCALE])) {
+			$locale = strtolower($translationParams[self::PARAM_LOCALE]);
 		} else {
 			$locale = $this->getLocale();
 		}
 
-		if (is_array($parameters) && isset($parameters[self::PARAM_COUNT])) {
-			$count = intval($parameters[self::PARAM_COUNT]);
-		} else if (is_numeric($parameters)) {
-			$count = intval($parameters);
-			$parameters = NULL;
+		if (is_array($translationParams) && isset($translationParams[self::PARAM_COUNT])) {
+			$count = intval($translationParams[self::PARAM_COUNT]);
+		} else if (is_numeric($translationParams)) {
+			$count = intval($translationParams);
+			$translationParams = NULL;
+		} else if (isset($parameters[1])) {
+			$count = intval($parameters[1]);
+		} else {
+			$count = NULL;
 		}
 
 		try {
@@ -130,14 +141,14 @@ class Translator implements ITranslator
 			}
 		}
 
-		if (is_array($parameters) && (count($parameters) > 0)) {
+		if (is_array($translationParams) && (count($translationParams) > 0)) {
 			$tmp = [];
-			foreach ($parameters as $key => $value) {
+			foreach ($translationParams as $key => $value) {
 				$tmp['%' . trim((string) $key, '%') . '%'] = $value;
 			}
-			$parameters = $tmp;
+			$translationParams = $tmp;
 
-			return strtr($translate, $parameters);
+			return strtr($translate, $translationParams);
 		}
 
 		return $translate;
