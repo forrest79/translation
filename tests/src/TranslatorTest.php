@@ -238,7 +238,12 @@ class TranslatorTest extends Tester\TestCase
 	 * @param array<string, string|array<string>> $messages
 	 * @param array<string> $plural
 	 */
-	private function createLocale(array $messages, array $plural = [], bool $corruptNeon = FALSE, bool $missingSections = FALSE): string
+	private function createLocale(
+		array $messages,
+		array $plural = [],
+		bool $corruptNeon = FALSE,
+		bool $missingSections = FALSE
+	): string
 	{
 		$updateNeon = NULL;
 		if ($corruptNeon === TRUE) {
