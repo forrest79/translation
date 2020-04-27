@@ -10,7 +10,7 @@ Simple and fast translator for Nette Framework based (default) on neon locale fi
 
 ## Requirements
 
-Forrest79/SimpleTranslator requires PHP 7.1 or higher and [Nette Framework](https://github.com/nette/nette) 2.4.
+Forrest79/SimpleTranslator requires PHP 7.1 or higher and [Nette Framework](https://github.com/nette/nette) 3.0.
 
 
 ## Installation
