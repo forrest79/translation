@@ -7,35 +7,27 @@ use Tracy;
 
 class Translator implements ITranslator
 {
-	/** @var bool */
-	private $debugMode;
+	private bool $debugMode;
 
-	/** @var DataLoader */
-	private $dataLoader;
+	private string $tempDir;
 
-	/** @var string */
-	private $tempDir;
+	private Tracy\ILogger $logger;
 
-	/** @var Tracy\ILogger */
-	private $logger;
+	private ?DataLoader $dataLoader = NULL;
 
-	/** @var string */
-	private $locale;
+	private ?string $locale = NULL;
 
-	/** @var string */
-	private $fallbackLocale;
+	private ?string $fallbackLocale = NULL;
 
 	/** @var array<string, TranslatorImmutable> */
-	private $immutableTranslators = [];
+	private array $immutableTranslators = [];
 
 	/** @var array<string, TranslatorData> */
-	private $data = [];
+	private array $data = [];
 
-	/** @var LocaleUtils */
-	private $localeUtils;
+	private ?LocaleUtils $localeUtils = NULL;
 
-	/** @var Diagnostics\Panel */
-	private $panel;
+	private ?Diagnostics\Panel $panel = NULL;
 
 
 	public function __construct(bool $debugMode, string $tempDir, Tracy\ILogger $logger)
@@ -251,8 +243,8 @@ class Translator implements ITranslator
 							$pluralCondition,
 							ucfirst($locale),
 							$locale,
-							$localeData
-						)
+							$localeData,
+						),
 					);
 					rename($localeCache . '.tmp', $localeCache); // atomic replace (in Linux)
 					if ($this->localeUtils !== NULL) {

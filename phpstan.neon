@@ -3,12 +3,7 @@ includes:
 
 parameters:
 	level: max
-	fileExtensions:
-		- php
-		- phpt
 	excludes_analyse:
 		- %rootDir%/../../../tests/temp/*
-	autoload_directories:
-		- %rootDir%/../../../tests/src
 	autoload_files:
 		- %rootDir%/../../../tests/bootstrap.php

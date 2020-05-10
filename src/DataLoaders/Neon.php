@@ -7,8 +7,7 @@ use Nette\Neon as NetteNeon;
 
 class Neon implements SimpleTranslator\DataLoader
 {
-	/** @var string */
-	private $localesDir;
+	private string $localesDir;
 
 
 	public function __construct(string $localesDir)

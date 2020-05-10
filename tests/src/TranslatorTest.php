@@ -12,10 +12,9 @@ require_once __DIR__ . '/../bootstrap.php';
 /**
  * @testCase
  */
-class TranslatorTest extends Tester\TestCase
+class TranslatorTest extends TestCase
 {
-	/** @var SimpleTranslator\Translator */
-	private $translator;
+	private SimpleTranslator\Translator $translator;
 
 
 	protected function setUp(): void

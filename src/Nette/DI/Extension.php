@@ -12,8 +12,7 @@ use Tracy;
  */
 class Extension extends Nette\DI\CompilerExtension
 {
-	/** @var bool */
-	private $debugMode;
+	private bool $debugMode;
 
 
 	public function __construct(bool $debugMode)

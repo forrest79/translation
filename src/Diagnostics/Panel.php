@@ -8,13 +8,12 @@ use Tracy\Helpers;
 class Panel implements Tracy\IBarPanel
 {
 	/** @var array<string, array<string>> */
-	private $untranslated = [];
+	private array $untranslated = [];
 
-	/** @var int */
-	private $untranslatedCount = 0;
+	private int $untranslatedCount = 0;
 
 	/** @var array<string, string> */
-	private $localeSources = [];
+	private array $localeSources = [];
 
 
 	/**

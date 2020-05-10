@@ -4,11 +4,9 @@ namespace Forrest79\SimpleTranslator;
 
 class TranslatorImmutable implements ITranslator
 {
-	/** @var Translator */
-	private $translator;
+	private Translator $translator;
 
-	/** @var string */
-	private $locale;
+	private string $locale;
 
 
 	public function __construct(Translator $translator, string $locale)

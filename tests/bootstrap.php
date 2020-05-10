@@ -14,12 +14,13 @@ define('TEMP_DIR', __DIR__ . '/temp/' . getmypid());
 Tester\Helpers::purge(TEMP_DIR);
 Tracy\Debugger::$logDirectory = TEMP_DIR;
 
+date_default_timezone_set('Europe/Prague');
+
 require __DIR__ . '/helpers/functions.php';
 require __DIR__ . '/helpers/HomepagePresenter.php';
 require __DIR__ . '/helpers/TestLocaleUtils.php';
 require __DIR__ . '/helpers/TestLocaleUtilsException.php';
 
-// configure environment
-Tester\Environment::setup();
-
-date_default_timezone_set('Europe/Prague');
+if (!defined('__PHPSTAN_RUNNING__')) {
+	Tester\Environment::setup();
+}

@@ -4,6 +4,7 @@ namespace Forrest79\SimpleTranslator\Tests\Nette\DI;
 
 use Forrest79;
 use Forrest79\SimpleTranslator;
+use Forrest79\SimpleTranslator\Tests;
 use Nette\DI;
 use Tester;
 use Tester\Assert;
@@ -13,10 +14,9 @@ require_once __DIR__ . '/../../../bootstrap.php';
 /**
  * @testCase
  */
-class ExtensionTest extends Tester\TestCase
+class ExtensionTest extends Tests\TestCase
 {
-	/** @var int */
-	private $container = 0;
+	private int $container = 0;
 
 
 	public function testDefaultConfig(): void

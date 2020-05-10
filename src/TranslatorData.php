@@ -4,11 +4,10 @@ namespace Forrest79\SimpleTranslator;
 
 abstract class TranslatorData
 {
-	/** @var string */
-	private $locale;
+	private string $locale;
 
 	/** @var array<string|array<string>> */
-	private $messages = [];
+	private array $messages;
 
 
 	/**

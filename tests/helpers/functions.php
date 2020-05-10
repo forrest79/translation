@@ -25,7 +25,7 @@ function createLocale(array $messages, array $plural = [], ?string $manualLocale
 
 	file_put_contents(
 		TEMP_DIR . DIRECTORY_SEPARATOR . (($manualLocale === NULL) ? $locale : $manualLocale) . '.neon',
-		$neon
+		$neon,
 	);
 
 	return ($manualLocale === NULL) ? (string) $locale++ : $manualLocale;

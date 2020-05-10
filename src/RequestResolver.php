@@ -7,11 +7,9 @@ use Nette\Application;
 
 class RequestResolver
 {
-	/** @var string */
-	private $parameter;
+	private string $parameter;
 
-	/** @var SimpleTranslator\Translator */
-	private $translator;
+	private SimpleTranslator\Translator $translator;
 
 
 	public function __construct(string $parameter, SimpleTranslator\Translator $translator)
