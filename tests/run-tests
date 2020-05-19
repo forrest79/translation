@@ -2,4 +2,8 @@
 
 ${0%/*}/../vendor/bin/tester -c ${0%/*}/php.ini "$@"
 
+SUCCESS=$?
+
 rm -rf ${0%/*}/temp/*
+
+exit "$SUCCESS"

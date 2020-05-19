@@ -209,7 +209,7 @@ class TranslatorTest extends TestCase
 		$this->translator->setLocale($this->createLocale([], [], TRUE));
 
 		Tester\Assert::exception(function (): void {
-			Assert::same('I have one car.', $this->translator->translate('message'));
+			$this->translator->translate('message');
 		}, SimpleTranslator\Exceptions\ParsingErrorException::class);
 	}
 
@@ -219,7 +219,7 @@ class TranslatorTest extends TestCase
 		$this->translator->setLocale($this->createLocale([], [], FALSE, TRUE));
 
 		Tester\Assert::exception(function (): void {
-			Assert::same('I have one car.', $this->translator->translate('message'));
+			$this->translator->translate('message');
 		}, SimpleTranslator\Exceptions\SomeSectionMissingException::class);
 	}
 
