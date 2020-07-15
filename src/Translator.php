@@ -254,7 +254,6 @@ class Translator implements ITranslator
 
 				flock($lockHandle, LOCK_UN);
 				fclose($lockHandle);
-				@unlink($lockFile); // intentionally @ - file may become locked on Windows
 			}
 
 			$this->data[$locale] = require $localeCache;
