@@ -105,7 +105,12 @@ class TranslatorTest extends TestCase
 		$message1 = 'Jedno auto.';
 		$message2 = '3 auta.';
 		$message3 = '10 aut.';
-		$this->translator->setLocale($this->createLocale(['message' => [$message1, $message2, $message3]], ['n == 1', '(n > 1) && (n < 5)', 'n >= 5']));
+		$this->translator->setLocale(
+			$this->createLocale(
+				['message' => [$message1, $message2, $message3]],
+				['n == 1', '(n > 1) && (n < 5)', 'n >= 5'],
+			),
+		);
 		Assert::same($message1, $this->translator->translate('message', 1));
 		Assert::same($message2, $this->translator->translate('message', 3));
 		Assert::same($message3, $this->translator->translate('message', 10));
@@ -121,7 +126,9 @@ class TranslatorTest extends TestCase
 
 	public function testVariablesPluralTranslate(): void
 	{
-		$this->translator->setLocale($this->createLocale(['message' => ['I have one %type%.', 'I have more %type%s.']]));
+		$this->translator->setLocale(
+			$this->createLocale(['message' => ['I have one %type%.', 'I have more %type%s.']]),
+		);
 		Assert::same('I have one car.', $this->translator->translate('message', ['type' => 'car', 'count' => 1]));
 		Assert::same('I have more cars.', $this->translator->translate('message', ['type' => 'car', 'count' => 10]));
 

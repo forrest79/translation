@@ -5,5 +5,5 @@ parameters:
 	level: max
 	excludes_analyse:
 		- %rootDir%/../../../tests/temp/*
-	autoload_files:
+	bootstrapFiles:
 		- %rootDir%/../../../tests/bootstrap.php

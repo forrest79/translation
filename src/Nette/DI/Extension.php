@@ -88,7 +88,10 @@ class Extension extends Nette\DI\CompilerExtension
 			if (($applicationService !== NULL) && $builder->hasDefinition($applicationService)) {
 				$applicationServiceDefinition = $builder->getDefinition($applicationService);
 				assert($applicationServiceDefinition instanceof Nette\DI\Definitions\ServiceDefinition);
-				$applicationServiceDefinition->addSetup('$service->onRequest[] = ?', [[$this->prefix('@requestResolver'), 'onRequest']]);
+				$applicationServiceDefinition->addSetup(
+					'$service->onRequest[] = ?',
+					[[$this->prefix('@requestResolver'), 'onRequest']],
+				);
 			}
 		}
 	}
