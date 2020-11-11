@@ -16,7 +16,7 @@ interface DataLoader
 	 *
 	 * @return array<string, array<string|array<string>>> with two keys
 	 *   [
-	 *     'plural' => [] plural defition with n variable,
+	 *     'plural' => [] plural definition with n variable,
 	 *     'messages' => [message => translation, ...] where translation can be string or array of strings for plural
 	 *   ]
 	 */
