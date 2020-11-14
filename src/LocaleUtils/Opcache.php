@@ -9,6 +9,18 @@ class Opcache implements SimpleTranslator\LocaleUtils
 
 	public function afterCacheBuild(string $locale, string $source, string $localeCache): void
 	{
+		$this->invalidateCache($localeCache);
+	}
+
+
+	public function afterCacheClear(string $locale, string $localeCache): void
+	{
+		$this->invalidateCache($localeCache);
+	}
+
+
+	private function invalidateCache(string $localeCache): void
+	{
 		opcache_invalidate($localeCache, TRUE);
 	}
 

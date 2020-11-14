@@ -12,4 +12,10 @@ class TestLocaleUtils implements SimpleTranslator\LocaleUtils
 		throw new TestLocaleUtilsException($locale . '|' . $source . '|' . $localeCache);
 	}
 
+
+	public function afterCacheClear(string $locale, string $localeCache): void
+	{
+		throw new TestLocaleUtilsException($locale . '|' . $localeCache);
+	}
+
 }

@@ -14,15 +14,27 @@ $translator = (new SimpleTranslator\Translator(FALSE, TEMP_DIR, Tracy\Debugger::
 	->setDataLoader(new SimpleTranslator\DataLoaders\Neon(TEMP_DIR))
 	->setLocale($locale);
 
+$cacheFile = NULL;
+
 // 1) building cache
 try {
 	$translator->translate('test');
 } catch (Forrest79\SimpleTranslator\Tests\TestLocaleUtilsException $e) {
 	$data = explode('|', $e->getMessage(), 3);
+	$cacheFile = $data[2];
 	Assert::equal($locale, $data[0]);
 	Assert::contains('.neon', $data[1]);
-	Assert::contains('.php', $data[2]);
+	Assert::contains('.php', $cacheFile);
 }
 
 // 2) cache is build, so translate will work in this test
 Assert::same($testMessage, $translator->translate('test'));
+
+// 3) manually clear cache
+try {
+	$translator->clearCache($locale);
+} catch (Forrest79\SimpleTranslator\Tests\TestLocaleUtilsException $e) {
+	$data = explode('|', $e->getMessage(), 2);
+	Assert::equal($locale, $data[0]);
+	Assert::contains($cacheFile, $data[1]);
+}

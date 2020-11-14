@@ -108,7 +108,7 @@ translator:
 
 Translations are cached to PHP files. In debug mode, cache is rebuild when translation definition is changed, in productin mode is cache build only once and translation source definitions are not checked for changes. If you want to regenerate cache, you can clean cache by calling 'clearCache($locale)'.
 
-If you are using Zend OpCache, then there is default after build cache hook, that remove this file from OpCache. For other opcaches (or if you want to do anything else after cache is built), you can write your own hook by writing object with ```LocaleUtils``` interface and register it to translator via neon setting ```localeUtils``` or manually with ```setLocaleUtils($localeUtils)```.
+If you are using Zend OpCache, then there is default after build cache hook, that remove this file from OpCache. For other opcaches (or if you want to do anything else after cache is built), you can write your own hook by writing object with ```LocaleUtils``` interface and register it to translator via neon setting ```localeUtils``` or manually with ```setLocaleUtils($localeUtils)```. Method `afterCacheBuild()` is called after new cache is build. There is also posibility to do something after manually clearing cache (`afterCacheClear()`) via `Translator::clearCache()` method.  
 
 Translator is registered to Nette and Latte. By default, there is resolver, that set actual locale from router variable. Default is `locale` variable, but it can be changed in configuration. Or you can set this to FALSE and then you must call `setLocale($locale)` manually. You can also set fallback locale, which is used, when main locale translation doen't exists.
 

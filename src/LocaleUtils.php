@@ -10,4 +10,10 @@ interface LocaleUtils
 	 */
 	function afterCacheBuild(string $locale, string $source, string $localeCache): void;
 
+
+	/**
+	 * Call after cache is cleared.
+	 */
+	function afterCacheClear(string $locale, string $localeCache): void;
+
 }

@@ -167,6 +167,9 @@ class Translator implements ITranslator
 			if (!@unlink($localeCache)) {
 				throw new Exceptions\ClearCacheFailedException();
 			}
+			if ($this->localeUtils !== NULL) {
+				$this->localeUtils->afterCacheClear($locale, $localeCache);
+			}
 		}
 		return $this;
 	}
