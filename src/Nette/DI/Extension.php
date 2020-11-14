@@ -76,7 +76,7 @@ class Extension extends Nette\DI\CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
-		if ($builder->hasDefinition('nette.latteFactory')) {
+		if (($this->config->latteFilter === TRUE) && $builder->hasDefinition('nette.latteFactory')) {
 			$latteFactoryDefinition = $builder->getDefinition('nette.latteFactory');
 			assert($latteFactoryDefinition instanceof Nette\DI\Definitions\FactoryDefinition);
 			$latteFactoryDefinition->getResultDefinition()
@@ -108,6 +108,7 @@ class Extension extends Nette\DI\CompilerExtension
 			'localesDir' => Schema\Expect::string($builder->parameters['appDir'] . '/locales'), // for DataLoaders/Neon
 			'tempDir' => Schema\Expect::string($builder->parameters['tempDir']),
 			'localeUtils' => Schema\Expect::mixed(NULL), // NULL = auto detect, FALSE = disable
+			'latteFilter' => Schema\Expect::bool(TRUE),
 			'requestResolver' => Schema\Expect::mixed('locale'), // FALSE = disable
 			'debugger' => Schema\Expect::bool(class_exists(Tracy\BlueScreen::class)),
 		]);

@@ -102,6 +102,7 @@ translator:
     localesDir: %appDir%/locales # directory with neon files for Neon data loader
     tempDir: %tempDir% # for cached translation files: tempDir/cache/locales
     localeUtils: null # auto detect - use Zend OpCache clean if it's detect or you can pass service name ('@customLocaleUtilsService')
+    latteFilter: TRUE # when TRUE and Latte is used in application, trehe is automatically registered translate filter
     requestResolver: locale # FALSE = disable
     debugger: TRUE # when TRUE - show Tracy bar in debug mode
 ```
