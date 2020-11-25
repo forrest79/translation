@@ -24,7 +24,10 @@ class RequestResolver
 	 */
 	public function onRequest(Application\Application $application, Application\Request $request): void
 	{
-		$this->translator->setLocale($request->getParameter($this->parameter));
+		$locale = $request->getParameter($this->parameter);
+		if ($locale !== NULL) {
+			$this->translator->setLocale($locale);
+		}
 	}
 
 }
