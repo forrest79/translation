@@ -36,6 +36,9 @@ function createLocale(array $messages, array $plural = [], ?string $manualLocale
  */
 function translate(string $testLocale, ?string $cacheFile = NULL): array
 {
-	$data = exec('php ' . __DIR__ . '/translate.php ' . TEMP_DIR . ' ' . $testLocale . (($cacheFile === NULL) ? '' : (' ' . $cacheFile)));
+	$data = system('php ' . __DIR__ . '/translate.php ' . TEMP_DIR . ' ' . $testLocale . (($cacheFile === NULL) ? '' : (' ' . $cacheFile)));
+	if ($data === FALSE) {
+		throw new \RuntimeException('Error running translate.php');
+	}
 	return explode('|', $data);
 }

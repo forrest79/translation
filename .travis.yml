@@ -2,12 +2,14 @@ language: php
 
 php:
   - 7.4
+  - 8.0
 
 before_install:
   - composer self-update
 
 install:
-  - composer install --no-interaction --prefer-source
+  #- composer install --no-interaction --prefer-source
+  - composer install --no-interaction --prefer-source --ignore-platform-reqs # --ignore-platform-reqs because of consistence/coding-standard
 
 script:
   - composer phpcs
