@@ -2,7 +2,7 @@
 <ruleset name="SimpleTranslator">
 	<exclude-pattern>tests/temp/*</exclude-pattern>
 
-	<rule ref="./vendor/consistence/coding-standard/Consistence/ruleset.xml">
+	<rule ref="./vendor/consistence-community/coding-standard/Consistence/ruleset.xml">
 		<exclude name="Consistence.Exceptions.ExceptionDeclaration.IncorrectExceptionDirectory"/> <!-- We use Exceptions directory, not exceptions -->
 		<exclude name="Generic.PHP.LowerCaseConstant.Found"/>
 		<exclude name="PSR2.ControlStructures.ElseIfDeclaration.NotAllowed"/>

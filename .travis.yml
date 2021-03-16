@@ -8,8 +8,7 @@ before_install:
   - composer self-update
 
 install:
-  #- composer install --no-interaction --prefer-source
-  - composer install --no-interaction --prefer-source --ignore-platform-reqs # --ignore-platform-reqs because of consistence/coding-standard
+  - composer install --no-interaction --prefer-source
 
 script:
   - composer phpcs
