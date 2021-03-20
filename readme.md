@@ -1,7 +1,7 @@
 # Forrest79/SimpleTranslator
 
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/forrest79/SimpleTranslator/blob/master/license.md)
-[![Build Status](https://travis-ci.org/forrest79/SimpleTranslator.svg?branch=master)](https://travis-ci.org/forrest79/SimpleTranslator)
+[![Build](https://github.com/forrest79/SimpleTranslator/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/forrest79/SimpleTranslator/actions/workflows/build.yml)
 [![Downloads this Month](https://img.shields.io/packagist/dm/forrest79/simple-translator.svg)](https://packagist.org/packages/forrest79/simple-translator)
 [![Latest stable](https://img.shields.io/packagist/v/forrest79/simple-translator.svg)](https://packagist.org/packages/forrest79/simple-translator)
 
