@@ -14,7 +14,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 /**
  * @testCase
  */
-class ExtensionTest extends Tests\TestCase
+final class ExtensionTest extends Tests\TestCase
 {
 	private int $container = 0;
 

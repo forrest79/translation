@@ -12,7 +12,7 @@ require_once __DIR__ . '/../bootstrap.php';
 /**
  * @testCase
  */
-class TranslatorTest extends TestCase
+final class TranslatorTest extends TestCase
 {
 	private SimpleTranslator\Translator $translator;
 

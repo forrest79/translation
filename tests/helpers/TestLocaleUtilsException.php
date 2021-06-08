@@ -2,7 +2,7 @@
 
 namespace Forrest79\SimpleTranslator\Tests;
 
-class TestLocaleUtilsException extends \Exception
+final class TestLocaleUtilsException extends \Exception
 {
 
 }

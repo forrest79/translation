@@ -45,7 +45,6 @@ abstract class TranslatorData
 			throw new Exceptions\NotPluralMessageException(sprintf('Message "%s" in "%s" is not plural', $message, $this->locale));
 		}
 
-		/** @var string $translate */
 		return $translate;
 	}
 

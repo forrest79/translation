@@ -18,11 +18,10 @@
 		"tracy/tracy": "^2.6"
 	},
 	"require-dev": {
-		"nette/tester": "~2",
+		"nette/tester": "^2.4",
+		"forrest79/phpcs": "^0.2",
 		"phpstan/phpstan": "^0.12",
-		"phpstan/phpstan-strict-rules": "^0.12",
-		"consistence-community/coding-standard": "^3.11",
-		"slevomat/coding-standard": "^6.3"
+		"phpstan/phpstan-strict-rules": "^0.12"
 	},
 	"autoload": {
 		"psr-4": {

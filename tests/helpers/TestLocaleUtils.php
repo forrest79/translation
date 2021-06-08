@@ -4,7 +4,7 @@ namespace Forrest79\SimpleTranslator\Tests;
 
 use Forrest79\SimpleTranslator;
 
-class TestLocaleUtils implements SimpleTranslator\LocaleUtils
+final class TestLocaleUtils implements SimpleTranslator\LocaleUtils
 {
 
 	public function afterCacheBuild(string $locale, string $source, string $localeCache): void
