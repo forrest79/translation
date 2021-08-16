@@ -7,3 +7,10 @@ parameters:
 		- %rootDir%/../../../tests/temp/*
 	bootstrapFiles:
 		- %rootDir%/../../../tests/bootstrap.php
+	ignoreErrors:
+		# === This is OK (just for tests) ===
+
+		-
+			message: '#Strict comparison using !== between null and null will always evaluate to false\.#'
+			path: %rootDir%/../../../tests/helpers/translate.php
+			count: 1
