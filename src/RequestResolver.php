@@ -26,6 +26,7 @@ class RequestResolver
 	{
 		$locale = $request->getParameter($this->parameter);
 		if ($locale !== NULL) {
+			assert(is_string($locale));
 			$this->translator->setLocale($locale);
 		}
 	}

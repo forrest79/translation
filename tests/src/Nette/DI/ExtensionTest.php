@@ -161,6 +161,7 @@ final class ExtensionTest extends Tests\TestCase
 		$containerName = '\\' . $containerName;
 
 		$container = new $containerName();
+		assert($container instanceof DI\Container);
 		$container->initialize();
 
 		return $container;

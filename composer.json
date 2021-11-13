@@ -20,8 +20,8 @@
 	"require-dev": {
 		"nette/tester": "^2.4",
 		"forrest79/phpcs": "^0.2",
-		"phpstan/phpstan": "^0.12",
-		"phpstan/phpstan-strict-rules": "^0.12"
+		"phpstan/phpstan": "^1.0",
+		"phpstan/phpstan-strict-rules": "^1.0"
 	},
 	"autoload": {
 		"psr-4": {

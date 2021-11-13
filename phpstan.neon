@@ -3,14 +3,36 @@ includes:
 
 parameters:
 	level: max
-	excludes_analyse:
+	excludePaths:
 		- %rootDir%/../../../tests/temp/*
 	bootstrapFiles:
 		- %rootDir%/../../../tests/bootstrap.php
 	ignoreErrors:
+		# === False positive ===
+
+		-
+			message: '#If condition is always true\.#'
+			path: %rootDir%/../../../src/Translator.php
+			count: 1
+
 		# === This is OK (just for tests) ===
 
 		-
 			message: '#Strict comparison using !== between null and null will always evaluate to false\.#'
 			path: %rootDir%/../../../tests/helpers/translate.php
+			count: 1
+
+		-
+			message: '#Dead catch - Forrest79\\SimpleTranslator\\Tests\\TestLocaleUtilsException is never thrown in the try block\.#'
+			path: %rootDir%/../../../tests/helpers/translate.php
+			count: 1
+
+		-
+			message: '#Dead catch - Forrest79\\SimpleTranslator\\Tests\\TestLocaleUtilsException is never thrown in the try block\.#'
+			path: %rootDir%/../../../tests/src/LocaleUtilsTest.php
+			count: 2
+
+		-
+			message: '#Call to an undefined method Nette\\DI\\Container::initialize\(\)\.#'
+			path: %rootDir%/../../../tests/src/Nette/DI/ExtensionTest.php
 			count: 1

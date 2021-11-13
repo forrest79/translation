@@ -89,6 +89,7 @@ class Translator implements ITranslator
 	 */
 	public function translate($message, ...$parameters): string
 	{
+		assert(is_string($message));
 		$translationParams = $parameters[0] ?? NULL;
 
 		if (is_array($translationParams) && isset($translationParams[self::PARAM_LOCALE])) {

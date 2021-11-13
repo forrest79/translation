@@ -36,7 +36,9 @@ class Neon implements SimpleTranslator\DataLoader
 			throw new SimpleTranslator\Exceptions\NoLocaleFileException(sprintf('Locale file "%s" doesn\'t exists', $localeFile));
 		}
 		try {
-			return NetteNeon\Neon::decode($data);
+			$decodedData = NetteNeon\Neon::decode($data);
+			assert(is_array($decodedData));
+			return $decodedData;
 		} catch (NetteNeon\Exception $e) {
 			throw new SimpleTranslator\Exceptions\ParsingErrorException('Error parsing Neon: ' . $e->getMessage(), 0, $e);
 		}
