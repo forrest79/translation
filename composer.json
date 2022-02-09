@@ -38,5 +38,10 @@
 		"coverage": "tests/collect-coverage tests",
 		"phpcs": "vendor/bin/phpcs -s src tests",
 		"phpstan": "vendor/bin/phpstan analyse src tests"
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": false
+		}
 	}
 }
