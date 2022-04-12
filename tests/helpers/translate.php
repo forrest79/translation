@@ -27,6 +27,7 @@ try {
 if ($cacheHash !== NULL) {
 	echo $translator->translate('test');
 } else {
+	assert($cacheFile !== NULL);
 	$cacheHash = md5_file($cacheFile);
 }
 

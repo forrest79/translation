@@ -7,7 +7,7 @@ use Nette\Application;
 final class HomepagePresenter implements Application\IPresenter
 {
 
-	public function run(Application\Request $request): Application\IResponse
+	public function run(Application\Request $request): Application\Response
 	{
 		return new Application\Responses\TextResponse('');
 	}
