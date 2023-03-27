@@ -13,11 +13,11 @@ class Translator implements ITranslator
 
 	private Tracy\ILogger $logger;
 
-	private ?DataLoader $dataLoader = NULL;
+	private DataLoader|NULL $dataLoader = NULL;
 
-	private ?string $locale = NULL;
+	private string|NULL $locale = NULL;
 
-	private ?string $fallbackLocale = NULL;
+	private string|NULL $fallbackLocale = NULL;
 
 	/** @var array<string, TranslatorImmutable> */
 	private array $immutableTranslators = [];
@@ -25,9 +25,9 @@ class Translator implements ITranslator
 	/** @var array<string, TranslatorData> */
 	private array $data = [];
 
-	private ?LocaleUtils $localeUtils = NULL;
+	private LocaleUtils|NULL $localeUtils = NULL;
 
-	private ?Diagnostics\Panel $panel = NULL;
+	private Diagnostics\Panel|NULL $panel = NULL;
 
 
 	public function __construct(bool $debugMode, string $tempDir, Tracy\ILogger $logger)
@@ -41,7 +41,7 @@ class Translator implements ITranslator
 	/**
 	 * @throws Exceptions\BadLocaleNameException
 	 */
-	public function setLocale(string $locale): self
+	public function setLocale(string $locale): static
 	{
 		$locale = strtolower($locale);
 		$this->checkLocaleName($locale);
@@ -66,7 +66,7 @@ class Translator implements ITranslator
 	/**
 	 * @throws Exceptions\BadLocaleNameException
 	 */
-	public function setFallbackLocale(string $locale): self
+	public function setFallbackLocale(string $locale): static
 	{
 		$locale = strtolower($locale);
 		$this->checkLocaleName($locale);
@@ -82,12 +82,10 @@ class Translator implements ITranslator
 	 *   param int|array|NULL $translateParameters (int = count; array = parameters, can contains self::PARAM_COUNT and self::PARAM_LOCALE value)
 	 *   param int|NULL $count
 	 *
-	 * @param mixed $message
-	 * @param mixed ...$parameters
 	 * @throws Exceptions\NoLocaleSelectedException
 	 * @throws Exceptions\Exception
 	 */
-	public function translate($message, ...$parameters): string
+	public function translate(string|\Stringable $message, mixed ...$parameters): string
 	{
 		assert(is_string($message));
 		$translationParams = $parameters[0] ?? NULL;
@@ -104,6 +102,7 @@ class Translator implements ITranslator
 			$count = intval($translationParams);
 			$translationParams = NULL;
 		} else if (isset($parameters[1])) {
+			assert(is_scalar($parameters[1]));
 			$count = intval($parameters[1]);
 		} else {
 			$count = NULL;
@@ -161,22 +160,21 @@ class Translator implements ITranslator
 	/**
 	 * @throws Exceptions\ClearCacheFailedException
 	 */
-	public function clearCache(string $locale): self
+	public function clearCache(string $locale): static
 	{
 		$localeCache = $this->getCacheFile($locale);
 		if (file_exists($localeCache)) {
 			if (!@unlink($localeCache)) {
 				throw new Exceptions\ClearCacheFailedException();
 			}
-			if ($this->localeUtils !== NULL) {
-				$this->localeUtils->afterCacheClear($locale, $localeCache);
-			}
+
+			$this->localeUtils?->afterCacheClear($locale, $localeCache);
 		}
 		return $this;
 	}
 
 
-	public function setLocaleUtils(LocaleUtils $localeUtils): self
+	public function setLocaleUtils(LocaleUtils $localeUtils): static
 	{
 		$this->localeUtils = $localeUtils;
 		return $this;
@@ -249,9 +247,8 @@ class Translator implements ITranslator
 						),
 					);
 					rename($localeCache . '.tmp', $localeCache); // atomic replace (in Linux)
-					if ($this->localeUtils !== NULL) {
-						$this->localeUtils->afterCacheBuild($locale, $source, $localeCache);
-					}
+
+					$this->localeUtils?->afterCacheBuild($locale, $source, $localeCache);
 				}
 
 				flock($lockHandle, LOCK_UN);
@@ -260,9 +257,7 @@ class Translator implements ITranslator
 
 			$this->data[$locale] = require $localeCache;
 
-			if ($this->panel !== NULL) {
-				$this->panel->addLocaleFile($locale, $source);
-			}
+			$this->panel?->addLocaleFile($locale, $source);
 		}
 
 		return $this->data[$locale];
@@ -281,7 +276,7 @@ class Translator implements ITranslator
 	}
 
 
-	public function setDataLoader(DataLoader $dataLoader): self
+	public function setDataLoader(DataLoader $dataLoader): static
 	{
 		$this->dataLoader = $dataLoader;
 		return $this;

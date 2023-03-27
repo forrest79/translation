@@ -102,12 +102,12 @@ class Extension extends Nette\DI\CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		return Schema\Expect::structure([
-			'locale' => Schema\Expect::string(NULL),
-			'fallbackLocale' => Schema\Expect::string(NULL),
-			'dataLoader' => Schema\Expect::string(NULL), // will use DataLoaders/Neon
+			'locale' => Schema\Expect::string(),
+			'fallbackLocale' => Schema\Expect::string(),
+			'dataLoader' => Schema\Expect::string(), // will use DataLoaders/Neon
 			'localesDir' => Schema\Expect::string($builder->parameters['appDir'] . '/locales'), // for DataLoaders/Neon
 			'tempDir' => Schema\Expect::string($builder->parameters['tempDir']),
-			'localeUtils' => Schema\Expect::mixed(NULL), // NULL = auto detect, FALSE = disable
+			'localeUtils' => Schema\Expect::mixed(), // NULL = auto detect, FALSE = disable
 			'latteFilter' => Schema\Expect::bool(TRUE),
 			'requestResolver' => Schema\Expect::mixed('locale'), // FALSE = disable
 			'debugger' => Schema\Expect::bool(class_exists(Tracy\BlueScreen::class)),

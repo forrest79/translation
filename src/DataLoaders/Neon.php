@@ -24,7 +24,7 @@ class Neon implements SimpleTranslator\DataLoader
 
 
 	/**
-	 * @return array<string, array<string|array<string>>>
+	 * @return array<string, list<string|list<string>>>
 	 * @throws SimpleTranslator\Exceptions\NoLocaleFileException
 	 * @throws SimpleTranslator\Exceptions\ParsingErrorException
 	 */

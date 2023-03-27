@@ -28,12 +28,10 @@ class TranslatorImmutable implements ITranslator
 	 *   param int|array|NULL $translateParameters (int = count; array = parameters, can contains self::PARAM_COUNT and self::PARAM_LOCALE value)
 	 *   param int|NULL $count
 	 *
-	 * @param mixed $message
-	 * @param mixed ...$parameters
 	 * @throws Exceptions\CantChangeLocaleForImmutableTranslatorException
 	 * @throws Exceptions\Exception
 	 */
-	public function translate($message, ...$parameters): string
+	public function translate(string|\Stringable $message, mixed ...$parameters): string
 	{
 		$translationParams = $parameters[0] ?? NULL;
 		$count = $parameters[1] ?? NULL;

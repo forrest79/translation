@@ -6,12 +6,12 @@ abstract class TranslatorData
 {
 	private string $locale;
 
-	/** @var array<string|array<string>> */
+	/** @var array<string, string|list<string>> */
 	private array $messages;
 
 
 	/**
-	 * @param array<string|array<string>> $messages
+	 * @param array<string, string|array<string>> $messages
 	 */
 	public function __construct(string $locale, array $messages)
 	{
@@ -25,7 +25,7 @@ abstract class TranslatorData
 	 * @throws Exceptions\NoCountForPluralMessageException
 	 * @throws Exceptions\NotPluralMessageException
 	 */
-	public function getTranslate(string $message, ?int $count = NULL): ?string
+	public function getTranslate(string $message, int|NULL $count = NULL): string|NULL
 	{
 		if (!isset($this->messages[$message])) {
 			return NULL;

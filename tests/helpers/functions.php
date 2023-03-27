@@ -1,10 +1,11 @@
 <?php declare(strict_types=1);
 
+
 /**
  * @param array<string, string|array<string>> $messages
  * @param array<string> $plural
  */
-function createLocale(array $messages, array $plural = [], ?string $manualLocale = NULL, ?callable $updateNeonData = NULL): string
+function createLocale(array $messages, array $plural = [], string|NULL $manualLocale = NULL, callable|NULL $updateNeonData = NULL): string
 {
 	static $locale = 0;
 
@@ -31,10 +32,11 @@ function createLocale(array $messages, array $plural = [], ?string $manualLocale
 	return ($manualLocale === NULL) ? (string) $locale++ : $manualLocale;
 }
 
+
 /**
  * @return array<string>
  */
-function translate(string $testLocale, ?string $cacheFile = NULL): array
+function translate(string $testLocale, string|NULL $cacheFile = NULL): array
 {
 	$data = system('php ' . __DIR__ . '/translate.php ' . TEMP_DIR . ' ' . $testLocale . (($cacheFile === NULL) ? '' : (' ' . $cacheFile)));
 	if ($data === FALSE) {

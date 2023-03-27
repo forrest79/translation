@@ -248,7 +248,7 @@ final class TranslatorTest extends TestCase
 		array $messages,
 		array $plural = [],
 		bool $corruptNeon = FALSE,
-		bool $missingSections = FALSE
+		bool $missingSections = FALSE,
 	): string
 	{
 		$updateNeon = NULL;

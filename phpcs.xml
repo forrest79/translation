@@ -4,16 +4,8 @@
 
 	<rule ref="./vendor/forrest79/phpcs/Forrest79CodingStandard/ruleset.xml"/>
 
-	<rule ref="Forrest79CodingStandard.Exceptions.ExceptionDeclaration.IncorrectExceptionDirectory">
-		<exclude-pattern>tests/helpers/TestLocaleUtilsException.php</exclude-pattern>
-	</rule>
-
 	<rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
 		<exclude-pattern>tests/*</exclude-pattern>
-	</rule>
-
-	<rule ref="SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal">
-		<exclude-pattern>src/*</exclude-pattern>
 	</rule>
 
 	<rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
@@ -24,39 +16,5 @@
 				tests/helpers=>Forrest79\SimpleTranslator\Tests,
 			"/>
 		</properties>
-	</rule>
-
-	<!-- PHP 8.0 -->
-	<rule ref="SlevomatCodingStandard.Functions.RequireTrailingCommaInDeclaration.MissingTrailingComma">
-		<exclude-pattern>tests/src/TranslatorTest.php</exclude-pattern>
-	</rule>
-
-	<rule ref="SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter">
-		<exclude-pattern>src/LocaleUtils/Opcache.php</exclude-pattern>
-		<exclude-pattern>src/RequestResolver.php</exclude-pattern>
-		<exclude-pattern>tests/helpers/HomepagePresenter.php</exclude-pattern>
-	</rule>
-
-	<!-- PHP 8.0 -->
-	<rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint">
-		<exclude-pattern>src/*</exclude-pattern>
-	</rule>
-
-	<rule ref="Squiz.Functions.GlobalFunction.Found">
-		<exclude-pattern>tests/helpers/functions.php</exclude-pattern>
-	</rule>
-
-	<rule ref="Squiz.Scope.MethodScope.Missing">
-		<exclude-pattern>src/DataLoader.php</exclude-pattern>
-		<exclude-pattern>src/ITranslator.php</exclude-pattern>
-		<exclude-pattern>src/LocaleUtils.php</exclude-pattern>
-	</rule>
-
-	<rule ref="Squiz.WhiteSpace.FunctionSpacing.After">
-		<exclude-pattern>tests/helpers/functions.php</exclude-pattern>
-	</rule>
-
-	<rule ref="Squiz.WhiteSpace.FunctionSpacing.Before">
-		<exclude-pattern>tests/helpers/functions.php</exclude-pattern>
 	</rule>
 </ruleset>

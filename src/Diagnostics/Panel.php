@@ -7,7 +7,7 @@ use Tracy\Helpers;
 
 class Panel implements Tracy\IBarPanel
 {
-	/** @var array<string, array<string>> */
+	/** @var array<string, list<string>> */
 	private array $untranslated = [];
 
 	private int $untranslatedCount = 0;
@@ -47,12 +47,13 @@ class Panel implements Tracy\IBarPanel
 			$panel[] = $this->renderLocaleSources();
 		}
 
-		return count($panel) > 0 ?
-			'<h1>Missing translations: ' . $this->getUntranslatedCount() . '</h1>' .
+		return count($panel) > 0
+			? '<h1>Missing translations: ' . $this->getUntranslatedCount() . '</h1>' .
 			'<div class="nette-inner tracy-inner translator-panel" style="min-width:500px">' . implode($panel) . '</div>' .
 			'<style>
 				#tracy-debug .translator-panel h2 {font-size: 23px;}
-			</style>' : '';
+			</style>'
+			: '';
 	}
 
 

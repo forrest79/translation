@@ -4,7 +4,7 @@ namespace Forrest79\SimpleTranslator;
 
 use Nette\Localization;
 
-interface ITranslator extends Localization\ITranslator
+interface ITranslator extends Localization\Translator
 {
 	public const PARAM_LOCALE = 'locale';
 	public const PARAM_COUNT = 'count';
@@ -15,11 +15,8 @@ interface ITranslator extends Localization\ITranslator
 	 *   param string $message
 	 *   param int|array|NULL $translateParameters (int = count; array = parameters, can contains self::PARAM_COUNT and self::PARAM_LOCALE value)
 	 *   param int|NULL $count
-	 *
-	 * @param mixed $message
-	 * @param mixed ...$parameters int|array|NULL
 	 */
-	function translate($message, ...$parameters): string;
+	function translate(string|\Stringable $message, mixed ...$parameters): string;
 
 
 	function getLocale(): string;
