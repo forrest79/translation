@@ -31,8 +31,3 @@ parameters:
 			message: '#Dead catch - Forrest79\\SimpleTranslator\\Tests\\TestLocaleUtilsException is never thrown in the try block\.#'
 			path: %rootDir%/../../../tests/src/LocaleUtilsTest.php
 			count: 2
-
-		-
-			message: '#Call to an undefined method Nette\\DI\\Container::initialize\(\)\.#'
-			path: %rootDir%/../../../tests/src/Nette/DI/ExtensionTest.php
-			count: 1
