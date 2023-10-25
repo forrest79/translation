@@ -1,16 +1,18 @@
 # Forrest79/SimpleTranslator
 
+**This repository is no longer maintained, use [https://github.com/forrest79/translation](https://github.com/forrest79/translation) instead.**
+
 [![Latest Stable Version](https://poser.pugx.org/forrest79/simple-translator/v)](//packagist.org/packages/forrest79/simple-translator)
 [![Monthly Downloads](https://poser.pugx.org/forrest79/simple-translator/d/monthly)](//packagist.org/packages/forrest79/simple-translator)
 [![License](https://poser.pugx.org/forrest79/simple-translator/license)](//packagist.org/packages/forrest79/simple-translator)
-[![Build](https://github.com/forrest79/SimpleTranslator/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/forrest79/SimpleTranslator/actions/workflows/build.yml)
+[![Build](https://github.com/forrest79/simple-translator/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/forrest79/simple-translator/actions/workflows/build.yml)
 
 Simple and fast translator for Nette Framework based (default) on neon locale files.
 
 
 ## Requirements
 
-Forrest79/SimpleTranslator requires PHP 7.4 or higher and [Nette Framework](https://github.com/nette/nette) 3.0.
+Forrest79/SimpleTranslator requires PHP 8.0 or higher and [Nette Framework](https://github.com/nette/nette) 3.0.
 
 
 ## Installation
