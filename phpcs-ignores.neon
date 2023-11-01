@@ -1,33 +1,69 @@
 ignoreErrors:
 	-
+		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
+		message: All classes should be declared using either the "abstract" or "final" keyword.
+		count: 1
+		path: src/CatalogueExtractors/Neon.php
+
+	-
 		sniff: Squiz.Scope.MethodScope.Missing
 		message: Visibility must be declared on method "isLocaleUpdated"
 		count: 1
-		path: src/DataLoader.php
+		path: src/CatalogueLoader.php
 
 	-
 		sniff: Squiz.Scope.MethodScope.Missing
 		message: Visibility must be declared on method "loadData"
 		count: 1
-		path: src/DataLoader.php
+		path: src/CatalogueLoader.php
 
 	-
 		sniff: Squiz.Scope.MethodScope.Missing
 		message: Visibility must be declared on method "source"
 		count: 1
-		path: src/DataLoader.php
+		path: src/CatalogueLoader.php
 
 	-
 		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 		message: All classes should be declared using either the "abstract" or "final" keyword.
 		count: 1
-		path: src/DataLoaders/Neon.php
+		path: src/CatalogueLoaders/Neon.php
+
+	-
+		sniff: Squiz.Scope.MethodScope.Missing
+		message: Visibility must be declared on method "afterCacheBuild"
+		count: 1
+		path: src/CatalogueUtils.php
+
+	-
+		sniff: Squiz.Scope.MethodScope.Missing
+		message: Visibility must be declared on method "afterCacheClear"
+		count: 1
+		path: src/CatalogueUtils.php
 
 	-
 		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 		message: All classes should be declared using either the "abstract" or "final" keyword.
 		count: 1
-		path: src/Diagnostics/Panel.php
+		path: src/CatalogueUtils/Opcache.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $locale.
+		count: 2
+		path: src/CatalogueUtils/Opcache.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $source.
+		count: 1
+		path: src/CatalogueUtils/Opcache.php
+
+	-
+		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
+		message: All classes should be declared using either the "abstract" or "final" keyword.
+		count: 1
+		path: src/Catalogues.php
 
 	-
 		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
@@ -51,37 +87,31 @@ ignoreErrors:
 		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 		message: All classes should be declared using either the "abstract" or "final" keyword.
 		count: 1
-		path: src/Exceptions/CantChangeLocaleForImmutableTranslatorException.php
+		path: src/Exceptions/FallbackLocaleIsTheSameAsMainLocaleException.php
 
 	-
 		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 		message: All classes should be declared using either the "abstract" or "final" keyword.
 		count: 1
-		path: src/Exceptions/ClearCacheFailedException.php
+		path: src/Exceptions/IOException.php
+
+	-
+		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
+		message: All classes should be declared using either the "abstract" or "final" keyword.
+		count: 1
+		path: src/Exceptions/MessagesSectionIsMissingException.php
+
+	-
+		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
+		message: All classes should be declared using either the "abstract" or "final" keyword.
+		count: 1
+		path: src/Exceptions/NoCountDefinitionException.php
 
 	-
 		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 		message: All classes should be declared using either the "abstract" or "final" keyword.
 		count: 1
 		path: src/Exceptions/NoCountForPluralMessageException.php
-
-	-
-		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
-		message: All classes should be declared using either the "abstract" or "final" keyword.
-		count: 1
-		path: src/Exceptions/NoDataLoaderException.php
-
-	-
-		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
-		message: All classes should be declared using either the "abstract" or "final" keyword.
-		count: 1
-		path: src/Exceptions/NoLocaleFileException.php
-
-	-
-		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
-		message: All classes should be declared using either the "abstract" or "final" keyword.
-		count: 1
-		path: src/Exceptions/NoLocaleSelectedException.php
 
 	-
 		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
@@ -96,70 +126,100 @@ ignoreErrors:
 		path: src/Exceptions/ParsingErrorException.php
 
 	-
-		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
-		message: All classes should be declared using either the "abstract" or "final" keyword.
+		sniff: Squiz.Scope.MethodScope.Missing
+		message: Visibility must be declared on method "addError"
 		count: 1
-		path: src/Exceptions/SomeSectionMissingException.php
+		path: src/Logger.php
 
 	-
 		sniff: Squiz.Scope.MethodScope.Missing
-		message: Visibility must be declared on method "getLocale"
+		message: Visibility must be declared on method "addLocaleFile"
 		count: 1
-		path: src/ITranslator.php
+		path: src/Logger.php
 
 	-
 		sniff: Squiz.Scope.MethodScope.Missing
-		message: Visibility must be declared on method "translate"
+		message: Visibility must be declared on method "addUntranslated"
 		count: 1
-		path: src/ITranslator.php
-
-	-
-		sniff: Squiz.Scope.MethodScope.Missing
-		message: Visibility must be declared on method "afterCacheBuild"
-		count: 1
-		path: src/LocaleUtils.php
-
-	-
-		sniff: Squiz.Scope.MethodScope.Missing
-		message: Visibility must be declared on method "afterCacheClear"
-		count: 1
-		path: src/LocaleUtils.php
+		path: src/Logger.php
 
 	-
 		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 		message: All classes should be declared using either the "abstract" or "final" keyword.
 		count: 1
-		path: src/LocaleUtils/Opcache.php
+		path: src/Loggers/TracyBarPanel.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $error.
+		count: 1
+		path: src/Loggers/TracyBarPanel.php
 
 	-
 		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
 		message: Unused parameter $locale.
-		count: 2
-		path: src/LocaleUtils/Opcache.php
+		count: 1
+		path: src/Loggers/TracyBarPanel.php
+
+	-
+		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
+		message: All classes should be declared using either the "abstract" or "final" keyword.
+		count: 1
+		path: src/Loggers/TracyLogger.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $locale.
+		count: 1
+		path: src/Loggers/TracyLogger.php
 
 	-
 		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
 		message: Unused parameter $source.
 		count: 1
-		path: src/LocaleUtils/Opcache.php
+		path: src/Loggers/TracyLogger.php
+
+	-
+		sniff: Squiz.Scope.MethodScope.Missing
+		message: Visibility must be declared on method "extract"
+		count: 1
+		path: src/MessageExtractor.php
+
+	-
+		sniff: Squiz.Scope.MethodScope.Missing
+		message: Visibility must be declared on method "fileExtension"
+		count: 1
+		path: src/MessageExtractor.php
 
 	-
 		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 		message: All classes should be declared using either the "abstract" or "final" keyword.
 		count: 1
-		path: src/Nette/DI/Extension.php
+		path: src/MessageExtractors/Latte.php
 
 	-
 		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 		message: All classes should be declared using either the "abstract" or "final" keyword.
 		count: 1
-		path: src/RequestResolver.php
+		path: src/MessageExtractors/Php.php
 
 	-
-		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
-		message: Unused parameter $application.
+		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
+		message: All classes should be declared using either the "abstract" or "final" keyword.
 		count: 1
-		path: src/RequestResolver.php
+		path: src/Nette/Exceptions/NoLocaleParameterException.php
+
+	-
+		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
+		message: All classes should be declared using either the "abstract" or "final" keyword.
+		count: 1
+		path: src/Nette/TranslatorFactory.php
+
+	-
+		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
+		message: All classes should be declared using either the "abstract" or "final" keyword.
+		count: 1
+		path: src/PluralsHelper.php
 
 	-
 		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
@@ -171,34 +231,251 @@ ignoreErrors:
 		sniff: SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 		message: All classes should be declared using either the "abstract" or "final" keyword.
 		count: 1
-		path: src/TranslatorImmutable.php
+		path: src/TranslatorFactory.php
 
 	-
 		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
-		message: Unused parameter $request.
+		message: Unused parameter $cacheFile.
 		count: 1
-		path: tests/helpers/HomepagePresenter.php
+		path: tests/src/CataloguesTest.php
 
 	-
-		sniff: Forrest79CodingStandard.Exceptions.ExceptionDeclaration.IncorrectExceptionDirectory
-		message: 'Exception file "TestLocaleUtilsException.php" must be placed in "Exceptions" directory (is in "helpers").'
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $error.
 		count: 1
-		path: tests/helpers/TestLocaleUtilsException.php
+		path: tests/src/CataloguesTest.php
 
 	-
-		sniff: SlevomatCodingStandard.TypeHints.DeclareStrictTypes.IncorrectWhitespaceAfterDeclare
-		message: 'Expected 1 line after declare statement, found 2.'
-		count: 1
-		path: tests/helpers/functions.php
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $locale.
+		count: 4
+		path: tests/src/CataloguesTest.php
 
 	-
-		sniff: Squiz.Functions.GlobalFunction.Found
-		message: Consider putting global function "createLocale" in a static class
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $message.
 		count: 1
-		path: tests/helpers/functions.php
+		path: tests/src/CataloguesTest.php
 
 	-
-		sniff: Squiz.Functions.GlobalFunction.Found
-		message: Consider putting global function "translate" in a static class
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $cacheFile.
 		count: 1
-		path: tests/helpers/functions.php
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $charset.
+		count: 1
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $code.
+		count: 2
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $domain.
+		count: 2
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $error.
+		count: 1
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $expire.
+		count: 2
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $header.
+		count: 2
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $httpOnly.
+		count: 1
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $httpRequest.
+		count: 1
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $key.
+		count: 4
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $locale.
+		count: 5
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $message.
+		count: 1
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $method.
+		count: 1
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $name.
+		count: 6
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $params.
+		count: 1
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $path.
+		count: 2
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $reason.
+		count: 1
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $refUrl.
+		count: 1
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $secure.
+		count: 2
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $source.
+		count: 1
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $type.
+		count: 1
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $url.
+		count: 1
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $value.
+		count: 3
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+		message: 'Method class@anonymous::setCookie() does not have native type hint for its parameter $expire but it should be possible to add it based on @param annotation "string|int|\DateTimeInterface".'
+		count: 1
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
+		message: 'Method class@anonymous::setCode() does not have void return type hint.'
+		count: 1
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: Squiz.Commenting.FunctionComment.InvalidNoReturn
+		message: 'Function has no return statement, but annotation @return is present'
+		count: 6
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: Squiz.Scope.StaticThisUsage.Found
+		message: Usage of "$this" in static methods will cause runtime errors
+		count: 1
+		path: tests/src/NetteTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $cacheFile.
+		count: 1
+		path: tests/src/TracyTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $locale.
+		count: 2
+		path: tests/src/TracyTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $cacheFile.
+		count: 1
+		path: tests/src/TranslatorFactoryTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $error.
+		count: 1
+		path: tests/src/TranslatorFactoryTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $locale.
+		count: 5
+		path: tests/src/TranslatorFactoryTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $message.
+		count: 1
+		path: tests/src/TranslatorFactoryTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $source.
+		count: 1
+		path: tests/src/TranslatorFactoryTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $cacheFile.
+		count: 1
+		path: tests/src/TranslatorTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $locale.
+		count: 2
+		path: tests/src/TranslatorTest.php
+
+	-
+		sniff: SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+		message: Unused parameter $source.
+		count: 1
+		path: tests/src/TranslatorTest.php
+

@@ -1,268 +1,329 @@
 <?php declare(strict_types=1);
 
-namespace Forrest79\SimpleTranslator\Tests;
+namespace Forrest79\Translation\Tests;
 
-use Forrest79\SimpleTranslator;
-use Tester;
+use Forrest79\Translation\CatalogueLoader;
+use Forrest79\Translation\Catalogues;
+use Forrest79\Translation\Exceptions;
+use Forrest79\Translation\Logger;
+use Forrest79\Translation\Translator;
 use Tester\Assert;
-use Tracy;
 
-require_once __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 /**
  * @testCase
  */
 final class TranslatorTest extends TestCase
 {
-	private SimpleTranslator\Translator $translator;
+	private string $tempDir;
 
 
 	protected function setUp(): void
 	{
 		parent::setUp();
-
-		$this->translator = new SimpleTranslator\Translator(TRUE, TEMP_DIR, Tracy\Debugger::getLogger());
-		$this->translator->setDataLoader(new SimpleTranslator\DataLoaders\Neon(TEMP_DIR));
+		$this->tempDir = self::prepareCurrentTestTempDir();
 	}
 
 
-	public function testNoLocaleSelected(): void
+	public function testBasic(): void
 	{
-		Tester\Assert::exception(function (): void {
-			$this->translator->translate('message');
-		}, SimpleTranslator\Exceptions\NoLocaleSelectedException::class);
+		$translator = self::createTranslator(
+			'en',
+			['cs'],
+			localeMessages: [
+				'en' => ['simple_identifier' => 'Simple Translation'],
+				'cs' => ['simple_fallback_identifier' => 'Simple Fallback Translation'],
+			],
+		);
+
+		Assert::same('en', $translator->getLocale());
+		Assert::same(['cs'], $translator->getFallbackLocales());
+
+		Assert::same('Simple Translation', $translator->translate('simple_identifier'));
+		Assert::same('Simple Fallback Translation', $translator->translate('simple_fallback_identifier'));
+		Assert::same('simple_non_existing_identifier', $translator->translate('simple_non_existing_identifier'));
+	}
+
+
+	public function testPlural(): void
+	{
+		$translator = self::createTranslator(
+			'en',
+			['cs'],
+			localeMessages: [
+				'en' => ['identifier_pl' => ['Translation', 'Plural translation']],
+				'cs' => ['fallback_identifier_pl' => ['Fallback Translation 1', 'Fallback Translation 2', 'Fallback Translation 3']],
+			],
+		);
+
+		Assert::same('Translation', $translator->translate('identifier_pl', count: 1));
+		Assert::same('Plural translation', $translator->translate('identifier_pl', count: 2));
+		Assert::same('Plural translation', $translator->translate('identifier_pl', count: 10));
+		Assert::same('Fallback Translation 1', $translator->translate('fallback_identifier_pl', count: 1));
+		Assert::same('Fallback Translation 2', $translator->translate('fallback_identifier_pl', count: 2));
+		Assert::same('Fallback Translation 2', $translator->translate('fallback_identifier_pl', count: 3));
+		Assert::same('Fallback Translation 2', $translator->translate('fallback_identifier_pl', count: 4));
+		Assert::same('Fallback Translation 3', $translator->translate('fallback_identifier_pl', count: 5));
+		Assert::same('non_existing_plural_identifier', $translator->translate('non_existing_plural_identifier', count: 100));
+	}
+
+
+	public function testParameters(): void
+	{
+		$translator = self::createTranslator(
+			'en',
+			['cs'],
+			localeMessages: [
+				'en' => ['param_identifier' => 'Translation With %param%'],
+				'cs' => ['param_fallback_identifier' => 'Fallback Translation With %param%'],
+			],
+		);
+
+		Assert::same('Translation With Parameter', $translator->translate('param_identifier', ['param' => 'Parameter']));
+		Assert::same('Fallback Translation With Parameter', $translator->translate('param_fallback_identifier', ['param' => 'Parameter']));
+		Assert::same('param_non_existing_identifier', $translator->translate('param_non_existing_identifier', ['param' => 'Parameter']));
+	}
+
+
+	public function testPluralWithParameters(): void
+	{
+		$translator = self::createTranslator(
+			'en',
+			['cs'],
+			localeMessages: [
+				'en' => ['param_identifier_pl' => ['Translation With %param%', 'Plural Translation With %param%']],
+				'cs' => ['param_fallback_identifier_pl' => ['Plural Translation With %param% 1', 'Plural Translation With %param% 2', 'Plural Translation With %param% 3']],
+			],
+		);
+
+		Assert::same('en', $translator->getLocale());
+		Assert::same(['cs'], $translator->getFallbackLocales());
+
+		Assert::same('Translation With Parameter', $translator->translate('param_identifier_pl', ['param' => 'Parameter'], 1));
+		Assert::same('Plural Translation With Parameter', $translator->translate('param_identifier_pl', ['param' => 'Parameter'], 2));
+		Assert::same('Plural Translation With Parameter', $translator->translate('param_identifier_pl', ['param' => 'Parameter'], 10));
+		Assert::same('Plural Translation With Parameter 1', $translator->translate('param_fallback_identifier_pl', ['param' => 'Parameter'], 1));
+		Assert::same('Plural Translation With Parameter 2', $translator->translate('param_fallback_identifier_pl', ['param' => 'Parameter'], 2));
+		Assert::same('Plural Translation With Parameter 2', $translator->translate('param_fallback_identifier_pl', ['param' => 'Parameter'], 3));
+		Assert::same('Plural Translation With Parameter 2', $translator->translate('param_fallback_identifier_pl', ['param' => 'Parameter'], 4));
+		Assert::same('Plural Translation With Parameter 3', $translator->translate('param_fallback_identifier_pl', ['param' => 'Parameter'], 5));
+		Assert::same('param_non_existing_plural_identifier', $translator->translate('param_non_existing_plural_identifier', ['param' => 'Parameter'], 100));
+	}
+
+
+	public function testProcessExceptionInDebugMode(): void
+	{
+		Assert::exception(function (): void {
+			$this->createTranslator(debugMode: TRUE, localeMessages: ['en' => ['test_identifier' => 'Test translation']])
+				->translate('test_identifier', count: 1);
+		}, Exceptions\NotPluralMessageException::class);
+	}
+
+
+	public function testProcessExceptionInProductionMode(): void
+	{
+		$translator = self::createTranslator(localeMessages: ['en' => ['test_identifier' => 'Test translation']]);
+		Assert::same('test_identifier', $translator->translate('test_identifier', count: 1));
+	}
+
+
+	public function testLoggerInProductionMode(): void
+	{
+		$logger = self::createLogger();
+		$translator = self::createTranslator(localeMessages: ['en' => ['test_identifier' => 'Test translation']]);
+		$translator->setLogger($logger);
+
+		Assert::same([], $logger->getUntranslated());
+		Assert::same([], $logger->getErrors());
+
+		Assert::same('Test translation', $translator->translate('test_identifier'));
+
+		Assert::same([], $logger->getUntranslated());
+		Assert::same([], $logger->getErrors());
+
+		Assert::same('test_non_existing_identifier', $translator->translate('test_non_existing_identifier'));
+
+		Assert::same([
+			[
+				'en',
+				'test_non_existing_identifier',
+			],
+		], $logger->getUntranslated());
+		Assert::same([], $logger->getErrors());
+
+		Assert::same('test_identifier', $translator->translate('test_identifier', count: 1));
+
+		Assert::same([
+			[
+				'en',
+				'test_non_existing_identifier',
+			],
+		], $logger->getUntranslated());
+		Assert::same([
+			[
+				'en',
+				'Message "test_identifier" in "en" is not plural',
+			],
+		], $logger->getErrors());
 	}
 
 
 	public function testBadLocaleName(): void
 	{
-		Tester\Assert::exception(function (): void {
-			$this->translator
-				->setLocale('bad*locale*name')
-				->translate('message');
-		}, SimpleTranslator\Exceptions\BadLocaleNameException::class);
+		Assert::exception(function (): void {
+			$this->createTranslator('en?');
+		}, Exceptions\BadLocaleNameException::class);
+
+		Assert::exception(function (): void {
+			$this->createTranslator('en', ['cs', 'en?']);
+		}, Exceptions\BadLocaleNameException::class);
 	}
 
 
-	public function testSimpleTranslate(): void
+	public function testLocaleNameIsTheSameAsFallbackLocale(): void
 	{
-		$message = 'Test message.';
-		$this->translator->setLocale($this->createLocale(['message' => $message]));
-		Assert::same($message, $this->translator->translate('message'));
-	}
-
-
-	public function testFallbackTranslate(): void
-	{
-		$message = 'Test message.';
-
-		$this->translator->setFallbackLocale($this->createLocale(['message' => $message]));
-		$this->translator->setLocale($this->createLocale(['other.message' => 'what?']));
-
-		Assert::same($message, $this->translator->translate('message'));
-	}
-
-
-	public function testBadPluralTranslate(): void
-	{
-		Tester\Assert::exception(function (): void {
-			$this->translator->setLocale($this->createLocale(['message' => ['One item.']]));
-			$this->translator->translate('message', 10);
-		}, SimpleTranslator\Exceptions\BadCountForPluralMessageException::class);
-	}
-
-
-	public function testNotPluralTranslate(): void
-	{
-		Tester\Assert::exception(function (): void {
-			$this->translator->setLocale($this->createLocale(['message' => 'One item.']));
-			$this->translator->translate('message', 10);
-		}, SimpleTranslator\Exceptions\NotPluralMessageException::class);
-	}
-
-
-	public function testPluralNoCountTranslate(): void
-	{
-		Tester\Assert::exception(function (): void {
-			$this->translator->setLocale($this->createLocale(['message' => ['One item.']]));
-			$this->translator->translate('message');
-		}, SimpleTranslator\Exceptions\NoCountForPluralMessageException::class);
-	}
-
-
-	public function testPluralTranslate(): void
-	{
-		$message1 = 'One item.';
-		$message2 = 'More items.';
-		$this->translator->setLocale($this->createLocale(['message' => [$message1, $message2]]));
-		Assert::same($message1, $this->translator->translate('message', 1));
-		Assert::same($message2, $this->translator->translate('message', 10));
-	}
-
-
-	public function testPluralCsTranslate(): void
-	{
-		$message1 = 'Jedno auto.';
-		$message2 = '3 auta.';
-		$message3 = '10 aut.';
-		$this->translator->setLocale(
-			$this->createLocale(
-				['message' => [$message1, $message2, $message3]],
-				['n == 1', '(n > 1) && (n < 5)', 'n >= 5'],
-			),
-		);
-		Assert::same($message1, $this->translator->translate('message', 1));
-		Assert::same($message2, $this->translator->translate('message', 3));
-		Assert::same($message3, $this->translator->translate('message', 10));
-	}
-
-
-	public function testVariablesTranslate(): void
-	{
-		$this->translator->setLocale($this->createLocale(['message' => 'Welcome %user%.']));
-		Assert::same('Welcome Jakub.', $this->translator->translate('message', ['user' => 'Jakub']));
-	}
-
-
-	public function testVariablesPluralTranslate(): void
-	{
-		$this->translator->setLocale(
-			$this->createLocale(['message' => ['I have one %type%.', 'I have more %type%s.']]),
-		);
-		Assert::same('I have one car.', $this->translator->translate('message', ['type' => 'car', 'count' => 1]));
-		Assert::same('I have more cars.', $this->translator->translate('message', ['type' => 'car', 'count' => 10]));
-
-		Assert::same('I have one car.', $this->translator->translate('message', ['type' => 'car'], 1));
-		Assert::same('I have more cars.', $this->translator->translate('message', ['type' => 'car'], 10));
-	}
-
-
-	public function testCreateImmutableTranslator(): void
-	{
-		$locale = 'cs';
-		$immutable = $this->translator->createImmutableTranslator($locale);
-		Tester\Assert::type(SimpleTranslator\TranslatorImmutable::class, $immutable);
-		Tester\Assert::same($locale, $immutable->getLocale());
-	}
-
-
-	public function testImmutableTranslatorChangeLocale(): void
-	{
-		$immutable = $this->translator->createImmutableTranslator('cs');
-		Tester\Assert::exception(static function () use ($immutable): void {
-			$immutable->translate('test', [$immutable::PARAM_LOCALE => 'en']);
-		}, SimpleTranslator\Exceptions\CantChangeLocaleForImmutableTranslatorException::class);
-	}
-
-
-	public function testImmutableTranslatorSimpleTranslate(): void
-	{
-		$message = 'Test message.';
-		$locale = $this->createLocale(['message' => $message]);
-		$immutable = $this->translator->setLocale($locale)->createImmutableTranslator($locale);
-		Assert::same($message, $immutable->translate('message'));
-	}
-
-
-	public function testImmutableTranslatorPluralTranslate(): void
-	{
-		$message1 = 'One item.';
-		$message2 = 'More items.';
-		$locale = $this->createLocale(['message' => [$message1, $message2]]);
-		$immutable = $this->translator->setLocale($locale)->createImmutableTranslator($locale);
-
-		Assert::same($message1, $immutable->translate('message', 1));
-		Assert::same($message2, $immutable->translate('message', 10));
-
-		Assert::same($message1, $immutable->translate('message', [], 1));
-		Assert::same($message2, $immutable->translate('message', [], 10));
-
-		Assert::same($message1, $immutable->translate('message', [$immutable::PARAM_COUNT => 1]));
-		Assert::same($message2, $immutable->translate('message', [$immutable::PARAM_COUNT => 10]));
-	}
-
-
-	public function testNoDataLoader(): void
-	{
-		$translator = new SimpleTranslator\Translator(TRUE, TEMP_DIR, Tracy\Debugger::getLogger());
-		$translator->setLocale('cs');
-
-		Tester\Assert::exception(static function () use ($translator): void {
-			$translator->translate('test');
-		}, SimpleTranslator\Exceptions\NoDataLoaderException::class);
+		Assert::exception(function (): void {
+			$this->createTranslator('en', ['cs', 'en']);
+		}, Exceptions\FallbackLocaleIsTheSameAsMainLocaleException::class);
 	}
 
 
 	public function testClearCache(): void
 	{
-		$message = 'test';
-		$locale = $this->createLocale(['message' => $message]);
-		$this->translator->setLocale($locale);
+		$translator = self::createTranslator(
+			localeMessages: [
+				'en' => ['simple_identifier' => 'Simple Translation'],
+			],
+		);
 
-		$cacheFile = TEMP_DIR . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'locales' . DIRECTORY_SEPARATOR . $locale . '.php';
+		$cacheFile = $this->tempDir . '/cache/locales/en.php';
 
-		Tester\Assert::same($message, $this->translator->translate('message'));
+		Assert::false(file_exists($cacheFile));
 
-		Tester\Assert::true(file_exists($cacheFile));
+		Assert::same('Simple Translation', $translator->translate('simple_identifier'));
 
-		$this->translator->clearCache($locale);
+		Assert::true(file_exists($cacheFile));
 
-		Tester\Assert::false(file_exists($cacheFile));
-	}
+		$translator->clearCache();
 
-
-	public function testCorruptedNeon(): void
-	{
-		$this->translator->setLocale($this->createLocale([], [], TRUE));
-
-		Tester\Assert::exception(function (): void {
-			$this->translator->translate('message');
-		}, SimpleTranslator\Exceptions\ParsingErrorException::class);
-	}
-
-
-	public function testMissingSectionInNeon(): void
-	{
-		$this->translator->setLocale($this->createLocale([], [], FALSE, TRUE));
-
-		Tester\Assert::exception(function (): void {
-			$this->translator->translate('message');
-		}, SimpleTranslator\Exceptions\SomeSectionMissingException::class);
-	}
-
-
-	public function testProcessErrorInProductionMode(): void
-	{
-		$translator = new SimpleTranslator\Translator(FALSE, TEMP_DIR, Tracy\Debugger::getLogger());
-		$translator->setDataLoader(new SimpleTranslator\DataLoaders\Neon(TEMP_DIR));
-		$translator->setLocale($this->createLocale(['message' => 'test']));
-		Tester\Assert::same('message', $translator->translate('message', 1));
+		Assert::false(file_exists($cacheFile));
 	}
 
 
 	/**
-	 * @param array<string, string|array<string>> $messages
-	 * @param array<string> $plural
+	 * @param list<string> $fallbackLocales
+	 * @param array<string, array<string, string|list<string>>> $localeMessages
 	 */
-	private function createLocale(
-		array $messages,
-		array $plural = [],
-		bool $corruptNeon = FALSE,
-		bool $missingSections = FALSE,
-	): string
+	private function createTranslator(
+		string $locale = 'en',
+		array $fallbackLocales = [],
+		bool $debugMode = FALSE,
+		array $localeMessages = [],
+	): Translator
 	{
-		$updateNeon = NULL;
-		if ($corruptNeon === TRUE) {
-			$updateNeon = static function ($neon): string {
-				return $neon . PHP_EOL . 'error';
-			};
-		} else if ($missingSections) {
-			$updateNeon = static function (): string {
-				return 'messages:';
-			};
-		}
+		return new Translator($debugMode, self::createCatalogues($debugMode, $localeMessages), $locale, $fallbackLocales);
+	}
 
-		return createLocale($messages, $plural, NULL, $updateNeon);
+
+	/**
+	 * @param array<string, array<string, string|list<string>>> $localeMessages
+	 */
+	private function createCatalogues(bool $debugMode = FALSE, array $localeMessages = []): Catalogues
+	{
+		return new Catalogues($debugMode, $this->tempDir, self::createCatalogueLoader($localeMessages));
+	}
+
+
+	/**
+	 * @param array<string, array<string, string|list<string>>> $localeMessages
+	 */
+	private static function createCatalogueLoader(array $localeMessages = []): CatalogueLoader
+	{
+		return new class($localeMessages) implements CatalogueLoader {
+			/** @var array<string, array<string, string|list<string>>> */
+			private array $localeMessages = [];
+
+
+			/**
+			 * @param array<string, array<string, string|list<string>>> $localeMessages
+			 */
+			public function __construct(array $localeMessages)
+			{
+				$this->localeMessages = $localeMessages;
+			}
+
+
+			public function isLocaleUpdated(string $locale, string $cacheFile): bool
+			{
+				return FALSE;
+			}
+
+
+			/**
+			 * @return array<string, string|array<string, string|list<string>>|NULL>
+			 */
+			public function loadData(string $locale): array
+			{
+				return ['messages' => $this->localeMessages[$locale] ?? []];
+			}
+
+
+			public function source(string $locale): string
+			{
+				return 'test_' . $locale;
+			}
+
+		};
+	}
+
+
+	private static function createLogger(): Logger
+	{
+		return new class implements Logger {
+			/** @var list<array{0: string, 1: string}> */
+			private array $untranslated = [];
+
+			/** @var list<array{0: string, 1: string}> */
+			private array $errors = [];
+
+
+			public function addUntranslated(string $locale, string $message): void
+			{
+				$this->untranslated[] = [$locale, $message];
+			}
+
+
+			/**
+			 * @return list<array{0: string, 1: string}>
+			 */
+			public function getUntranslated(): array
+			{
+				return $this->untranslated;
+			}
+
+
+			public function addError(string $locale, string $error): void
+			{
+				$this->errors[] = [$locale, $error];
+			}
+
+
+			/**
+			 * @return list<array{0: string, 1: string}>
+			 */
+			public function getErrors(): array
+			{
+				return $this->errors;
+			}
+
+
+			public function addLocaleFile(string $locale, string $source): void
+			{
+				// nothing important in this test
+			}
+
+		};
 	}
 
 }

@@ -1,7 +1,7 @@
 {
-	"name": "forrest79/simple-translator",
-	"description": "Simple and fast translator for Nette Framework.",
-	"keywords": ["nette", "translator"],
+	"name": "forrest79/translation",
+	"description": "Simple and fast translator and tools to internationalize your PHP application.",
+	"keywords": ["translation", "translator", "neon", "nette"],
 	"type": "library",
 	"license": "BSD-3-Clause",
 	"authors": [
@@ -11,33 +11,38 @@
 		}
 	],
 	"require": {
-		"php": "^8.0",
-		"nette/application": "^3.1",
-		"nette/di": "^3.1",
-		"nette/utils": "^3.0 | ^4.0",
-		"tracy/tracy": "^2.10"
+		"php": "^8.0"
 	},
 	"require-dev": {
-		"nette/tester": "^2.4",
-		"forrest79/phpcs": "^1.2",
-		"forrest79/phpcs-ignores": "^0.3",
+		"forrest79/phpcs": "^1.5",
+		"forrest79/phpcs-ignores": "^0.4",
+		"latte/latte": "^3.0",
+		"nette/application": "^3.1",
+		"nette/neon": "^3.4",
+		"nette/tester": "^2.5",
 		"phpstan/phpstan": "^1.10",
-		"phpstan/phpstan-strict-rules": "^1.5"
+		"phpstan/phpstan-strict-rules": "^1.5",
+		"tracy/tracy": "^2.10"
 	},
 	"autoload": {
 		"psr-4": {
-			"Forrest79\\SimpleTranslator\\": "src/"
+			"Forrest79\\Translation\\": "src/"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"Forrest79\\SimpleTranslator\\Tests\\": "tests/src"
+			"Forrest79\\Translation\\Tests\\": "tests/src"
 		}
+	},
+	"suggest": {
+		"neon/neon": "To use with Neon catalogue loader.",
+		"nette/application": "To use with Nette translator factory and auto detecting current locale.",
+		"tracy/tracy": "For logging and debug panel."
 	},
 	"scripts": {
 		"tests": "tests/run-tests tests",
 		"coverage": "tests/collect-coverage tests",
-		"phpcs": "vendor/bin/phpcs --bootstrap=vendor/forrest79/phpcs-ignores/src/bootstrap.php -s src tests",
+		"phpcs": "vendor/bin/phpcs --bootstrap=vendor/forrest79/phpcs-ignores/src/bootstrap-outdated.php -s src tests",
 		"phpstan": "vendor/bin/phpstan analyse src tests"
 	},
 	"config": {

@@ -5,29 +5,25 @@ parameters:
 	level: max
 	excludePaths:
 		- %rootDir%/../../../tests/temp/*
-	bootstrapFiles:
-		- %rootDir%/../../../tests/bootstrap.php
 	ignoreErrors:
-		# === False positive ===
-
-		-
-			message: '#If condition is always true\.#'
-			path: %rootDir%/../../../src/Translator.php
-			count: 1
-
 		# === This is OK (just for tests) ===
 
 		-
-			message: '#Strict comparison using !== between null and null will always evaluate to false\.#'
-			path: %rootDir%/../../../tests/helpers/translate.php
+			message: '#^Call to an undefined method Forrest79\\Translation\\CatalogueExtractors\\Neon::getLoggedMessages\(\)\.$#'
+			path: %rootDir%/../../../tests/src/CatalogueExtractorNeonTest.php
 			count: 1
 
 		-
-			message: '#Dead catch - Forrest79\\SimpleTranslator\\Tests\\TestLocaleUtilsException is never thrown in the try block\.#'
-			path: %rootDir%/../../../tests/helpers/translate.php
+			message: '#^Call to an undefined method Forrest79\\Translation\\(CatalogueLoader::setData|CatalogueLoader::setIsLocaleUpdated|CatalogueUtils::getAfterCacheBuild|CatalogueUtils::getAfterCacheClear|Logger::getLocaleFiles)\(\)\.$#'
+			path: %rootDir%/../../../tests/src/CataloguesTest.php
+			count: 18
+
+		-
+			message: '#^Call to an undefined method Tracy\\ILogger::getMessages()\(\)\.$#'
+			path: %rootDir%/../../../tests/src/TracyTest.php
 			count: 1
 
 		-
-			message: '#Dead catch - Forrest79\\SimpleTranslator\\Tests\\TestLocaleUtilsException is never thrown in the try block\.#'
-			path: %rootDir%/../../../tests/src/LocaleUtilsTest.php
-			count: 2
+			message: '#^Call to an undefined method Forrest79\\Translation\\Logger::(getUntranslated|getErrors)\(\)\.$#'
+			path: %rootDir%/../../../tests/src/TranslatorTest.php
+			count: 8

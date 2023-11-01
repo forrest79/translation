@@ -1,308 +1,113 @@
 <?php declare(strict_types=1);
 
-namespace Forrest79\SimpleTranslator;
+namespace Forrest79\Translation;
 
-use Nette\Utils;
-use Tracy;
-
-class Translator implements ITranslator
+class Translator
 {
 	private bool $debugMode;
 
-	private string $tempDir;
+	private string $locale;
 
-	private Tracy\ILogger $logger;
+	/** @var list<string> */
+	private array $fallbackLocales = [];
 
-	private DataLoader|NULL $dataLoader = NULL;
+	private Catalogues $catalogues;
 
-	private string|NULL $locale = NULL;
-
-	private string|NULL $fallbackLocale = NULL;
-
-	/** @var array<string, TranslatorImmutable> */
-	private array $immutableTranslators = [];
-
-	/** @var array<string, TranslatorData> */
-	private array $data = [];
-
-	private LocaleUtils|NULL $localeUtils = NULL;
-
-	private Diagnostics\Panel|NULL $panel = NULL;
+	private Logger|NULL $logger = NULL;
 
 
-	public function __construct(bool $debugMode, string $tempDir, Tracy\ILogger $logger)
+	/**
+	 * @param list<string> $fallbackLocales
+	 * @throws Exceptions\BadLocaleNameException
+	 * @throws Exceptions\FallbackLocaleIsTheSameAsMainLocaleException
+	 */
+	public function __construct(bool $debugMode, Catalogues $catalogues, string $locale, array $fallbackLocales = [])
 	{
 		$this->debugMode = $debugMode;
-		$this->tempDir = $tempDir;
-		$this->logger = $logger;
-	}
+		$this->catalogues = $catalogues;
 
-
-	/**
-	 * @throws Exceptions\BadLocaleNameException
-	 */
-	public function setLocale(string $locale): static
-	{
 		$locale = strtolower($locale);
-		$this->checkLocaleName($locale);
-
+		self::checkLocaleName($locale);
 		$this->locale = $locale;
-		return $this;
+
+		foreach ($fallbackLocales as $fallbackLocale) {
+			$fallbackLocale = strtolower($fallbackLocale);
+			self::checkLocaleName($fallbackLocale);
+
+			if ($fallbackLocale === $locale) {
+				throw new Exceptions\FallbackLocaleIsTheSameAsMainLocaleException(sprintf('Fallback locale \'%s\' is the same as the main locale \'%s\'.', $fallbackLocale, $locale));
+			}
+
+			$this->fallbackLocales[] = $fallbackLocale;
+		}
 	}
 
 
-	/**
-	 * @throws Exceptions\NoLocaleSelectedException
-	 */
 	public function getLocale(): string
 	{
-		if ($this->locale === NULL) {
-			throw new Exceptions\NoLocaleSelectedException();
-		}
 		return $this->locale;
 	}
 
 
 	/**
-	 * @throws Exceptions\BadLocaleNameException
+	 * @return list<string>
 	 */
-	public function setFallbackLocale(string $locale): static
+	public function getFallbackLocales(): array
 	{
-		$locale = strtolower($locale);
-		$this->checkLocaleName($locale);
+		return $this->fallbackLocales;
+	}
 
-		$this->fallbackLocale = $locale;
+
+	public function setLogger(Logger $logger): static
+	{
+		$this->logger = $logger;
+
 		return $this;
 	}
 
 
 	/**
-	 * translate(string $message, int|array|NULL $translateParameters = NULL, ?int $count = NULL): string
-	 *   param string $message
-	 *   param int|array|NULL $translateParameters (int = count; array = parameters, can contains self::PARAM_COUNT and self::PARAM_LOCALE value)
-	 *   param int|NULL $count
-	 *
-	 * @throws Exceptions\NoLocaleSelectedException
+	 * @param array<string|int, string|int|float> $parameters
 	 * @throws Exceptions\Exception
 	 */
-	public function translate(string|\Stringable $message, mixed ...$parameters): string
+	public function translate(string $message, array $parameters = [], int|NULL $count = NULL): string
 	{
-		assert(is_string($message));
-		$translationParams = $parameters[0] ?? NULL;
+		$translation = $this->getTranslation($this->locale, $message, $count);
+		if ($translation === NULL) {
+			$this->logger?->addUntranslated($this->locale, $message);
 
-		if (is_array($translationParams) && isset($translationParams[self::PARAM_LOCALE])) {
-			$locale = strtolower($translationParams[self::PARAM_LOCALE]);
-		} else {
-			$locale = $this->getLocale();
-		}
+			foreach ($this->fallbackLocales as $fallbackLocale) {
+				$translation = $this->getTranslation($fallbackLocale, $message, $count);
 
-		if (is_array($translationParams) && isset($translationParams[self::PARAM_COUNT])) {
-			$count = intval($translationParams[self::PARAM_COUNT]);
-		} else if (is_numeric($translationParams)) {
-			$count = intval($translationParams);
-			$translationParams = NULL;
-		} else if (isset($parameters[1])) {
-			assert(is_scalar($parameters[1]));
-			$count = intval($parameters[1]);
-		} else {
-			$count = NULL;
-		}
-
-		try {
-			$translate = $this->loadData($locale)->getTranslate($message, $count);
-		} catch (Exceptions\Exception $e) {
-			return $this->processTranslatorException($e, $message, $locale);
-		}
-		if ($translate === NULL) {
-			if ($this->panel !== NULL) {
-				$this->panel->addUntranslated($locale, $message);
-			} else {
-				$this->logger->log(sprintf('No translation for "%s" in locale "%s"', $message, $locale), 'translator');
-			}
-
-			if (($this->fallbackLocale !== NULL) && ($this->fallbackLocale !== $locale)) {
-				try {
-					$translate = $this->loadData($this->fallbackLocale)->getTranslate($message, $count);
-				} catch (Exceptions\Exception $e) {
-					return $this->processTranslatorException($e, $message, $this->fallbackLocale);
+				if ($translation !== NULL) {
+					break;
 				}
 			}
 
-			if ($translate === NULL) {
+			if ($translation === NULL) {
 				return $message;
 			}
 		}
 
-		if (is_array($translationParams) && (count($translationParams) > 0)) {
-			$tmp = [];
-			foreach ($translationParams as $key => $value) {
-				$tmp['%' . trim((string) $key, '%') . '%'] = $value;
-			}
-			$translationParams = $tmp;
-
-			return strtr($translate, $translationParams);
-		}
-
-		return $translate;
-	}
-
-
-	public function createImmutableTranslator(string $locale): TranslatorImmutable
-	{
-		$locale = strtolower($locale);
-		if (!isset($this->immutableTranslators[$locale])) {
-			$this->immutableTranslators[$locale] = new TranslatorImmutable($this, $locale);
-		}
-		return $this->immutableTranslators[$locale];
-	}
-
-
-	/**
-	 * @throws Exceptions\ClearCacheFailedException
-	 */
-	public function clearCache(string $locale): static
-	{
-		$localeCache = $this->getCacheFile($locale);
-		if (file_exists($localeCache)) {
-			if (!@unlink($localeCache)) {
-				throw new Exceptions\ClearCacheFailedException();
+		if ($parameters !== []) {
+			$translationParams = [];
+			foreach ($parameters as $key => $value) {
+				$translationParams['%' . $key . '%'] = $value;
 			}
 
-			$this->localeUtils?->afterCacheClear($locale, $localeCache);
-		}
-		return $this;
-	}
-
-
-	public function setLocaleUtils(LocaleUtils $localeUtils): static
-	{
-		$this->localeUtils = $localeUtils;
-		return $this;
-	}
-
-
-	public function setPanel(Diagnostics\Panel $panel): Diagnostics\Panel
-	{
-		$this->panel = $panel;
-		return $panel;
-	}
-
-
-	/**
-	 * @throws Exceptions\NoLocaleFileException
-	 * @throws Exceptions\NoDataLoaderException
-	 * @throws Exceptions\ParsingErrorException
-	 * @throws Exceptions\SomeSectionMissingException
-	 */
-	private function loadData(string $locale): TranslatorData
-	{
-		if (!isset($this->data[$locale])) {
-			$dataLoader = $this->getDataLoader();
-			$source = $dataLoader->source($locale);
-			$localeCache = $this->getCacheFile($locale);
-			if ($this->cacheNeedsRebuild($localeCache, $locale)) {
-				Utils\FileSystem::createDir(dirname($localeCache), 0755);
-
-				$lockFile = $localeCache . '.lock';
-				$lockHandle = fopen($lockFile, 'c+');
-				if (($lockHandle === FALSE) || !flock($lockHandle, LOCK_EX)) {
-					throw new Exceptions\CantAcquireLockException(sprintf('Unable to create or acquire exclusive lock on file \'%s\'.', $lockFile));
-				}
-
-				// cache still not exists
-				if ($this->cacheNeedsRebuild($localeCache, $locale)) {
-					$data = $dataLoader->loadData($locale);
-
-					if (!array_key_exists('plural', $data) || !array_key_exists('messages', $data)) {
-						throw new Exceptions\SomeSectionMissingException('You must have "plural" and "messages" section in data');
-					}
-
-					$pluralCondition = '';
-					/** @var string $plural */
-					foreach ($data['plural'] as $i => $plural) {
-						$pluralCondition .= (($i > 0) ? 'else ' : '') . 'if (' . str_replace('n', '$count', $plural) . ') return ' . $i . ';';
-					}
-
-					$localeData = '';
-					foreach ($data['messages'] as $identificator => $translate) {
-						if (is_array($translate)) {
-							$translateData = '';
-							foreach ($translate as $translateItem) {
-								$translateData .= '\'' . str_replace('\'', '\\\'', $translateItem) . '\',';
-							}
-							$translateData = '[' . $translateData . ']';
-						} else {
-							$translateData = '\'' . str_replace('\'', '\\\'', $translate) . '\'';
-						}
-						$localeData .= '\'' . $identificator . '\'=>' . $translateData . ',';
-					}
-
-					file_put_contents(
-						$localeCache . '.tmp',
-						sprintf(
-							'<?php declare(strict_types=1); return new class(\'%s\', [%s]) extends Forrest79\SimpleTranslator\TranslatorData {protected function getPluralIndex(int $count): int {%sthrow new Forrest79\SimpleTranslator\Exceptions\TranslatorException(\'No definition for count \' . $count);}};',
-							$locale,
-							$localeData,
-							$pluralCondition,
-						),
-					);
-					rename($localeCache . '.tmp', $localeCache); // atomic replace (in Linux)
-
-					$this->localeUtils?->afterCacheBuild($locale, $source, $localeCache);
-				}
-
-				flock($lockHandle, LOCK_UN);
-				fclose($lockHandle);
-			}
-
-			$this->data[$locale] = require $localeCache;
-
-			$this->panel?->addLocaleFile($locale, $source);
+			return strtr($translation, $translationParams);
 		}
 
-		return $this->data[$locale];
+		return $translation;
 	}
 
 
-	private function getCacheFile(string $locale): string
+	private function getTranslation(string $locale, string $message, int|NULL $count): string|NULL
 	{
-		return $this->tempDir . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'locales' . DIRECTORY_SEPARATOR . $locale . '.php';
-	}
-
-
-	private function cacheNeedsRebuild(string $localeCache, string $locale): bool
-	{
-		return !file_exists($localeCache) || ($this->debugMode && $this->getDataLoader()->isLocaleUpdated($locale, $localeCache));
-	}
-
-
-	public function setDataLoader(DataLoader $dataLoader): static
-	{
-		$this->dataLoader = $dataLoader;
-		return $this;
-	}
-
-
-	/**
-	 * @throws Exceptions\NoDataLoaderException
-	 */
-	private function getDataLoader(): DataLoader
-	{
-		if ($this->dataLoader === NULL) {
-			throw new Exceptions\NoDataLoaderException('You must set data loader via setDataLoader.');
-		}
-
-		return $this->dataLoader;
-	}
-
-
-	/**
-	 * @throws Exceptions\BadLocaleNameException
-	 */
-	private function checkLocaleName(string $locale): void
-	{
-		if (preg_match('/^[a-z0-9_\-]+$/', $locale) === 0) {
-			throw new Exceptions\BadLocaleNameException('Only "a-z", "0-9", "_" and "-" characters are allowed for locale name.');
+		try {
+			return $this->catalogues->getTranslation($locale, $message, $count);
+		} catch (Exceptions\Exception $e) {
+			return $this->processTranslatorException($e, $message, $locale);
 		}
 	}
 
@@ -315,8 +120,25 @@ class Translator implements ITranslator
 		if ($this->debugMode) {
 			throw $e;
 		} else {
-			$this->logger->log(sprintf('Translation error "%s" in locale "%s"', $e->getMessage(), $locale), 'translator');
+			$this->logger?->addError($locale, $e->getMessage());
 			return $message;
+		}
+	}
+
+
+	public function clearCache(): void
+	{
+		$this->catalogues->clearCache($this->locale); // @todo tests!!!
+	}
+
+
+	/**
+	 * @throws Exceptions\BadLocaleNameException
+	 */
+	private static function checkLocaleName(string $locale): void
+	{
+		if (preg_match('/^[a-z0-9_\-]+$/', $locale) === 0) {
+			throw new Exceptions\BadLocaleNameException('Only "a-z", "0-9", "_" and "-" characters are allowed for locale name.');
 		}
 	}
 

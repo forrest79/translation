@@ -2,7 +2,7 @@
 
 namespace Forrest79\Translation\Exceptions;
 
-abstract class Exception extends \RuntimeException
+class MessagesSectionIsMissingException extends Exception
 {
 
 }

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-${0%/*}/../vendor/bin/tester -c ${0%/*}/php.ini "$@"
+${0%/*}/../vendor/bin/tester -d extension=tokenizer "$@"
 
 SUCCESS=$?
 
