@@ -4,6 +4,7 @@
 [![Monthly Downloads](https://poser.pugx.org/forrest79/translation/d/monthly)](//packagist.org/packages/forrest79/translation)
 [![License](https://poser.pugx.org/forrest79/translation/license)](//packagist.org/packages/forrest79/translation)
 [![Build](https://github.com/forrest79/translation/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/forrest79/translation/actions/workflows/build.yml)
+[![codecov](https://codecov.io/gh/forrest79/translation/graph/badge.svg?token=67FHZ4MKLV)](https://codecov.io/gh/forrest79/translation)
 
 Simple and fast translator and tools to internationalize your PHP application.
 

@@ -1,15 +1,10 @@
-name: build
+name: code-coverage
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   run:
     runs-on: 'ubuntu-20.04'
-
-    strategy:
-      matrix:
-        php-versions: ['8.0', '8.1', '8.2']
-      fail-fast: false
 
     steps:
       - name: Checkout
@@ -18,7 +13,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: 8.2
           coverage: none
           tools: composer:v2
 
@@ -36,17 +31,10 @@ jobs:
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
 
-      - name: Run phpcs
-        run: composer phpcs
+      - name: Collect code coverage
+        run: tests/run-tests -d zend_extension=xdebug.so --coverage coverage.xml --coverage-src src
 
-      - name: Run phpstan
-        run: composer phpstan
-
-      - name: Run tests
-        run: composer tests
-
-      - if: failure()
-        uses: actions/upload-artifact@v2
-        with:
-          name: output
-          path: tests/**/output
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
