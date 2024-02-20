@@ -396,12 +396,6 @@ ignoreErrors:
 		path: tests/src/NetteTest.php
 
 	-
-		sniff: SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-		message: 'Method class@anonymous::setCookie() does not have native type hint for its parameter $expire but it should be possible to add it based on @param annotation "string|int|\DateTimeInterface".'
-		count: 1
-		path: tests/src/NetteTest.php
-
-	-
 		sniff: SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
 		message: 'Method class@anonymous::setCode() does not have void return type hint.'
 		count: 1

@@ -14,6 +14,7 @@ use Nette\Application\Request;
 use Nette\Http;
 use Nette\Routing;
 use Tester\Assert;
+use Tester\Environment;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
@@ -31,6 +32,10 @@ final class NetteTest extends Tests\TestCase
 	{
 		parent::setUp();
 		$this->tempDir = self::prepareCurrentTestTempDir();
+
+		if (PHP_MINOR_VERSION === 0) {
+			Environment::skip('This test needs Nette\Http with PHP 8.1 support.');
+		}
 	}
 
 
@@ -276,13 +281,10 @@ final class NetteTest extends Tests\TestCase
 			}
 
 
-			/**
-			 * @param string|int|\DateTimeInterface $expire
-			 */
 			public function setCookie(
 				string $name,
 				string $value,
-				$expire,
+				int|NULL $expire,
 				string|NULL $path = NULL,
 				string|NULL $domain = NULL,
 				bool|NULL $secure = NULL,
