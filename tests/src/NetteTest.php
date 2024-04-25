@@ -54,6 +54,29 @@ final class NetteTest extends Tests\TestCase
 	}
 
 
+	public function testCreateByRequestWithDefault(): void
+	{
+		$translatorFactory = $this->createTranslatorFactory();
+
+		$application1 = self::createApplication(new Request(
+			'TestRequest',
+			params: [self::DEFAULT_LOCALE_PARAMETER => 'en'],
+		));
+
+		$translator1 = $translatorFactory->createByRequest($application1, 'fr');
+
+		Assert::same('en', $translator1->getLocale());
+
+		$application2 = self::createApplication(new Request(
+			'TestRequest',
+		));
+
+		$translator2 = $translatorFactory->createByRequest($application2, 'fr');
+
+		Assert::same('fr', $translator2->getLocale());
+	}
+
+
 	public function testNoLocaleParameter(): void
 	{
 		$application = self::createApplication(new Request(

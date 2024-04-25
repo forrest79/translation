@@ -40,9 +40,11 @@ class TranslatorFactory extends Translation\TranslatorFactory
 	): Translation\Translator
 	{
 		$locale = $defaultLocale;
+
 		foreach ($application->getRequests() as $request) {
-			$locale = $request->getParameter($this->parameter);
-			if ($locale !== NULL) {
+			$detectedLocale = $request->getParameter($this->parameter);
+			if ($detectedLocale !== NULL) {
+				$locale = $detectedLocale;
 				break;
 			}
 		}
