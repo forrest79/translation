@@ -307,7 +307,7 @@ final class NetteTest extends Tests\TestCase
 			public function setCookie(
 				string $name,
 				string $value,
-				int|NULL $expire,
+				string|int|\DateTimeInterface|NULL $expire,
 				string|NULL $path = NULL,
 				string|NULL $domain = NULL,
 				bool|NULL $secure = NULL,

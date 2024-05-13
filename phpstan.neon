@@ -7,24 +7,34 @@ parameters:
 	excludePaths:
 		- %rootDir%/../../../tests/temp/*
 	ignoreErrors:
+		-
+			message: '#^Method Forrest79\\Translation\\CatalogueLoaders\\Neon\:\:loadData\(\) should return array\<string, array\<string, list\<string\>\|string\>\|string\|null\> but returns array\<mixed, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/CatalogueLoaders/Neon.php
+
 		# === This is OK (just for tests) ===
 
 		-
 			message: '#^Call to an undefined method Forrest79\\Translation\\CatalogueExtractors\\Neon::getLoggedMessages\(\)\.$#'
-			path: %rootDir%/../../../tests/src/CatalogueExtractorNeonTest.php
+			identifier: method.notFound
 			count: 1
+			path: %rootDir%/../../../tests/src/CatalogueExtractorNeonTest.php
 
 		-
 			message: '#^Call to an undefined method Forrest79\\Translation\\(CatalogueLoader::setData|CatalogueLoader::setIsLocaleUpdated|CatalogueUtils::getAfterCacheBuild|CatalogueUtils::getAfterCacheClear|Logger::getLocaleFiles)\(\)\.$#'
-			path: %rootDir%/../../../tests/src/CataloguesTest.php
+			identifier: method.notFound
 			count: 18
+			path: %rootDir%/../../../tests/src/CataloguesTest.php
 
 		-
 			message: '#^Call to an undefined method Tracy\\ILogger::getMessages()\(\)\.$#'
-			path: %rootDir%/../../../tests/src/TracyTest.php
+			identifier: method.notFound
 			count: 1
+			path: %rootDir%/../../../tests/src/TracyTest.php
 
 		-
 			message: '#^Call to an undefined method Forrest79\\Translation\\Logger::(getUntranslated|getErrors)\(\)\.$#'
-			path: %rootDir%/../../../tests/src/TranslatorTest.php
+			identifier: method.notFound
 			count: 8
+			path: %rootDir%/../../../tests/src/TranslatorTest.php

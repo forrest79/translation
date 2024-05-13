@@ -9,7 +9,7 @@ class Neon extends Translation\CatalogueExtractor
 {
 	private string $localesDir;
 
-	/** @var array<string, list<string>> */
+	/** @var array<string, array<int, string>> */
 	private array $lines = [];
 
 
@@ -62,8 +62,11 @@ class Neon extends Translation\CatalogueExtractor
 			$this->lines[$locale] = $lines;
 		}
 
+		$messages = $neonData['messages'] ?? [];
+		assert(is_array($messages));
+
 		/** @phpstan-var list<string> */
-		return array_keys($neonData['messages'] ?? []);
+		return array_keys($messages);
 	}
 
 

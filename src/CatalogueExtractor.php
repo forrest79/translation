@@ -51,12 +51,11 @@ abstract class CatalogueExtractor
 
 		foreach ($this->sourceDirectories as $sourceDirectory) {
 			foreach (self::findFilesInDirectory($sourceDirectory, $this->fileExtensionsPattern) as $file) {
-				assert(is_array($file));
 				$messages = array_merge($messages, $this->extractFile(new \SplFileInfo($file[0])));
 			}
 		}
 
-		$this->processLocales(array_unique($messages));
+		$this->processLocales(array_values(array_unique($messages)));
 	}
 
 
@@ -92,16 +91,21 @@ abstract class CatalogueExtractor
 
 		$existingMessages = $this->loadExistingMessages($locale);
 
-		$this->processMessagesToInsert($locale, array_diff($messages, $existingMessages));
+		$this->processMessagesToInsert($locale, array_values(array_diff($messages, $existingMessages)));
 
-		$this->processMessagesToRemove($locale, array_diff($existingMessages, $messages));
+		$this->processMessagesToRemove($locale, array_values(array_diff($existingMessages, $messages)));
 	}
 
 
+	/**
+	 * @return \RegexIterator<int, list<string>, \RecursiveIteratorIterator<\RecursiveIterator<int, list<string>>>>
+	 */
 	private static function findFilesInDirectory(string $directory, string $fileExtensionsPattern): \RegexIterator
 	{
 		$directoryIterator = new \RecursiveDirectoryIterator($directory);
 		$recursiveIterator = new \RecursiveIteratorIterator($directoryIterator);
+
+		/** @phpstan-var \RegexIterator<int, list<string>, \RecursiveIteratorIterator<\RecursiveIterator<int, list<string>>>> */
 		return new \RegexIterator($recursiveIterator, sprintf('~^(%s)$~i', $fileExtensionsPattern), \RegexIterator::GET_MATCH);
 	}
 

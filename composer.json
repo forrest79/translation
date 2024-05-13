@@ -15,13 +15,13 @@
 	},
 	"require-dev": {
 		"forrest79/phpcs": "^1.5",
-		"forrest79/phpcs-ignores": "^0.4",
+		"forrest79/phpcs-ignores": "^0.5",
 		"latte/latte": "^3.0",
 		"nette/application": "^3.1",
 		"nette/neon": "^3.4",
 		"nette/tester": "^2.5",
-		"phpstan/phpstan": "^1.10",
-		"phpstan/phpstan-strict-rules": "^1.5",
+		"phpstan/phpstan": "^2.1",
+		"phpstan/phpstan-strict-rules": "^2.0",
 		"tracy/tracy": "^2.10"
 	},
 	"autoload": {

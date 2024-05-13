@@ -105,7 +105,10 @@ class Catalogues
 				fclose($lockHandle);
 			}
 
-			$this->catalogues[$locale] = require $localeCache;
+			$catalogue = require $localeCache;
+			assert($catalogue instanceof Catalogue);
+
+			$this->catalogues[$locale] = $catalogue;
 
 			$this->logger?->addLocaleFile($locale, $source);
 		}
