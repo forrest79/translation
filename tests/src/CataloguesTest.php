@@ -84,7 +84,7 @@ final class CataloguesTest extends TestCase
 		$catalogueLoader->setIsLocaleUpdated(TRUE);
 		$catalogues->getTranslation('en', 'test_message', NULL);
 
-		Assert::true(filesize($cacheFile) > 0);
+		Assert::true(filesize($cacheFile) !== FALSE && filesize($cacheFile) > 0);
 	}
 
 

@@ -242,7 +242,7 @@ final class TranslatorTest extends TestCase
 	{
 		return new class($localeMessages) implements CatalogueLoader {
 			/** @var array<string, array<string, string|list<string>>> */
-			private array $localeMessages = [];
+			private array $localeMessages;
 
 
 			/**
