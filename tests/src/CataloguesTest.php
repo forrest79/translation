@@ -33,7 +33,7 @@ final class CataloguesTest extends TestCase
 		$cacheFile = $this->getCacheFile('en');
 		$catalogueUtils = self::createCatalogueUtils();
 		$logger = self::createLogger();
-		$catalogues = $this->createCatalogues(debugMode: TRUE, catalogueUtils: $catalogueUtils);
+		$catalogues = $this->createCatalogues(debugMode: true, catalogueUtils: $catalogueUtils);
 		$catalogues->setLogger($logger);
 
 		Assert::false(file_exists($cacheFile));
@@ -42,7 +42,7 @@ final class CataloguesTest extends TestCase
 		Assert::same([], $logger->getLocaleFiles());
 
 		// this should generate cache file
-		$catalogues->getTranslation('en', 'test_message', NULL);
+		$catalogues->getTranslation('en', 'test_message', null);
 
 		$cacheFileReal = realpath($cacheFile);
 
@@ -72,19 +72,19 @@ final class CataloguesTest extends TestCase
 	{
 		$cacheFile = $this->getCacheFile('en');
 		$catalogueLoader = self::createCatalogueLoader();
-		$catalogues = $this->createCatalogues(debugMode: TRUE, catalogueLoader: $catalogueLoader);
+		$catalogues = $this->createCatalogues(debugMode: true, catalogueLoader: $catalogueLoader);
 
-		mkdir(dirname($cacheFile), 0777, TRUE);
+		mkdir(dirname($cacheFile), 0777, true);
 		touch($cacheFile);
 
 		Assert::true(filesize($cacheFile) === 0);
 
 		// this should now re-generate cache file
 
-		$catalogueLoader->setIsLocaleUpdated(TRUE);
-		$catalogues->getTranslation('en', 'test_message', NULL);
+		$catalogueLoader->setIsLocaleUpdated(true);
+		$catalogues->getTranslation('en', 'test_message', null);
 
-		Assert::true(filesize($cacheFile) > 0);
+		Assert::true(filesize($cacheFile) !== false && filesize($cacheFile) > 0);
 	}
 
 
@@ -95,16 +95,16 @@ final class CataloguesTest extends TestCase
 		$catalogueLoader = self::createCatalogueLoader();
 		$catalogueLoader->setData(['messages' => ['test_identifier' => 'test-translation']]);
 
-		$catalogues = $this->createCatalogues(debugMode: TRUE, catalogueLoader: $catalogueLoader);
+		$catalogues = $this->createCatalogues(debugMode: true, catalogueLoader: $catalogueLoader);
 
-		mkdir(dirname($cacheFile), 0777, TRUE);
+		mkdir(dirname($cacheFile), 0777, true);
 		file_put_contents($cacheFile, self::SIMPLE_BLANK_CACHE_FILE);
 
 		$size = filesize($cacheFile);
 
 		// this should not re-generate cache file
 
-		$catalogues->getTranslation('en', 'test_message', NULL);
+		$catalogues->getTranslation('en', 'test_message', null);
 
 		Assert::same($size, filesize($cacheFile));
 	}
@@ -119,15 +119,15 @@ final class CataloguesTest extends TestCase
 
 		$catalogues = $this->createCatalogues(catalogueLoader: $catalogueLoader);
 
-		mkdir(dirname($cacheFile), 0777, TRUE);
+		mkdir(dirname($cacheFile), 0777, true);
 		file_put_contents($cacheFile, self::SIMPLE_BLANK_CACHE_FILE);
 
 		$size = filesize($cacheFile);
 
 		// this should not re-generate cache file
 
-		$catalogueLoader->setIsLocaleUpdated(TRUE);
-		$catalogues->getTranslation('en', 'test_message', NULL);
+		$catalogueLoader->setIsLocaleUpdated(true);
+		$catalogues->getTranslation('en', 'test_message', null);
 
 		Assert::same($size, filesize($cacheFile));
 	}
@@ -141,7 +141,7 @@ final class CataloguesTest extends TestCase
 
 			$catalogues = $this->createCatalogues(catalogueLoader: $catalogueLoader);
 
-			$catalogues->getTranslation('en', 'test_message', NULL);
+			$catalogues->getTranslation('en', 'test_message', null);
 		}, Exceptions\MessagesSectionIsMissingException::class);
 	}
 
@@ -154,7 +154,7 @@ final class CataloguesTest extends TestCase
 
 			$catalogues = $this->createCatalogues(catalogueLoader: $catalogueLoader);
 
-			$catalogues->getTranslation('en', 'test_message', NULL);
+			$catalogues->getTranslation('en', 'test_message', null);
 		}, Exceptions\NoCountDefinitionException::class);
 	}
 
@@ -166,7 +166,7 @@ final class CataloguesTest extends TestCase
 
 		$catalogues = $this->createCatalogues(catalogueLoader: $catalogueLoader);
 
-		Assert::same('test-translation', $catalogues->getTranslation('en', 'test_identifier', NULL));
+		Assert::same('test-translation', $catalogues->getTranslation('en', 'test_identifier', null));
 	}
 
 
@@ -177,7 +177,7 @@ final class CataloguesTest extends TestCase
 
 		$catalogues = $this->createCatalogues(catalogueLoader: $catalogueLoader);
 
-		Assert::same('\'test\'-translation', $catalogues->getTranslation('en', 'test_identifier', NULL));
+		Assert::same('\'test\'-translation', $catalogues->getTranslation('en', 'test_identifier', null));
 		Assert::same('\'test\'-translation1', $catalogues->getTranslation('en', 'test_identifier_pl', 1));
 		Assert::same('\'test\'-translation2', $catalogues->getTranslation('en', 'test_identifier_pl', 2));
 	}
@@ -215,9 +215,9 @@ final class CataloguesTest extends TestCase
 
 
 	private function createCatalogues(
-		bool $debugMode = FALSE,
-		CatalogueLoader|NULL $catalogueLoader = NULL,
-		CatalogueUtils|NULL $catalogueUtils = NULL,
+		bool $debugMode = false,
+		CatalogueLoader|null $catalogueLoader = null,
+		CatalogueUtils|null $catalogueUtils = null,
 	): Catalogues
 	{
 		return new Catalogues(
@@ -232,7 +232,7 @@ final class CataloguesTest extends TestCase
 	private static function createCatalogueLoader(): CatalogueLoader
 	{
 		return new class implements CatalogueLoader {
-			private bool $isLocaleUpdated = FALSE;
+			private bool $isLocaleUpdated = false;
 
 			/** @var array<string, string|array<string, string|list<string>>> */
 			private array $data = ['messages' => []];
@@ -251,7 +251,7 @@ final class CataloguesTest extends TestCase
 
 
 			/**
-			 * @return array<string, string|array<string, string|list<string>>|NULL>
+			 * @return array<string, string|array<string, string|list<string>>|null>
 			 */
 			public function loadData(string $locale): array
 			{

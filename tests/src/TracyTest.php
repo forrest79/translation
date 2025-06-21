@@ -66,13 +66,13 @@ final class TracyTest extends Tests\TestCase
 
 	private function createTranslator(Logger $logger): Translator
 	{
-		return (new Translator(FALSE, self::createCatalogues($logger), 'en', ['cs']))->setLogger($logger);
+		return (new Translator(false, self::createCatalogues($logger), 'en', ['cs']))->setLogger($logger);
 	}
 
 
 	private function createCatalogues(Logger $logger): Catalogues
 	{
-		return (new Catalogues(FALSE, $this->tempDir, self::createCatalogueLoader()))->setLogger($logger);
+		return (new Catalogues(false, $this->tempDir, self::createCatalogueLoader()))->setLogger($logger);
 	}
 
 
@@ -82,12 +82,12 @@ final class TracyTest extends Tests\TestCase
 
 			public function isLocaleUpdated(string $locale, string $cacheFile): bool
 			{
-				return FALSE;
+				return false;
 			}
 
 
 			/**
-			 * @return array<string, string|array<string, string|list<string>>|NULL>
+			 * @return array<string, string|array<string, string|list<string>>|null>
 			 */
 			public function loadData(string $locale): array
 			{

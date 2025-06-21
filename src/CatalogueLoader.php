@@ -6,7 +6,7 @@ interface CatalogueLoader
 {
 
 	/**
-	 * Return TRUE if there is needs to rebuild cache in debug mode.
+	 * Return true if there is needs to rebuild cache in debug mode.
 	 */
 	function isLocaleUpdated(string $locale, string $cacheFile): bool;
 
@@ -14,7 +14,7 @@ interface CatalogueLoader
 	/**
 	 * Return translation defition.
 	 *
-	 * @return array<string, string|array<string, string|list<string>>|NULL> with two keys
+	 * @return array<string, string|array<string, string|list<string>>|null> with two keys
 	 *   [
 	 *     'plural' (optional) => string - plural definition with $count variable, if missing, definition is taken from PluralsHelper by $locale
 	 *     'messages' => array - [message => translation, ...] where translation can be string or list of strings for plural

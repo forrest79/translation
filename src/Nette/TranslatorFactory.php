@@ -21,8 +21,8 @@ class TranslatorFactory extends Translation\TranslatorFactory
 		Translation\CatalogueLoader $catalogueLoader,
 		string $parameter = self::DEFAULT_PARAMETER,
 		array $fallbackLocales = [],
-		Translation\CatalogueUtils|NULL $catalogueUtils = NULL,
-		Translation\Logger|NULL $logger = NULL,
+		Translation\CatalogueUtils|null $catalogueUtils = null,
+		Translation\Logger|null $logger = null,
 	)
 	{
 		parent::__construct($debugMode, $tempDir, $catalogueLoader, $fallbackLocales, $catalogueUtils, $logger);
@@ -36,20 +36,20 @@ class TranslatorFactory extends Translation\TranslatorFactory
 	 */
 	public function createByRequest(
 		Application\Application $application,
-		string|NULL $defaultLocale = NULL,
+		string|null $defaultLocale = null,
 	): Translation\Translator
 	{
 		$locale = $defaultLocale;
 
 		foreach ($application->getRequests() as $request) {
 			$detectedLocale = $request->getParameter($this->parameter);
-			if ($detectedLocale !== NULL) {
+			if ($detectedLocale !== null) {
 				$locale = $detectedLocale;
 				break;
 			}
 		}
 
-		if ($locale === NULL) {
+		if ($locale === null) {
 			throw new Exceptions\NoLocaleParameterException();
 		}
 

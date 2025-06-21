@@ -63,17 +63,17 @@ final class TranslatorFactoryTest extends TestCase
 		$translatorFactory = $this->createTranslatorFactory();
 		$translator = $translatorFactory->create('en');
 
-		$logger = (fn (): Logger|NULL => $this->logger)->call($translator);
+		$logger = (fn (): Logger|null => $this->logger)->call($translator);
 		Assert::null($logger);
 	}
 
 
 	public function testWithLogger(): void
 	{
-		$translatorFactory = $this->createTranslatorFactory(withLogger: TRUE);
+		$translatorFactory = $this->createTranslatorFactory(withLogger: true);
 		$translator = $translatorFactory->create('en');
 
-		$logger = (fn (): Logger|NULL => $this->logger)->call($translator);
+		$logger = (fn (): Logger|null => $this->logger)->call($translator);
 		Assert::true($logger instanceof Logger);
 	}
 
@@ -84,7 +84,7 @@ final class TranslatorFactoryTest extends TestCase
 		$translator = $translatorFactory->create('en');
 
 		$catalogues = (fn (): Catalogues => $this->catalogues)->call($translator);
-		$catalogueUtils = (fn (): CatalogueUtils|NULL => $this->catalogueUtils)->call($catalogues);
+		$catalogueUtils = (fn (): CatalogueUtils|null => $this->catalogueUtils)->call($catalogues);
 		Assert::null($catalogueUtils);
 	}
 
@@ -97,7 +97,7 @@ final class TranslatorFactoryTest extends TestCase
 		$translator = $translatorFactory->create('en');
 
 		$catalogues = (fn (): Catalogues => $this->catalogues)->call($translator);
-		$catalogueUtils = (fn (): CatalogueUtils|NULL => $this->catalogueUtils)->call($catalogues);
+		$catalogueUtils = (fn (): CatalogueUtils|null => $this->catalogueUtils)->call($catalogues);
 		Assert::true($catalogueUtils instanceof CatalogueUtils\Opcache);
 	}
 
@@ -105,14 +105,14 @@ final class TranslatorFactoryTest extends TestCase
 	/**
 	 * @param array<string, list<string>> $fallbackLocales
 	 */
-	private function createTranslatorFactory(bool $withLogger = FALSE, array $fallbackLocales = []): TranslatorFactory
+	private function createTranslatorFactory(bool $withLogger = false, array $fallbackLocales = []): TranslatorFactory
 	{
 		return new TranslatorFactory(
-			TRUE,
+			true,
 			$this->tempDir,
 			self::createCatalogueLoader(),
 			$fallbackLocales,
-			logger: $withLogger ? self::createLogger() : NULL,
+			logger: $withLogger ? self::createLogger() : null,
 		);
 	}
 
@@ -123,12 +123,12 @@ final class TranslatorFactoryTest extends TestCase
 
 			public function isLocaleUpdated(string $locale, string $cacheFile): bool
 			{
-				return FALSE;
+				return false;
 			}
 
 
 			/**
-			 * @return array<string, string|array<string, string|list<string>>|NULL>
+			 * @return array<string, string|array<string, string|list<string>>|null>
 			 */
 			public function loadData(string $locale): array
 			{

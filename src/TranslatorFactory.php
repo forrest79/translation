@@ -13,11 +13,11 @@ class TranslatorFactory
 	/** @var array<string, list<string>> */
 	private array $fallbackLocales;
 
-	private CatalogueUtils|NULL $catalogueUtils;
+	private CatalogueUtils|null $catalogueUtils;
 
-	private Logger|NULL $logger;
+	private Logger|null $logger;
 
-	private Catalogues|NULL $catalogues = NULL;
+	private Catalogues|null $catalogues = null;
 
 	/** @var array<string, Translator> */
 	private array $translators = [];
@@ -31,8 +31,8 @@ class TranslatorFactory
 		string $tempDir,
 		CatalogueLoader $catalogueLoader,
 		array $fallbackLocales = [],
-		CatalogueUtils|NULL $catalogueUtils = NULL,
-		Logger|NULL $logger = NULL,
+		CatalogueUtils|null $catalogueUtils = null,
+		Logger|null $logger = null,
 	)
 	{
 		$this->debugMode = $debugMode;
@@ -45,11 +45,11 @@ class TranslatorFactory
 
 
 	/**
-	 * @param list<string>|NULL $fallbackLocales
+	 * @param list<string>|null $fallbackLocales
 	 * @throws Exceptions\BadLocaleNameException
 	 * @throws Exceptions\FallbackLocaleIsTheSameAsMainLocaleException
 	 */
-	public function create(string $locale, array|NULL $fallbackLocales = NULL): Translator
+	public function create(string $locale, array|null $fallbackLocales = null): Translator
 	{
 		$fallbackLocales ??= $this->fallbackLocales[$locale] ?? [];
 		$cacheKey = serialize([$locale, $fallbackLocales]);
@@ -57,7 +57,7 @@ class TranslatorFactory
 		if (!isset($this->translators[$cacheKey])) {
 			$translator = new Translator($this->debugMode, $this->createCatalogues(), $locale, $fallbackLocales);
 
-			if ($this->logger !== NULL) {
+			if ($this->logger !== null) {
 				$translator->setLogger($this->logger);
 			}
 
@@ -70,15 +70,15 @@ class TranslatorFactory
 
 	private function createCatalogues(): Catalogues
 	{
-		if ($this->catalogues === NULL) {
+		if ($this->catalogues === null) {
 			$this->catalogues = new Catalogues(
 				$this->debugMode,
 				$this->tempDir,
 				$this->catalogueLoader,
-				$this->catalogueUtils ?? (function_exists('opcache_invalidate') ? new CatalogueUtils\Opcache() : NULL),
+				$this->catalogueUtils ?? (function_exists('opcache_invalidate') ? new CatalogueUtils\Opcache() : null),
 			);
 
-			if ($this->logger !== NULL) {
+			if ($this->logger !== null) {
 				$this->catalogues->setLogger($this->logger);
 			}
 		}

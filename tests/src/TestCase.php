@@ -9,7 +9,7 @@ use Tester;
  */
 abstract class TestCase extends Tester\TestCase
 {
-	private static int|NULL $microtime = NULL;
+	private static int|null $microtime = null;
 
 
 	public function run(): void
@@ -29,8 +29,8 @@ abstract class TestCase extends Tester\TestCase
 
 	final protected static function getCurrentTestTempDir(): string
 	{
-		if (self::$microtime === NULL) {
-			self::$microtime = (int) (microtime(TRUE) * 10000);
+		if (self::$microtime === null) {
+			self::$microtime = (int) (microtime(true) * 10000);
 		}
 
 		return self::getSharedTempDir() . '/' . self::$microtime . '-' . getmypid() . '-' . self::getCurrentTestThread();

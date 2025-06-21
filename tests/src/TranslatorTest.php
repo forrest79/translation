@@ -115,7 +115,7 @@ final class TranslatorTest extends TestCase
 	public function testProcessExceptionInDebugMode(): void
 	{
 		Assert::exception(function (): void {
-			$this->createTranslator(debugMode: TRUE, localeMessages: ['en' => ['test_identifier' => 'Test translation']])
+			$this->createTranslator(debugMode: true, localeMessages: ['en' => ['test_identifier' => 'Test translation']])
 				->translate('test_identifier', count: 1);
 		}, Exceptions\NotPluralMessageException::class);
 	}
@@ -218,7 +218,7 @@ final class TranslatorTest extends TestCase
 	private function createTranslator(
 		string $locale = 'en',
 		array $fallbackLocales = [],
-		bool $debugMode = FALSE,
+		bool $debugMode = false,
 		array $localeMessages = [],
 	): Translator
 	{
@@ -229,7 +229,7 @@ final class TranslatorTest extends TestCase
 	/**
 	 * @param array<string, array<string, string|list<string>>> $localeMessages
 	 */
-	private function createCatalogues(bool $debugMode = FALSE, array $localeMessages = []): Catalogues
+	private function createCatalogues(bool $debugMode = false, array $localeMessages = []): Catalogues
 	{
 		return new Catalogues($debugMode, $this->tempDir, self::createCatalogueLoader($localeMessages));
 	}
@@ -242,7 +242,7 @@ final class TranslatorTest extends TestCase
 	{
 		return new class($localeMessages) implements CatalogueLoader {
 			/** @var array<string, array<string, string|list<string>>> */
-			private array $localeMessages = [];
+			private array $localeMessages;
 
 
 			/**
@@ -256,12 +256,12 @@ final class TranslatorTest extends TestCase
 
 			public function isLocaleUpdated(string $locale, string $cacheFile): bool
 			{
-				return FALSE;
+				return false;
 			}
 
 
 			/**
-			 * @return array<string, string|array<string, string|list<string>>|NULL>
+			 * @return array<string, string|array<string, string|list<string>>|null>
 			 */
 			public function loadData(string $locale): array
 			{

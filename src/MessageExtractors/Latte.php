@@ -5,7 +5,6 @@ namespace Forrest79\Translation\MessageExtractors;
 use Forrest79\Translation;
 use Latte\Compiler;
 use Latte\Engine;
-use Latte\Essential\Nodes\PrintNode;
 
 class Latte implements Translation\MessageExtractor
 {
@@ -47,9 +46,9 @@ class Latte implements Translation\MessageExtractor
 		$ast = $this->engine->parse($source);
 
 		// {='web.xxx'|translate}
-		$printNodes = Compiler\NodeHelpers::find($ast, static fn (Compiler\Node $node) => $node instanceof PrintNode);
+		$printNodes = Compiler\NodeHelpers::find($ast, static fn (Compiler\Node $node) => $node instanceof Compiler\Nodes\PrintNode);
 		foreach ($printNodes as $node) {
-			assert($node instanceof PrintNode);
+			assert($node instanceof Compiler\Nodes\PrintNode);
 			if ($node->expression instanceof Compiler\Nodes\Php\Scalar\StringNode) { // only 'web.xxx'|translate, ignore $var|translate
 				if ($node->modifier->hasFilter($this->filterName)) {
 					$messages[] = $node->expression->value;

@@ -12,7 +12,7 @@ class PluralsHelper
 	 * which is subject to the new BSD license (http://framework.zend.com/license/new-bsd).
 	 * Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
 	 */
-	public static function getPluralizationRule(string $locale): string|NULL
+	public static function getPluralizationRule(string $locale): string|null
 	{
 		if (($locale !== 'pt_BR') && ($locale !== 'en_US_POSIX') && (strlen($locale) > 3)) {
 			$parts = explode('_', $locale, 2);
@@ -106,7 +106,7 @@ class PluralsHelper
 			'cy' => '($count === 1) ? 0 : (($count === 2) ? 1 : ((($count === 8) || ($count === 11)) ? 2 : 3))',
 			'ro' => '($count === 1) ? 0 : ((($count === 0) || ((($count % 100) > 0) && (($count % 100) < 20))) ? 1 : 2)',
 			'ar' => '($count === 0) ? 0 : (($count === 1) ? 1 : (($count === 2) ? 2 : (((($count % 100) >= 3) && (($count % 100) <= 10)) ? 3 : (((($count % 100) >= 11) && (($count % 100) <= 99)) ? 4 : 5))))',
-			default => NULL,
+			default => null,
 		};
 	}
 

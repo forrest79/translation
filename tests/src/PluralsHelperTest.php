@@ -49,7 +49,7 @@ final class PluralsHelperTest extends TestCase
 	}
 
 
-	private static function createPluralFunction(string|NULL $definition): callable
+	private static function createPluralFunction(string|null $definition): callable
 	{
 		// make IDE and PHPStan happy - is overwritten in eval()
 		$callable = static function (): int {

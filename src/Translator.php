@@ -13,7 +13,7 @@ class Translator
 
 	private Catalogues $catalogues;
 
-	private Logger|NULL $logger = NULL;
+	private Logger|null $logger = null;
 
 
 	/**
@@ -70,21 +70,21 @@ class Translator
 	 * @param array<string|int, string|int|float> $parameters
 	 * @throws Exceptions\Exception
 	 */
-	public function translate(string $message, array $parameters = [], int|NULL $count = NULL): string
+	public function translate(string $message, array $parameters = [], int|null $count = null): string
 	{
 		$translation = $this->getTranslation($this->locale, $message, $count);
-		if ($translation === NULL) {
+		if ($translation === null) {
 			$this->logger?->addUntranslated($this->locale, $message);
 
 			foreach ($this->fallbackLocales as $fallbackLocale) {
 				$translation = $this->getTranslation($fallbackLocale, $message, $count);
 
-				if ($translation !== NULL) {
+				if ($translation !== null) {
 					break;
 				}
 			}
 
-			if ($translation === NULL) {
+			if ($translation === null) {
 				return $message;
 			}
 		}
@@ -102,7 +102,7 @@ class Translator
 	}
 
 
-	private function getTranslation(string $locale, string $message, int|NULL $count): string|NULL
+	private function getTranslation(string $locale, string $message, int|null $count): string|null
 	{
 		try {
 			return $this->catalogues->getTranslation($locale, $message, $count);
