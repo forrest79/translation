@@ -21,7 +21,7 @@ class Opcache implements Translation\CatalogueUtils
 
 	private function invalidateCache(string $localeCache): void
 	{
-		opcache_invalidate($localeCache, TRUE);
+		opcache_invalidate($localeCache, true);
 	}
 
 }

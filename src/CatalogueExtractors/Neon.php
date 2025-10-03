@@ -44,7 +44,7 @@ class Neon extends Translation\CatalogueExtractor
 		$path = $this->getLocaleNeonFile($locale);
 
 		$content = @file_get_contents($path); // intentionally @ - file may not exists
-		if ($content === FALSE) {
+		if ($content === false) {
 			throw new \RuntimeException(sprintf('Can\'t load locale file \'%s\'.', $path));
 		}
 
@@ -78,7 +78,7 @@ class Neon extends Translation\CatalogueExtractor
 		if ($messages !== []) {
 			sort($messages);
 			foreach ($messages as $message) {
-				$this->lines[$locale][] = "\t" . trim(Nette\Neon\Neon::encode([$message => ''], TRUE));
+				$this->lines[$locale][] = "\t" . trim(Nette\Neon\Neon::encode([$message => ''], true));
 			}
 			$this->lines[$locale][] = '';
 		}
@@ -90,11 +90,11 @@ class Neon extends Translation\CatalogueExtractor
 	 */
 	protected function processMessagesToRemove(string $locale, array $messages): void
 	{
-		$messagesSection = FALSE;
+		$messagesSection = false;
 		foreach ($this->lines[$locale] as $i => $line) {
 			$line = trim($line);
-			if (($messagesSection === FALSE) && ($line === 'messages:')) {
-				$messagesSection = TRUE;
+			if (($messagesSection === false) && ($line === 'messages:')) {
+				$messagesSection = true;
 				continue;
 			}
 
@@ -102,7 +102,7 @@ class Neon extends Translation\CatalogueExtractor
 				$neonLine = Nette\Neon\Neon::decode($line);
 				if (is_array($neonLine)) {
 					$key = key($neonLine);
-					if (in_array($key, $messages, TRUE)) {
+					if (in_array($key, $messages, true)) {
 						unset($this->lines[$locale][$i]);
 					}
 				}

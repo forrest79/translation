@@ -45,7 +45,7 @@ To proper locale detection, use the correct locale name - 2-chars language codes
 
 ### Translator
 
-The `Translator` object has the main method `translate(string $message, array $parameters = [], int|NULL $count = NULL)`.
+The `Translator` object has the main method `translate(string $message, array $parameters = [], int|null $count = null)`.
 
 The only required parameters is the `$message`. As the name sugges, it's the message from your catalogue to translate. Prefer to use identifiers (`web.form.password`) as messages, not real texts (`Enter password`).
 
@@ -121,9 +121,9 @@ You can prepare these objects manually, but the preferred way is to use `Transla
 - `CatalogueUtils $catalogueUtils` - *optional* - if none is provided and an Opcache extension is loaded (function `opcache_invalidate()` exists), the `CatalogueUtils\Opcache` is used automatically
 - `Logger $logger` - *optional*
 
-With prepated `TranslatorFactory` just call `create(string $locale, array|NULL $fallbackLocales = NULL)` method, and you will get `Translator` object for `$locale`.
+With prepated `TranslatorFactory` just call `create(string $locale, array|null $fallbackLocales = null)` method, and you will get `Translator` object for `$locale`.
 
-If `$fallbackLocales` is `NULL`, fallback locales are get from the one defined on `TranslatorFactory`, if it's an array (even blank), this value is used. 
+If `$fallbackLocales` is `null`, fallback locales are get from the one defined on `TranslatorFactory`, if it's an array (even blank), this value is used. 
 
 `Translator` objects for the same `$locale` and `$fallbackLocales` are cached. If you call `create()` method twice for the same parameters, you will get the same `Translator` object.
 
@@ -157,7 +157,7 @@ If you use internal `CatalogueLoaders\Neon` catalogue loader, you must pass dire
 Then, when, for example, you want to create `Translator` for `en` locale, the `en.neon` file is used. For `en_US` locale, the `en_US.neon` file is used.
 
 If you want to implement your own `CatalogueLoader`, you must implement these methods from the interface:
-- `isLocaleUpdated(string $locale, string $cacheFile): bool` - returns `TRUE` if cache needs to be rebuild in debug mode, `FALSE` otherwise (`CatalogueLoaders\Neon` returns `TRUE` is source neon file was updated)
+- `isLocaleUpdated(string $locale, string $cacheFile): bool` - returns `true` if cache needs to be rebuild in debug mode, `false` otherwise (`CatalogueLoaders\Neon` returns `true` is source neon file was updated)
 - `loadData(string $locale): array` - returns array with two keys, `plural` (*optional*) definition and `messages` with array `message => translation|list<translation>` (the list if for plural messages)
 - `source(string $locale): string` - return source identification, file path for neon file or whatever you want to identify the correct source for the locale
 
@@ -222,7 +222,7 @@ $sourceDirectories = [
 ];
 
 $latteEngine = new Latte\Engine();
-$latteEngine->addExtension(new Nette\Bridges\ApplicationLatte\UIExtension(NULL));
+$latteEngine->addExtension(new Nette\Bridges\ApplicationLatte\UIExtension(null));
 $latteEngine->addExtension(new Nette\Bridges\FormsLatte\FormsExtension());
 
 $messageExtractors = [
@@ -279,7 +279,7 @@ $messageExtractors = [
 			SELECT ti.identifier
 			  FROM public.translation_identifiers AS ti
 			  LEFT JOIN public.translations AS t ON t.identifier_id = ti.id AND t.lang = ?
-		', $locale)->fetchPairs(NULL, 'identifier');
+		', $locale)->fetchPairs(null, 'identifier');
 	}
 
 	protected function processMessagesToInsert(string $locale, array $messages): void
@@ -309,9 +309,9 @@ $messageExtractors = [
 
 This library can be simply integrated into [Nette Framework](https://nette.org/). You already know about two loggers `TracyLogger` and `TracyBarPanel` for [Tracy debugging tool](https://tracy.nette.org/).
 
-There is also special `Nette\TranslatorFactory`. This factory extends classic `TranslatorFactory` and add one method `createByRequest(Application\Application $application, string|NULL $defaultLocale = NULL)`.
+There is also special `Nette\TranslatorFactory`. This factory extends classic `TranslatorFactory` and add one method `createByRequest(Application\Application $application, string|null $defaultLocale = null)`.
 
-This method tries to detect current locale from application request. If there is none locale, `$defaultLocale` is used (when the `$defaultLocale` is `NULL`, an exception is thrown).
+This method tries to detect current locale from application request. If there is none locale, `$defaultLocale` is used (when the `$defaultLocale` is `null`, an exception is thrown).
 
 The preferred way is to register services in your DI container:
 
@@ -362,7 +362,7 @@ You probably want to register translator also to [Latte](https://latte.nette.org
 simply register `translate` filter to the template. Filter can look like this: 
 
 ```php
-$template->addFilter('translate', function (string $message, array|int $parameters = [], int|NULL $count = NULL): string {
+$template->addFilter('translate', function (string $message, array|int $parameters = [], int|null $count = null): string {
     if (is_int($parameters)) {
         $count = $parameters;
         $parameters = [];

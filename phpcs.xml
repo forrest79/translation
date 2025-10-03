@@ -2,7 +2,9 @@
 <ruleset name="Translation">
 	<exclude-pattern>tests/temp/*</exclude-pattern>
 
-	<rule ref="./vendor/forrest79/phpcs/Forrest79CodingStandard/ruleset.xml"/>
+	<rule ref="./vendor/forrest79/phpcs/Forrest79CodingStandard/ruleset.xml">
+		<exclude name="SlevomatCodingStandard.TypeHints.ClassConstantTypeHint.MissingNativeTypeHint"/><!-- PHP 8.3+ -->
+	</rule>
 
 	<rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
 		<exclude-pattern>tests/*</exclude-pattern>
@@ -10,10 +12,10 @@
 
 	<rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
 		<properties>
-			<property name="rootNamespaces" type="array" value="
-				src=>Forrest79\Translation,
-				tests/src=>Forrest79\Translation\Tests,
-			"/>
+			<property name="rootNamespaces" type="array">
+				<element key="src" value="Forrest79\Translation"/>
+				<element key="tests/src" value="Forrest79\Translation\Tests"/>
+			</property>
 		</properties>
 	</rule>
 </ruleset>

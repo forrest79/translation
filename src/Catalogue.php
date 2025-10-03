@@ -25,23 +25,23 @@ abstract class Catalogue
 	 * @throws Exceptions\NoCountForPluralMessageException
 	 * @throws Exceptions\NotPluralMessageException
 	 */
-	public function getTranslation(string $message, int|NULL $count = NULL): string|NULL
+	public function getTranslation(string $message, int|null $count = null): string|null
 	{
 		if (!isset($this->messages[$message])) {
-			return NULL;
+			return null;
 		}
 
 		$translation = $this->messages[$message];
 
-		if (is_array($translation) && ($count !== NULL)) {
+		if (is_array($translation) && ($count !== null)) {
 			$index = $this->getPluralIndex($count);
 			if (!isset($translation[$index])) {
 				throw new Exceptions\BadCountForPluralMessageException(sprintf('Message "%s" for count "%d" in "%s" not exists', $message, $count, $this->locale));
 			}
 			return $translation[$index];
-		} else if (is_array($translation) && ($count === NULL)) {
+		} else if (is_array($translation) && ($count === null)) {
 			throw new Exceptions\NoCountForPluralMessageException(sprintf('You must specify count for "%s" in "%s"', $message, $this->locale));
-		} else if ($count !== NULL) {
+		} else if ($count !== null) {
 			throw new Exceptions\NotPluralMessageException(sprintf('Message "%s" in "%s" is not plural', $message, $this->locale));
 		}
 

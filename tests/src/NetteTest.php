@@ -81,7 +81,7 @@ final class NetteTest extends Tests\TestCase
 	{
 		$application = self::createApplication(new Request(
 			'TestRequest',
-			params: [self::DEFAULT_LOCALE_PARAMETER => NULL],
+			params: [self::DEFAULT_LOCALE_PARAMETER => null],
 		));
 
 		Assert::exception(function () use ($application): void {
@@ -110,9 +110,9 @@ final class NetteTest extends Tests\TestCase
 		$router = new class implements Routing\Router {
 
 			/**
-			 * @return array<mixed>|NULL
+			 * @return array<mixed>|null
 			 */
-			public function match(Http\IRequest $httpRequest): array|NULL
+			public function match(Http\IRequest $httpRequest): array|null
 			{
 				throw new \RuntimeException('Not implemented');
 			}
@@ -121,7 +121,7 @@ final class NetteTest extends Tests\TestCase
 			/**
 			 * @param array<mixed> $params
 			 */
-			public function constructUrl(array $params, Http\UrlScript $refUrl): string|NULL
+			public function constructUrl(array $params, Http\UrlScript $refUrl): string|null
 			{
 				throw new \RuntimeException('Not implemented');
 			}
@@ -136,22 +136,22 @@ final class NetteTest extends Tests\TestCase
 			}
 
 
-			public function getQuery(string|NULL $key = NULL): mixed
+			public function getQuery(string|null $key = null): mixed
 			{
 				throw new \RuntimeException('Not implemented');
 			}
 
 
-			public function getPost(string|NULL $key = NULL): mixed
+			public function getPost(string|null $key = null): mixed
 			{
 				throw new \RuntimeException('Not implemented');
 			}
 
 
 			/**
-			 * @return array<mixed>|Http\FileUpload|NULL
+			 * @return array<mixed>|Http\FileUpload|null
 			 */
-			public function getFile(string $key): array|Http\FileUpload|NULL
+			public function getFile(string $key): array|Http\FileUpload|null
 			{
 				throw new \RuntimeException('Not implemented');
 			}
@@ -193,7 +193,7 @@ final class NetteTest extends Tests\TestCase
 			}
 
 
-			public function getHeader(string $header): string|NULL
+			public function getHeader(string $header): string|null
 			{
 				throw new \RuntimeException('Not implemented');
 			}
@@ -220,19 +220,19 @@ final class NetteTest extends Tests\TestCase
 			}
 
 
-			public function getRemoteAddress(): string|NULL
+			public function getRemoteAddress(): string|null
 			{
 				throw new \RuntimeException('Not implemented');
 			}
 
 
-			public function getRemoteHost(): string|NULL
+			public function getRemoteHost(): string|null
 			{
 				throw new \RuntimeException('Not implemented');
 			}
 
 
-			public function getRawBody(): string|NULL
+			public function getRawBody(): string|null
 			{
 				throw new \RuntimeException('Not implemented');
 			}
@@ -241,7 +241,7 @@ final class NetteTest extends Tests\TestCase
 
 		$httpResponse = new class implements Http\IResponse {
 
-			public function setCode(int $code, string|NULL $reason = NULL)
+			public function setCode(int $code, string|null $reason = null)
 			{
 				throw new \RuntimeException('Not implemented');
 			}
@@ -265,7 +265,7 @@ final class NetteTest extends Tests\TestCase
 			}
 
 
-			public function setContentType(string $type, string|NULL $charset = NULL): static
+			public function setContentType(string $type, string|null $charset = null): static
 			{
 				throw new \RuntimeException('Not implemented');
 			}
@@ -277,7 +277,7 @@ final class NetteTest extends Tests\TestCase
 			}
 
 
-			public function setExpiration(string|NULL $expire): static
+			public function setExpiration(string|null $expire): static
 			{
 				throw new \RuntimeException('Not implemented');
 			}
@@ -289,7 +289,7 @@ final class NetteTest extends Tests\TestCase
 			}
 
 
-			public function getHeader(string $header): string|NULL
+			public function getHeader(string $header): string|null
 			{
 				throw new \RuntimeException('Not implemented');
 			}
@@ -307,11 +307,11 @@ final class NetteTest extends Tests\TestCase
 			public function setCookie(
 				string $name,
 				string $value,
-				string|int|\DateTimeInterface|NULL $expire,
-				string|NULL $path = NULL,
-				string|NULL $domain = NULL,
-				bool|NULL $secure = NULL,
-				bool|NULL $httpOnly = NULL,
+				string|int|\DateTimeInterface|null $expire,
+				string|null $path = null,
+				string|null $domain = null,
+				bool|null $secure = null,
+				bool|null $httpOnly = null,
 			): static
 			{
 				throw new \RuntimeException('Not implemented');
@@ -320,9 +320,9 @@ final class NetteTest extends Tests\TestCase
 
 			public function deleteCookie(
 				string $name,
-				string|NULL $path = NULL,
-				string|NULL $domain = NULL,
-				bool|NULL $secure = NULL,
+				string|null $path = null,
+				string|null $domain = null,
+				bool|null $secure = null,
 			): static
 			{
 				throw new \RuntimeException('Not implemented');
@@ -343,7 +343,7 @@ final class NetteTest extends Tests\TestCase
 	private function createTranslatorFactory(): Nette\TranslatorFactory
 	{
 		return new Nette\TranslatorFactory(
-			TRUE,
+			true,
 			$this->tempDir,
 			self::createCatalogueLoader(),
 			self::DEFAULT_LOCALE_PARAMETER,
@@ -360,12 +360,12 @@ final class NetteTest extends Tests\TestCase
 
 			public function isLocaleUpdated(string $locale, string $cacheFile): bool
 			{
-				return FALSE;
+				return false;
 			}
 
 
 			/**
-			 * @return array<string, string|array<string, string|list<string>>|NULL>
+			 * @return array<string, string|array<string, string|list<string>>|null>
 			 */
 			public function loadData(string $locale): array
 			{

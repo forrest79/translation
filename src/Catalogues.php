@@ -10,9 +10,9 @@ class Catalogues
 
 	private CatalogueLoader $catalogueLoader;
 
-	private CatalogueUtils|NULL $catalogueUtils;
+	private CatalogueUtils|null $catalogueUtils;
 
-	private Logger|NULL $logger = NULL;
+	private Logger|null $logger = null;
 
 	/** @var array<string, Catalogue> */
 	private array $catalogues = [];
@@ -22,7 +22,7 @@ class Catalogues
 		bool $debugMode,
 		string $tempDir,
 		CatalogueLoader $catalogueLoader,
-		CatalogueUtils|NULL $catalogueUtils = NULL,
+		CatalogueUtils|null $catalogueUtils = null,
 	)
 	{
 		$this->debugMode = $debugMode;
@@ -40,7 +40,7 @@ class Catalogues
 	}
 
 
-	public function getTranslation(string $locale, string $message, int|NULL $count): string|NULL
+	public function getTranslation(string $locale, string $message, int|null $count): string|null
 	{
 		return $this->loadCatalogue($locale)->getTranslation($message, $count);
 	}
@@ -59,13 +59,13 @@ class Catalogues
 			$localeCache = $this->getCacheFile($locale);
 			if (!file_exists($localeCache) || ($this->debugMode && $this->catalogueLoader->isLocaleUpdated($locale, $localeCache))) {
 				$localeCacheDir = dirname($localeCache);
-				if (!is_dir($localeCacheDir) && !@mkdir($localeCacheDir, 0755, TRUE) && !is_dir($localeCacheDir)) { // intentionally @ - dir may already exist
+				if (!is_dir($localeCacheDir) && !@mkdir($localeCacheDir, 0755, true) && !is_dir($localeCacheDir)) { // intentionally @ - dir may already exist
 					throw new Exceptions\IOException(sprintf('Unable to create directory \'%s\'.', $localeCacheDir));
 				}
 
 				$lockFile = $localeCache . '.lock';
 				$lockHandle = fopen($lockFile, 'c+');
-				if (($lockHandle === FALSE) || !flock($lockHandle, LOCK_EX)) {
+				if (($lockHandle === false) || !flock($lockHandle, LOCK_EX)) {
 					throw new Exceptions\CantAcquireLockException(sprintf('Unable to create or acquire exclusive lock on file \'%s\'.', $lockFile));
 				}
 
@@ -92,7 +92,7 @@ class Catalogues
 						sprintf(
 							'<?php declare(strict_types=1); return new class(\'%s\', %s) extends Forrest79\Translation\Catalogue {protected function getPluralIndex(int $count): int {return %s;throw new Forrest79\Translation\Exceptions\NoCountDefinitionException(\'No definition for count \' . $count);}};',
 							$locale,
-							var_export($data['messages'] ?? [], TRUE),
+							var_export($data['messages'] ?? [], true),
 							$pluralCondition,
 						),
 					);

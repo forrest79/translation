@@ -24,7 +24,7 @@ class Neon implements Translation\CatalogueLoader
 
 
 	/**
-	 * @return array<string, string|array<string, string|list<string>>|NULL>
+	 * @return array<string, string|array<string, string|list<string>>|null>
 	 * @throws Translation\Exceptions\IOException
 	 * @throws Translation\Exceptions\ParsingErrorException
 	 */
@@ -33,7 +33,7 @@ class Neon implements Translation\CatalogueLoader
 		$localeFile = $this->source($locale);
 
 		$data = @file_get_contents($localeFile); // intentionally @ - file may not exists
-		if ($data === FALSE) {
+		if ($data === false) {
 			throw new Translation\Exceptions\IOException(sprintf('Locale file "%s" doesn\'t exists', $localeFile));
 		}
 

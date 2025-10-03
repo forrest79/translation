@@ -26,7 +26,7 @@ class Php implements Translation\MessageExtractor
 	public function extract(\SplFileInfo $file): array
 	{
 		$content = @file_get_contents($file->getPathname()); // intentionally @ - file may not exist
-		if ($content === FALSE) {
+		if ($content === false) {
 			throw new \RuntimeException(sprintf('Can\'t read file "%s".', $file->getPathname()));
 		}
 
@@ -76,7 +76,7 @@ class Php implements Translation\MessageExtractor
 		$parameters = [];
 		while ($this->isValidToken()) {
 			$meta = $this->tokens->current();
-			if (in_array($meta, ['(', ','], TRUE)) {
+			if (in_array($meta, ['(', ','], true)) {
 				$parameters[] = trim($this->loadMethodParameter());
 			} else if ($meta === ')') {
 				break;

@@ -1,17 +1,37 @@
 includes:
-	- vendor/phpstan/phpstan-strict-rules/rules.neon
 	- phpstan-php80.php
+	- %rootDir%/conf/bleedingEdge.neon
+	- %rootDir%/../phpstan-strict-rules/rules.neon
+	- %rootDir%/../../shipmonk/phpstan-rules/rules.neon
 
 parameters:
 	level: max
+
 	excludePaths:
 		- %rootDir%/../../../tests/temp/*
+
+	shipmonkRules:
+		forbidCheckedExceptionInCallable:
+			enabled: false
+
 	ignoreErrors:
+		-
+			message: '#^Comparison int\<0, max\>\|false \> int\<0, max\>\|false contains non\-comparable type, only int\|float\|string\|DateTimeInterface or comparable tuple is allowed\.$#'
+			identifier: shipmonk.comparingNonComparableTypes
+			count: 1
+			path: src/CatalogueLoaders/Neon.php
+
 		-
 			message: '#^Method Forrest79\\Translation\\CatalogueLoaders\\Neon\:\:loadData\(\) should return array\<string, array\<string, list\<string\>\|string\>\|string\|null\> but returns array\<mixed, mixed\>\.$#'
 			identifier: return.type
 			count: 1
 			path: src/CatalogueLoaders/Neon.php
+
+		-
+			message: '#^Missing native return typehint never$#'
+			identifier: shipmonk.missingNativeReturnTypehint
+			count: 1
+			path: tests/src/NetteTest.php
 
 		# === This is OK (just for tests) ===
 
