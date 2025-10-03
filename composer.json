@@ -11,19 +11,19 @@
 		}
 	],
 	"require": {
-		"php": "^8.0"
+		"php": "^8.3"
 	},
 	"require-dev": {
-		"forrest79/phpcs": "^2.0",
-		"forrest79/phpcs-ignores": "^0.5",
+		"forrest79/phpcs": "^2.3",
+		"forrest79/phpcs-ignores": "^0.6",
 		"latte/latte": "^3.0",
-		"nette/application": "^3.1",
+		"nette/application": "^3.2",
 		"nette/neon": "^3.4",
 		"nette/tester": "^2.5",
 		"phpstan/phpstan": "^2.1",
 		"phpstan/phpstan-strict-rules": "^2.0",
 		"tracy/tracy": "^2.10",
-		"shipmonk/phpstan-rules": "^4.1"
+		"shipmonk/phpstan-rules": "^4.2"
 	},
 	"autoload": {
 		"psr-4": {
@@ -43,7 +43,7 @@
 	"scripts": {
 		"tests": "tests/run-tests tests",
 		"coverage": "tests/collect-coverage tests",
-		"phpcs": "vendor/bin/phpcs --bootstrap=vendor/forrest79/phpcs-ignores/src/bootstrap-outdated.php -s src tests",
+		"phpcs": "vendor/bin/phpcs --bootstrap=vendor/forrest79/phpcs-ignores/src/bootstrap-outdated.php -q -s src tests",
 		"phpstan": "vendor/bin/phpstan analyse src tests"
 	},
 	"config": {

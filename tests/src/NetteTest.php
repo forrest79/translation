@@ -31,10 +31,6 @@ final class NetteTest extends Tests\TestCase
 	{
 		parent::setUp();
 		$this->tempDir = self::prepareCurrentTestTempDir();
-
-		if (PHP_MINOR_VERSION === 0) {
-			Environment::skip('This test needs Nette\Http with PHP 8.1 support.');
-		}
 	}
 
 
