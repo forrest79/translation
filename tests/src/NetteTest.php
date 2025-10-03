@@ -14,7 +14,6 @@ use Nette\Application\Request;
 use Nette\Http;
 use Nette\Routing;
 use Tester\Assert;
-use Tester\Environment;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
