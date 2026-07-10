@@ -128,7 +128,7 @@ class Translator
 
 	public function clearCache(): void
 	{
-		$this->catalogues->clearCache($this->locale); // @todo tests!!!
+		$this->catalogues->clearCache($this->locale);
 	}
 
 

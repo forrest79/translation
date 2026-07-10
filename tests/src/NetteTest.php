@@ -105,7 +105,7 @@ final class NetteTest extends Tests\TestCase
 		$router = new class implements Routing\Router {
 
 			/**
-			 * @return array<mixed>|null
+			 * @return array<string, mixed>|null
 			 */
 			public function match(Http\IRequest $httpRequest): array|null
 			{
@@ -143,10 +143,7 @@ final class NetteTest extends Tests\TestCase
 			}
 
 
-			/**
-			 * @return array<mixed>|Http\FileUpload|null
-			 */
-			public function getFile(string $key): array|Http\FileUpload|null
+			public function getFile(string $key): Http\FileUpload|null
 			{
 				throw new \RuntimeException('Not implemented');
 			}
@@ -168,7 +165,7 @@ final class NetteTest extends Tests\TestCase
 
 
 			/**
-			 * @return array<mixed>
+			 * @return array<string, string>
 			 */
 			public function getCookies(): array
 			{
@@ -195,7 +192,7 @@ final class NetteTest extends Tests\TestCase
 
 
 			/**
-			 * @return array<mixed>
+			 * @return array<string, string>
 			 */
 			public function getHeaders(): array
 			{
@@ -291,7 +288,7 @@ final class NetteTest extends Tests\TestCase
 
 
 			/**
-			 * @return array<mixed>
+			 * @return array<string, string>
 			 */
 			public function getHeaders(): array
 			{

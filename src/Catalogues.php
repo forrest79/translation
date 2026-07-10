@@ -49,8 +49,8 @@ class Catalogues
 	/**
 	 * @throws Exceptions\CantAcquireLockException
 	 * @throws Exceptions\IOException
-	 * @throws Exceptions\ParsingErrorException
 	 * @throws Exceptions\MessagesSectionIsMissingException
+	 * @throws Exceptions\ParsingErrorException
 	 */
 	private function loadCatalogue(string $locale): Catalogue
 	{

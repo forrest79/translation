@@ -404,7 +404,7 @@ ignoreErrors:
 	-
 		sniff: Squiz.Commenting.FunctionComment.InvalidNoReturn
 		message: 'Function has no return statement, but annotation @return is present'
-		count: 6
+		count: 5
 		path: tests/src/NetteTest.php
 
 	-

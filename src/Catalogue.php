@@ -39,7 +39,7 @@ abstract class Catalogue
 				throw new Exceptions\BadCountForPluralMessageException(sprintf('Message "%s" for count "%d" in "%s" not exists', $message, $count, $this->locale));
 			}
 			return $translation[$index];
-		} else if (is_array($translation) && ($count === null)) {
+		} else if (is_array($translation)) {
 			throw new Exceptions\NoCountForPluralMessageException(sprintf('You must specify count for "%s" in "%s"', $message, $this->locale));
 		} else if ($count !== null) {
 			throw new Exceptions\NotPluralMessageException(sprintf('Message "%s" in "%s" is not plural', $message, $this->locale));
